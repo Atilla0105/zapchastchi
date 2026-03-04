@@ -419,6 +419,102 @@
       color: #ffe5a6;
     }
 
+    .vin-guide {
+      margin-bottom: 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+    }
+
+    .vin-guide summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      font: 700 14px var(--font-display);
+      color: var(--text-primary);
+    }
+
+    .vin-guide summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .vin-guide summary::after {
+      content: "+";
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(0, 217, 255, 0.12);
+      color: var(--primary);
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .vin-guide[open] summary::after {
+      content: "−";
+    }
+
+    .vin-guide-body {
+      padding: 0 16px 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+      gap: 16px;
+      align-items: center;
+    }
+
+    .vin-guide-copy {
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .vin-guide-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .vin-guide-list div {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .vin-guide-list strong {
+      color: var(--text-primary);
+    }
+
+    .vin-guide-dot {
+      width: 8px;
+      height: 8px;
+      margin-top: 7px;
+      border-radius: 999px;
+      background: var(--primary);
+      box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.12);
+      flex-shrink: 0;
+    }
+
+    .vin-visual {
+      width: 100%;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(0, 217, 255, 0.06), rgba(131, 56, 236, 0.08));
+      border: 1px solid rgba(0, 217, 255, 0.12);
+      padding: 10px;
+    }
+
+    .vin-visual svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     .draft-note {
       display: flex;
       align-items: center;
@@ -981,6 +1077,22 @@
         border-radius: 16px;
       }
 
+      .vin-guide summary {
+        padding: 12px 14px;
+        font-size: 13px;
+      }
+
+      .vin-guide-body {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 14px 14px;
+      }
+
+      .vin-guide-copy {
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
       .upload-icon {
         font-size: 34px;
         margin-bottom: 8px;
@@ -1116,6 +1228,53 @@
       </div>
 
       <div class="status-box hidden" id="vinStatus"></div>
+
+      <details class="vin-guide" id="vinGuide" open>
+        <summary data-i18n="vinGuideTitle"></summary>
+        <div class="vin-guide-body">
+          <div class="vin-guide-copy">
+            <div data-i18n="vinGuideText"></div>
+            <div class="vin-guide-list">
+              <div>
+                <span class="vin-guide-dot"></span>
+                <div><strong data-i18n="vinGuidePoint1Title"></strong> <span data-i18n="vinGuidePoint1"></span></div>
+              </div>
+              <div>
+                <span class="vin-guide-dot"></span>
+                <div><strong data-i18n="vinGuidePoint2Title"></strong> <span data-i18n="vinGuidePoint2"></span></div>
+              </div>
+              <div>
+                <span class="vin-guide-dot"></span>
+                <div><strong data-i18n="vinGuidePoint3Title"></strong> <span data-i18n="vinGuidePoint3"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="vin-visual" aria-hidden="true">
+            <svg viewBox="0 0 420 240" role="img">
+              <defs>
+                <linearGradient id="carBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#1d2942"></stop>
+                  <stop offset="100%" stop-color="#10182c"></stop>
+                </linearGradient>
+                <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="rgba(0,217,255,0.35)"></stop>
+                  <stop offset="100%" stop-color="rgba(131,56,236,0.15)"></stop>
+                </linearGradient>
+              </defs>
+              <rect x="28" y="120" width="364" height="70" rx="26" fill="url(#carBody)" stroke="rgba(255,255,255,0.12)"></rect>
+              <path d="M95 118 L145 72 H275 L325 118 Z" fill="url(#glass)" stroke="rgba(0,217,255,0.35)" stroke-width="2"></path>
+              <rect x="152" y="132" width="116" height="22" rx="8" fill="rgba(255,183,3,0.22)" stroke="#ffb703" stroke-dasharray="4 4"></rect>
+              <circle cx="115" cy="190" r="26" fill="#0e1526" stroke="rgba(255,255,255,0.14)"></circle>
+              <circle cx="305" cy="190" r="26" fill="#0e1526" stroke="rgba(255,255,255,0.14)"></circle>
+              <circle cx="268" cy="96" r="6" fill="#00d9ff"></circle>
+              <line x1="268" y1="96" x2="330" y2="48" stroke="#00d9ff" stroke-width="3"></line>
+              <rect x="282" y="26" width="102" height="34" rx="12" fill="rgba(0,217,255,0.12)" stroke="rgba(0,217,255,0.45)"></rect>
+              <text x="333" y="47" text-anchor="middle" fill="#dffbff" font-size="16" font-family="Arial, sans-serif">VIN</text>
+              <text x="210" y="148" text-anchor="middle" fill="#ffe5a6" font-size="14" font-family="Arial, sans-serif">17 VIN CODE</text>
+            </svg>
+          </div>
+        </div>
+      </details>
 
       <div class="car-info hidden" id="carInfo">
         <div class="grid-2">
@@ -1363,6 +1522,14 @@
         vinInvalid: "Неверный формат VIN.",
         vinNetworkFail: "Внешний VIN-сервис недоступен, используется локальное определение.",
         vinPartialStatus: "Внешний VIN-сервис вернул неполные данные. Проверьте модель, год и комплектацию вручную.",
+        vinGuideTitle: "Где найти VIN-код?",
+        vinGuideText: "Многие клиенты не знают, где искать VIN. Обычно это 17-значный код, который можно найти в нескольких местах автомобиля и документах.",
+        vinGuidePoint1Title: "Под лобовым стеклом:",
+        vinGuidePoint1: "снаружи со стороны водителя, у основания панели.",
+        vinGuidePoint2Title: "На стойке двери:",
+        vinGuidePoint2: "на заводской наклейке после открытия водительской двери.",
+        vinGuidePoint3Title: "В документах:",
+        vinGuidePoint3: "в техпаспорте или регистрационных документах автомобиля.",
         ciMake: "Марка",
         ciYear: "Год",
         ciModel: "Модель",
@@ -1446,6 +1613,14 @@
         vinInvalid: "VIN formati noto'g'ri.",
         vinNetworkFail: "Tashqi VIN xizmati ishlamadi, mahalliy aniqlash ishlatildi.",
         vinPartialStatus: "Tashqi VIN xizmati qisman ma'lumot qaytardi. Model, yil va komplektatsiyani qo'lda tekshiring.",
+        vinGuideTitle: "VIN kod qayerda bo'ladi?",
+        vinGuideText: "Ko'p mijozlar VIN nimligini yoki uni qayerdan topishni bilishmaydi. VIN odatda 17 belgidan iborat bo'lib, mashinada va hujjatlarda bir nechta joyda bo'ladi.",
+        vinGuidePoint1Title: "Old oynada:",
+        vinGuidePoint1: "haydovchi tomonda, panelning pastki qismida tashqaridan ko'rinadi.",
+        vinGuidePoint2Title: "Eshik ustunida:",
+        vinGuidePoint2: "haydovchi eshigini ochganda zavod stikeri yoki metall yorliqda bo'ladi.",
+        vinGuidePoint3Title: "Hujjatlarda:",
+        vinGuidePoint3: "tex pasport yoki ro'yxatdan o'tkazish hujjatlarida yozilgan bo'ladi.",
         ciMake: "Marka",
         ciYear: "Yil",
         ciModel: "Model",
@@ -1529,6 +1704,14 @@
         vinInvalid: "VIN 格式无效。",
         vinNetworkFail: "外部 VIN 服务不可用，已切换到本地识别。",
         vinPartialStatus: "外部 VIN 服务返回了不完整数据，请手动核对车型、年份和配置。",
+        vinGuideTitle: "VIN 码在哪里找？",
+        vinGuideText: "很多客户不知道 VIN 是什么。VIN 一般是 17 位字符，通常可以在车辆本体和证件上找到。",
+        vinGuidePoint1Title: "前挡风玻璃下方：",
+        vinGuidePoint1: "从驾驶员一侧向内看，仪表台底部通常能看到。",
+        vinGuidePoint2Title: "驾驶员车门门框：",
+        vinGuidePoint2: "打开车门后，厂家标签或铭牌上通常会写 VIN。",
+        vinGuidePoint3Title: "车辆证件：",
+        vinGuidePoint3: "行驶证、登记文件或购车资料中也会有 VIN。",
         ciMake: "品牌",
         ciYear: "年份",
         ciModel: "车型",
