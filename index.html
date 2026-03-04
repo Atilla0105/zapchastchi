@@ -10,23 +10,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #00d9ff;
-      --secondary: #ff006e;
-      --accent: #8338ec;
-      --success: #3dd68e;
-      --warning: #ffb703;
-      --danger: #ff4d6d;
-      --bg-dark: #0f1419;
-      --bg-gradient: linear-gradient(135deg, #0f1419 0%, #12072a 55%, #1e0d3e 100%);
-      --surface-1: rgba(26, 31, 46, 0.72);
-      --surface-2: rgba(37, 45, 61, 0.92);
-      --surface-3: rgba(49, 57, 75, 0.98);
-      --text-primary: #ffffff;
-      --text-secondary: #b0b3c1;
-      --text-tertiary: #7a7e8f;
-      --border: rgba(255, 255, 255, 0.1);
-      --border-light: rgba(255, 255, 255, 0.05);
-      --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      --primary: #4f8cff;
+      --secondary: #6fb5ff;
+      --accent: #89c8ff;
+      --success: #2faa72;
+      --warning: #d29a27;
+      --danger: #df6f6f;
+      --bg-dark: #f4f7fb;
+      --bg-gradient: linear-gradient(180deg, #fbfdff 0%, #f3f7fb 48%, #eef3f9 100%);
+      --surface-1: rgba(255, 255, 255, 0.56);
+      --surface-2: rgba(255, 255, 255, 0.78);
+      --surface-3: rgba(247, 250, 253, 0.94);
+      --text-primary: #16324a;
+      --text-secondary: #5f7286;
+      --text-tertiary: #8ea0b2;
+      --border: rgba(148, 163, 184, 0.22);
+      --border-light: rgba(148, 163, 184, 0.14);
+      --shadow: 0 18px 48px rgba(157, 172, 190, 0.18);
       --radius-sm: 10px;
       --radius-md: 18px;
       --radius-lg: 28px;
@@ -64,18 +64,18 @@
 
     body::before {
       background:
-        radial-gradient(circle at 20% 20%, rgba(0, 217, 255, 0.12) 0%, transparent 34%),
-        radial-gradient(circle at 78% 72%, rgba(131, 56, 236, 0.16) 0%, transparent 36%),
-        radial-gradient(circle at 40% 85%, rgba(255, 0, 110, 0.08) 0%, transparent 28%);
+        radial-gradient(circle at 16% 18%, rgba(132, 194, 255, 0.22) 0%, transparent 33%),
+        radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.8) 0%, transparent 34%),
+        radial-gradient(circle at 80% 80%, rgba(193, 229, 255, 0.28) 0%, transparent 36%);
       animation: drift 16s ease-in-out infinite;
     }
 
     body::after {
       background-image:
-        linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%, transparent),
-        linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%, transparent);
-      background-size: 60px 60px;
-      opacity: 0.4;
+        linear-gradient(0deg, transparent 24%, rgba(148, 163, 184, 0.04) 25%, rgba(148, 163, 184, 0.04) 26%, transparent 27%, transparent 74%, rgba(148, 163, 184, 0.04) 75%, rgba(148, 163, 184, 0.04) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(148, 163, 184, 0.04) 25%, rgba(148, 163, 184, 0.04) 26%, transparent 27%, transparent 74%, rgba(148, 163, 184, 0.04) 75%, rgba(148, 163, 184, 0.04) 76%, transparent 77%, transparent);
+      background-size: 72px 72px;
+      opacity: 0.55;
     }
 
     @keyframes drift {
@@ -87,8 +87,8 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      backdrop-filter: blur(18px);
-      background: rgba(15, 20, 25, 0.78);
+      backdrop-filter: blur(24px) saturate(1.2);
+      background: rgba(255, 255, 255, 0.58);
       border-bottom: 1px solid var(--border-light);
     }
 
@@ -128,12 +128,12 @@
       border-radius: 12px;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      box-shadow: 0 12px 24px rgba(0, 217, 255, 0.22);
+      background: linear-gradient(135deg, #7ec1ff, #5f8fff);
+      box-shadow: 0 12px 24px rgba(111, 162, 222, 0.22);
     }
 
     .logo-text {
-      background: linear-gradient(135deg, var(--primary), #ffffff 60%, var(--secondary));
+      background: linear-gradient(135deg, #295173, #4f8cff 52%, #77aef7);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -169,38 +169,30 @@
     }
 
     .lang-btn.active {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: var(--text-primary);
-      box-shadow: 0 8px 20px rgba(0, 217, 255, 0.2);
+      background: linear-gradient(135deg, #89c2ff, #5d8fff);
+      color: #ffffff;
+      box-shadow: 0 8px 20px rgba(111, 162, 222, 0.22);
     }
 
     .hero {
-      padding-top: 56px;
-      padding-bottom: 20px;
+      padding-top: 42px;
+      padding-bottom: 8px;
       text-align: center;
       animation: reveal 0.8s ease;
     }
 
     .hero-eyebrow {
-      font: 600 12px var(--font-mono);
-      letter-spacing: 0.18em;
-      color: var(--primary);
-      text-transform: uppercase;
-      margin-bottom: 16px;
+      display: none;
     }
 
     .hero-title {
-      font: 700 clamp(34px, 5vw, 56px)/1.1 var(--font-display);
+      font: 700 clamp(32px, 5vw, 54px)/1.06 var(--font-display);
       letter-spacing: -0.06em;
-      margin-bottom: 18px;
+      margin-bottom: 0;
     }
 
     .hero-subtitle {
-      max-width: 700px;
-      margin: 0 auto;
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--text-secondary);
+      display: none;
     }
 
     @keyframes reveal {
@@ -233,12 +225,12 @@
     }
 
     .step-item.active {
-      border-color: rgba(0, 217, 255, 0.8);
-      background: rgba(0, 217, 255, 0.08);
+      border-color: rgba(79, 140, 255, 0.42);
+      background: rgba(255, 255, 255, 0.74);
     }
 
     .step-item.done {
-      border-color: rgba(61, 214, 142, 0.6);
+      border-color: rgba(111, 181, 255, 0.3);
     }
 
     .step-number {
@@ -248,8 +240,9 @@
       display: grid;
       place-items: center;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
+      background: linear-gradient(135deg, #8fcbff, #6897ff);
       font: 700 18px var(--font-display);
+      color: #ffffff;
     }
 
     .step-label {
@@ -414,17 +407,18 @@
     }
 
     .status-box {
-      background: rgba(255, 183, 3, 0.08);
-      border: 1px solid rgba(255, 183, 3, 0.22);
-      color: #ffe5a6;
+      background: rgba(255, 240, 214, 0.72);
+      border: 1px solid rgba(210, 154, 39, 0.22);
+      color: #8a6210;
     }
 
     .vin-guide {
       margin-bottom: 20px;
       border-radius: 16px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      box-shadow: 0 16px 34px rgba(171, 184, 201, 0.14);
     }
 
     .vin-guide summary {
@@ -437,6 +431,7 @@
       padding: 14px 16px;
       font: 700 14px var(--font-display);
       color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.32);
     }
 
     .vin-guide summary::-webkit-details-marker {
@@ -451,7 +446,7 @@
       display: grid;
       place-items: center;
       border-radius: 999px;
-      background: rgba(0, 217, 255, 0.12);
+      background: rgba(79, 140, 255, 0.12);
       color: var(--primary);
       font-size: 16px;
       line-height: 1;
@@ -470,9 +465,9 @@
     }
 
     .vin-guide-copy {
-      color: var(--text-secondary);
+      color: #5b7085;
       font-size: 13px;
-      line-height: 1.7;
+      line-height: 1.72;
     }
 
     .vin-guide-list {
@@ -488,7 +483,7 @@
     }
 
     .vin-guide-list strong {
-      color: var(--text-primary);
+      color: #1f3d59;
     }
 
     .vin-guide-dot {
@@ -497,15 +492,15 @@
       margin-top: 7px;
       border-radius: 999px;
       background: var(--primary);
-      box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.12);
+      box-shadow: 0 0 0 4px rgba(79, 140, 255, 0.12);
       flex-shrink: 0;
     }
 
     .vin-visual {
       width: 100%;
       border-radius: 16px;
-      background: linear-gradient(180deg, rgba(0, 217, 255, 0.06), rgba(131, 56, 236, 0.08));
-      border: 1px solid rgba(0, 217, 255, 0.12);
+      background: linear-gradient(180deg, rgba(235, 246, 255, 0.96), rgba(245, 249, 255, 0.98));
+      border: 1px solid rgba(148, 163, 184, 0.2);
       padding: 10px;
     }
 
@@ -520,8 +515,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      background: rgba(131, 56, 236, 0.12);
-      border: 1px solid rgba(131, 56, 236, 0.22);
+      background: rgba(255, 255, 255, 0.58);
+      border: 1px solid rgba(148, 163, 184, 0.18);
       font-size: 13px;
       color: var(--text-secondary);
     }
@@ -534,9 +529,9 @@
       border-radius: 16px;
       padding: 16px;
       margin-bottom: 20px;
-      background: rgba(255, 183, 3, 0.1);
-      border: 1px solid rgba(255, 183, 3, 0.28);
-      color: #ffe5a6;
+      background: rgba(255, 246, 228, 0.92);
+      border: 1px solid rgba(210, 154, 39, 0.28);
+      color: #8c6310;
       font-size: 13px;
       line-height: 1.6;
     }
@@ -553,9 +548,9 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: var(--text-primary);
-      box-shadow: 0 10px 24px rgba(0, 217, 255, 0.18);
+      background: linear-gradient(135deg, #7fbfff, #5f8fff);
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(111, 162, 222, 0.18);
     }
 
     .btn-secondary {
@@ -601,9 +596,9 @@
 
     .cat-card:hover,
     .cat-card.active {
-      border-color: rgba(0, 217, 255, 0.7);
+      border-color: rgba(79, 140, 255, 0.4);
       transform: translateY(-2px);
-      background: rgba(0, 217, 255, 0.08);
+      background: rgba(255, 255, 255, 0.76);
     }
 
     .cat-icon {
@@ -661,8 +656,8 @@
     .tag-btn.selected,
     .tag-btn:hover {
       color: var(--text-primary);
-      border-color: rgba(0, 217, 255, 0.8);
-      background: linear-gradient(135deg, rgba(0, 217, 255, 0.18), rgba(131, 56, 236, 0.22));
+      border-color: rgba(79, 140, 255, 0.5);
+      background: linear-gradient(135deg, rgba(127, 191, 255, 0.24), rgba(255, 255, 255, 0.9));
     }
 
     .selected-panel {
@@ -683,9 +678,9 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: linear-gradient(135deg, rgba(0, 217, 255, 0.18), rgba(131, 56, 236, 0.24));
+      background: linear-gradient(135deg, rgba(127, 191, 255, 0.2), rgba(255, 255, 255, 0.82));
       color: var(--text-primary);
-      border: 1px solid rgba(0, 217, 255, 0.8);
+      border: 1px solid rgba(79, 140, 255, 0.34);
     }
 
     .chip-remove {
@@ -715,10 +710,10 @@
     }
 
     .toggle-btn.active {
-      color: var(--text-primary);
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-color: rgba(0, 217, 255, 0.75);
-      box-shadow: 0 8px 18px rgba(0, 217, 255, 0.18);
+      color: #ffffff;
+      background: linear-gradient(135deg, #7fbfff, #5f8fff);
+      border-color: rgba(79, 140, 255, 0.4);
+      box-shadow: 0 8px 18px rgba(111, 162, 222, 0.18);
     }
 
     .photo-upload-area {
@@ -727,13 +722,13 @@
       border-radius: 18px;
       border: 2px dashed rgba(255, 255, 255, 0.15);
       text-align: center;
-      background: rgba(0, 217, 255, 0.04);
+      background: rgba(255, 255, 255, 0.5);
       transition: all 0.2s ease;
     }
 
     .photo-upload-area.dragover {
-      border-color: var(--secondary);
-      background: rgba(255, 0, 110, 0.08);
+      border-color: var(--primary);
+      background: rgba(127, 191, 255, 0.12);
     }
 
     .photo-upload-input {
@@ -809,8 +804,8 @@
     }
 
     .checkbox-wrap.warn {
-      background: rgba(255, 0, 110, 0.08);
-      border-color: rgba(255, 0, 110, 0.22);
+      background: rgba(255, 246, 233, 0.88);
+      border-color: rgba(210, 154, 39, 0.2);
     }
 
     .checkbox-wrap input {
@@ -834,6 +829,91 @@
     .summary-box h3 {
       font: 700 16px var(--font-display);
       margin-bottom: 14px;
+    }
+
+    .ai-assist-box {
+      border-radius: 18px;
+      padding: 18px;
+      margin-top: 18px;
+      background: rgba(0, 217, 255, 0.05);
+      border: 1px solid rgba(0, 217, 255, 0.16);
+    }
+
+    .ai-assist-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .ai-assist-title {
+      font: 700 16px var(--font-display);
+    }
+
+    .ai-assist-subtitle {
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .ai-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font: 600 11px var(--font-mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .ai-result {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .ai-result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .ai-panel {
+      border-radius: 14px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--border);
+    }
+
+    .ai-panel h4 {
+      font: 700 12px var(--font-mono);
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .ai-panel ul {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .ai-panel li::before {
+      content: "•";
+      color: var(--primary);
+      margin-right: 8px;
+    }
+
+    .ai-summary {
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.65;
     }
 
     .summary-list {
@@ -942,27 +1022,23 @@
       }
 
       .hero {
-        padding-top: 22px;
-        padding-bottom: 4px;
+        padding-top: 18px;
+        padding-bottom: 0;
       }
 
       .hero-eyebrow {
-        margin-bottom: 10px;
-        font-size: 10px;
-        letter-spacing: 0.14em;
+        display: none;
       }
 
       .hero-title {
         font-size: clamp(22px, 8vw, 34px);
         line-height: 1.04;
         letter-spacing: -0.05em;
-        margin-bottom: 12px;
+        margin-bottom: 0;
       }
 
       .hero-subtitle {
-        font-size: 14px;
-        line-height: 1.55;
-        max-width: none;
+        display: none;
       }
 
       .steps-bar {
@@ -1068,7 +1144,8 @@
 
       .action-row[style],
       .toolbar-row,
-      .summary-grid {
+      .summary-grid,
+      .ai-result-grid {
         grid-template-columns: 1fr !important;
       }
 
@@ -1139,7 +1216,7 @@
       }
 
       .hero-subtitle {
-        font-size: 13px;
+        display: none;
       }
 
       .step-item {
@@ -1175,9 +1252,7 @@
   </header>
 
   <section class="hero">
-    <div class="hero-eyebrow" data-i18n="eyebrow"></div>
     <h1 class="hero-title" data-i18n="heroTitle"></h1>
-    <p class="hero-subtitle" data-i18n="subtitle"></p>
   </section>
 
   <div class="steps-bar">
@@ -1229,7 +1304,7 @@
 
       <div class="status-box hidden" id="vinStatus"></div>
 
-      <details class="vin-guide" id="vinGuide" open>
+      <details class="vin-guide" id="vinGuide">
         <summary data-i18n="vinGuideTitle"></summary>
         <div class="vin-guide-body">
           <div class="vin-guide-copy">
@@ -1250,27 +1325,42 @@
             </div>
           </div>
           <div class="vin-visual" aria-hidden="true">
-            <svg viewBox="0 0 420 240" role="img">
+            <svg viewBox="0 0 420 260" role="img">
               <defs>
-                <linearGradient id="carBody" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#1d2942"></stop>
-                  <stop offset="100%" stop-color="#10182c"></stop>
+                <linearGradient id="carShell" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#eff5fb"></stop>
+                  <stop offset="100%" stop-color="#dfe9f5"></stop>
                 </linearGradient>
-                <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="rgba(0,217,255,0.35)"></stop>
-                  <stop offset="100%" stop-color="rgba(131,56,236,0.15)"></stop>
+                <linearGradient id="glassSoft" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#dff2ff"></stop>
+                  <stop offset="100%" stop-color="#cfe1ff"></stop>
+                </linearGradient>
+                <linearGradient id="calloutBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"></stop>
+                  <stop offset="100%" stop-color="#f3f8ff"></stop>
                 </linearGradient>
               </defs>
-              <rect x="28" y="120" width="364" height="70" rx="26" fill="url(#carBody)" stroke="rgba(255,255,255,0.12)"></rect>
-              <path d="M95 118 L145 72 H275 L325 118 Z" fill="url(#glass)" stroke="rgba(0,217,255,0.35)" stroke-width="2"></path>
-              <rect x="152" y="132" width="116" height="22" rx="8" fill="rgba(255,183,3,0.22)" stroke="#ffb703" stroke-dasharray="4 4"></rect>
-              <circle cx="115" cy="190" r="26" fill="#0e1526" stroke="rgba(255,255,255,0.14)"></circle>
-              <circle cx="305" cy="190" r="26" fill="#0e1526" stroke="rgba(255,255,255,0.14)"></circle>
-              <circle cx="268" cy="96" r="6" fill="#00d9ff"></circle>
-              <line x1="268" y1="96" x2="330" y2="48" stroke="#00d9ff" stroke-width="3"></line>
-              <rect x="282" y="26" width="102" height="34" rx="12" fill="rgba(0,217,255,0.12)" stroke="rgba(0,217,255,0.45)"></rect>
-              <text x="333" y="47" text-anchor="middle" fill="#dffbff" font-size="16" font-family="Arial, sans-serif">VIN</text>
-              <text x="210" y="148" text-anchor="middle" fill="#ffe5a6" font-size="14" font-family="Arial, sans-serif">17 VIN CODE</text>
+              <rect x="18" y="18" width="384" height="224" rx="24" fill="url(#calloutBg)" stroke="#d4e0ee"></rect>
+              <rect x="88" y="130" width="238" height="54" rx="22" fill="url(#carShell)" stroke="#93a8bf" stroke-width="2"></rect>
+              <path d="M132 130 L178 88 H265 L306 130 Z" fill="url(#glassSoft)" stroke="#8fbef2" stroke-width="2"></path>
+              <line x1="219" y1="89" x2="219" y2="130" stroke="#9cb3c8" stroke-width="2"></line>
+              <rect x="176" y="118" width="46" height="10" rx="5" fill="#ffd67b" stroke="#d29a27" stroke-dasharray="4 3"></rect>
+              <rect x="104" y="108" width="7" height="28" rx="3" fill="#ffd67b" stroke="#d29a27"></rect>
+              <circle cx="145" cy="188" r="22" fill="#3c556f"></circle>
+              <circle cx="280" cy="188" r="22" fill="#3c556f"></circle>
+
+              <circle cx="200" cy="123" r="6" fill="#4f8cff"></circle>
+              <path d="M206 119 C240 96, 260 80, 292 59" fill="none" stroke="#4f8cff" stroke-width="3" stroke-linecap="round"></path>
+              <rect x="278" y="34" width="110" height="32" rx="12" fill="#f5faff" stroke="#8fbef2"></rect>
+              <text x="333" y="54" text-anchor="middle" fill="#31506d" font-size="13" font-family="Arial, sans-serif">Windshield VIN</text>
+
+              <circle cx="107" cy="122" r="6" fill="#d29a27"></circle>
+              <path d="M102 116 C78 96, 62 78, 40 58" fill="none" stroke="#d29a27" stroke-width="3" stroke-linecap="round"></path>
+              <rect x="28" y="34" width="118" height="32" rx="12" fill="#fff8eb" stroke="#e0b764"></rect>
+              <text x="87" y="54" text-anchor="middle" fill="#8a6210" font-size="13" font-family="Arial, sans-serif">Door label VIN</text>
+
+              <text x="199" y="114" text-anchor="middle" fill="#8a6210" font-size="12" font-family="Arial, sans-serif">dashboard base</text>
+              <text x="140" y="102" text-anchor="middle" fill="#8a6210" font-size="11" font-family="Arial, sans-serif">driver door</text>
             </svg>
           </div>
         </div>
@@ -1395,6 +1485,48 @@
         <input id="noPhotoCheck" type="checkbox">
         <label for="noPhotoCheck" data-i18n="noPhotoLabel"></label>
       </div>
+
+      <section class="ai-assist-box">
+        <div class="ai-assist-head">
+          <div class="ai-assist-title" data-i18n="aiAssistTitle"></div>
+          <div class="ai-status" id="aiAssistStatus" data-i18n="aiIdle"></div>
+        </div>
+        <p class="ai-assist-subtitle" data-i18n="aiAssistSub"></p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn btn-secondary" type="button" id="runAiAssistBtn">
+            <span>✦</span>
+            <span data-i18n="aiAnalyzeBtn"></span>
+          </button>
+          <button class="btn btn-ghost hidden" type="button" id="applyAiSummaryBtn">
+            <span>↳</span>
+            <span data-i18n="aiApplyBtn"></span>
+          </button>
+        </div>
+        <div class="ai-result hidden" id="aiAssistResult">
+          <div class="ai-panel">
+            <h4 data-i18n="aiSummaryHeading"></h4>
+            <div class="ai-summary" id="aiSummaryText"></div>
+          </div>
+          <div class="ai-result-grid">
+            <div class="ai-panel">
+              <h4 data-i18n="aiProbableHeading"></h4>
+              <ul id="aiProbableList"></ul>
+            </div>
+            <div class="ai-panel">
+              <h4 data-i18n="aiMissingHeading"></h4>
+              <ul id="aiMissingList"></ul>
+            </div>
+            <div class="ai-panel">
+              <h4 data-i18n="aiQuestionsHeading"></h4>
+              <ul id="aiQuestionsList"></ul>
+            </div>
+            <div class="ai-panel">
+              <h4 data-i18n="aiCluesHeading"></h4>
+              <ul id="aiCluesList"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div class="action-row" style="grid-template-columns:repeat(2,minmax(0,1fr));">
         <button class="btn btn-secondary" type="button" id="backToStep1">
@@ -1593,7 +1725,22 @@
         contactSummary: "Контакт",
         orderCreated: "Заявка создана",
         cityPlaceholder: "Выберите город",
-        runtimeNote: "Чтобы VIN-распознавание работало стабильно, запустите локальный proxy: `python3 server.py`. После этого можно открыть `http://127.0.0.1:8000` или даже текущий HTML-файл."
+        runtimeNote: "Чтобы VIN-распознавание работало стабильно, запустите локальный proxy: `python3 server.py`. После этого можно открыть `http://127.0.0.1:8000` или даже текущий HTML-файл.",
+        aiAssistTitle: "AI-помощник по заявке",
+        aiAssistSub: "AI анализирует VIN, выбранные детали, комментарий и фото, чтобы подсказать вероятную деталь и чего не хватает для точного заказа.",
+        aiAnalyzeBtn: "Запустить AI-анализ",
+        aiApplyBtn: "Добавить AI-краткое описание",
+        aiIdle: "Не запущен",
+        aiLoading: "Анализ...",
+        aiReady: "Готово",
+        aiFallback: "Базовый режим",
+        aiSummaryHeading: "Краткое резюме",
+        aiProbableHeading: "Вероятные детали",
+        aiMissingHeading: "Чего не хватает",
+        aiQuestionsHeading: "Что спросить у клиента",
+        aiCluesHeading: "Подсказки и коды",
+        aiError: "AI-анализ не удалось выполнить.",
+        aiEmpty: "Пока нет данных."
       },
       uz: {
         eyebrow: "Elektromobil ehtiyot qismlari · Xitoy → O'zbekiston",
@@ -1684,7 +1831,22 @@
         contactSummary: "Kontakt",
         orderCreated: "So'rov yaratildi",
         cityPlaceholder: "Shaharni tanlang",
-        runtimeNote: "VIN aniqlash ishlashi uchun sahifani `file://` emas, lokal server orqali oching. `python3 server.py` ni ishga tushiring va `http://127.0.0.1:8000` ni oching."
+        runtimeNote: "VIN aniqlash ishlashi uchun sahifani `file://` emas, lokal server orqali oching. `python3 server.py` ni ishga tushiring va `http://127.0.0.1:8000` ni oching.",
+        aiAssistTitle: "AI yordamchi tahlili",
+        aiAssistSub: "AI VIN, tanlangan qismlar, izoh va rasmlarni tahlil qilib, ehtimoliy detalni va hali yetishmayotgan ma'lumotlarni ko'rsatadi.",
+        aiAnalyzeBtn: "AI tahlilni ishga tushirish",
+        aiApplyBtn: "AI qisqacha izohni qo'shish",
+        aiIdle: "Ishga tushmagan",
+        aiLoading: "Tahlil qilinmoqda...",
+        aiReady: "Tayyor",
+        aiFallback: "Bazaviy rejim",
+        aiSummaryHeading: "Qisqa xulosa",
+        aiProbableHeading: "Ehtimoliy qismlar",
+        aiMissingHeading: "Yetishmayotgan ma'lumot",
+        aiQuestionsHeading: "Mijozdan so'rash kerak",
+        aiCluesHeading: "Kodlar va ishoralar",
+        aiError: "AI tahlilni bajarib bo'lmadi.",
+        aiEmpty: "Hozircha ma'lumot yo'q."
       },
       zh: {
         eyebrow: "新能源汽车配件 · 中国 → 乌兹别克斯坦",
@@ -1775,7 +1937,22 @@
         contactSummary: "联系方式",
         orderCreated: "询价已创建",
         cityPlaceholder: "请选择城市",
-        runtimeNote: "要让 VIN 识别正常工作，不要直接双击打开文件。请先运行 `python3 server.py`，再访问 `http://127.0.0.1:8000`。"
+        runtimeNote: "要让 VIN 识别正常工作，不要直接双击打开文件。请先运行 `python3 server.py`，再访问 `http://127.0.0.1:8000`。",
+        aiAssistTitle: "AI 辅助分析",
+        aiAssistSub: "AI 会结合 VIN、已选配件、备注和照片，给出疑似部件、缺失信息和建议追问。",
+        aiAnalyzeBtn: "开始 AI 分析",
+        aiApplyBtn: "加入 AI 摘要",
+        aiIdle: "未运行",
+        aiLoading: "分析中...",
+        aiReady: "已完成",
+        aiFallback: "基础模式",
+        aiSummaryHeading: "摘要",
+        aiProbableHeading: "疑似配件",
+        aiMissingHeading: "缺失信息",
+        aiQuestionsHeading: "建议追问",
+        aiCluesHeading: "线索与编码",
+        aiError: "AI 分析失败。",
+        aiEmpty: "暂无数据。"
       }
     };
 
@@ -1849,7 +2026,12 @@
       selectedParts: {},
       uploadedPhotos: [],
       noPhoto: false,
-      lastVinLookupId: 0
+      lastVinLookupId: 0,
+      aiAssist: {
+        status: "idle",
+        source: "",
+        analysis: null
+      }
     };
 
     function t(key) {
@@ -1899,6 +2081,8 @@
       byId("backToStep1").addEventListener("click", function () { setStep(1); });
       byId("backToStep2").addEventListener("click", function () { setStep(2); });
       byId("newOrderBtn").addEventListener("click", resetAll);
+      byId("runAiAssistBtn").addEventListener("click", runAiAssist);
+      byId("applyAiSummaryBtn").addEventListener("click", applyAiSummaryToComment);
 
       byId("partsSearch").addEventListener("input", function (event) {
         state.searchTerm = event.target.value.trim().toLowerCase();
@@ -1915,6 +2099,9 @@
 
       ["partLocationInput", "commentInput", "nameInput", "tgInput", "phoneInput"].forEach(function (id) {
         byId(id).addEventListener("input", function () {
+          if (id === "partLocationInput" || id === "commentInput") {
+            invalidateAiAssist();
+          }
           saveDraft();
           refreshAllValidity();
         });
@@ -1928,6 +2115,7 @@
       byId("chk2").addEventListener("change", refreshAllValidity);
       byId("noPhotoCheck").addEventListener("change", function (event) {
         state.noPhoto = event.target.checked;
+        invalidateAiAssist();
         saveDraft();
         refreshAllValidity();
       });
@@ -1971,6 +2159,7 @@
       renderSelectedParts();
       renderOrderSummary();
       renderPhotoStatus();
+      renderAiAssist();
       saveDraft();
     }
 
@@ -1988,6 +2177,137 @@
 
     function updateRuntimeNote() {
       byId("runtimeNote").classList.toggle("hidden", location.protocol !== "file:");
+    }
+
+    function createListMarkup(items) {
+      if (!items || !items.length) {
+        return "<li>" + t("aiEmpty") + "</li>";
+      }
+      return items.map(function (item) {
+        return "<li>" + escapeHtml(item) + "</li>";
+      }).join("");
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function buildAiPayload() {
+      return {
+        vin: byId("vinInput").value.trim(),
+        car: {
+          make: byId("editMake").value.trim(),
+          model: byId("editModel").value.trim(),
+          year: byId("editYear").value.trim(),
+          trim: byId("editTrim").value.trim()
+        },
+        parts: Object.keys(state.selectedParts).map(function (key) {
+          var item = state.selectedParts[key];
+          return item.label + " x" + item.qty;
+        }),
+        part_location: byId("partLocationInput").value.trim(),
+        comment: byId("commentInput").value.trim(),
+        quality: state.prefs.quality,
+        alt_brand: state.prefs.alt,
+        photos: state.uploadedPhotos.slice(0, 3).map(function (photo) { return photo.dataUrl; }),
+        contact: {
+          name: byId("nameInput").value.trim(),
+          telegram: byId("tgInput").value.trim(),
+          phone: byId("phoneInput").value.trim(),
+          city: byId("cityInput").value
+        }
+      };
+    }
+
+    function setAiStatus(status, source) {
+      state.aiAssist.status = status;
+      state.aiAssist.source = source || state.aiAssist.source;
+      renderAiAssist();
+    }
+
+    function invalidateAiAssist() {
+      if (!state.aiAssist.analysis && state.aiAssist.status === "idle") {
+        return;
+      }
+      state.aiAssist = { status: "idle", source: "", analysis: null };
+      renderAiAssist();
+    }
+
+    function renderAiAssist() {
+      var statusNode = byId("aiAssistStatus");
+      var resultNode = byId("aiAssistResult");
+      var applyButton = byId("applyAiSummaryBtn");
+      var analysis = state.aiAssist.analysis;
+      var statusKey = "aiIdle";
+      if (state.aiAssist.status === "loading") {
+        statusKey = "aiLoading";
+      } else if (state.aiAssist.status === "ready") {
+        statusKey = state.aiAssist.source === "heuristic" ? "aiFallback" : "aiReady";
+      }
+      statusNode.textContent = t(statusKey);
+      resultNode.classList.toggle("hidden", !analysis);
+      applyButton.classList.toggle("hidden", !(analysis && analysis.manager_brief));
+      if (!analysis) {
+        return;
+      }
+      byId("aiSummaryText").textContent = analysis.summary || analysis.manager_brief || t("aiEmpty");
+      byId("aiProbableList").innerHTML = createListMarkup(analysis.probable_parts);
+      byId("aiMissingList").innerHTML = createListMarkup(analysis.missing_info);
+      byId("aiQuestionsList").innerHTML = createListMarkup(analysis.follow_up_questions);
+      var clueItems = (analysis.extracted_clues || []).concat(analysis.risk_flags || []);
+      byId("aiCluesList").innerHTML = createListMarkup(clueItems);
+    }
+
+    async function runAiAssist(options) {
+      var config = options || {};
+      var button = byId("runAiAssistBtn");
+      var silent = !!config.silent;
+      button.disabled = true;
+      setAiStatus("loading", "");
+      try {
+        var response = await fetch("/api/ai/analyze-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(buildAiPayload())
+        });
+        var payload = await response.json().catch(function () { return {}; });
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || "AI request failed");
+        }
+        state.aiAssist.analysis = payload.analysis || null;
+        state.aiAssist.source = payload.source || "";
+        state.aiAssist.status = "ready";
+        renderAiAssist();
+        renderOrderSummary();
+        saveDraft();
+        return true;
+      } catch (error) {
+        console.warn("AI assist failed.", error);
+        if (!silent) {
+          alert(t("aiError") + " " + error.message);
+        }
+        state.aiAssist.status = "idle";
+        renderAiAssist();
+        return false;
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function applyAiSummaryToComment() {
+      if (!state.aiAssist.analysis || !state.aiAssist.analysis.manager_brief) {
+        return;
+      }
+      var commentInput = byId("commentInput");
+      var brief = state.aiAssist.analysis.manager_brief;
+      commentInput.value = commentInput.value.trim() ? commentInput.value.trim() + "\n\nAI: " + brief : "AI: " + brief;
+      saveDraft();
+      refreshAllValidity();
     }
 
     function setStep(step) {
@@ -2024,6 +2344,7 @@
       event.target.value = cleaned;
       state.orderVin = cleaned;
       setVinStatus("", false);
+      invalidateAiAssist();
 
       if (cleaned.length === 0) {
         setVinBadge("", "");
@@ -2166,6 +2487,7 @@
         year: byId("editYear").value.trim(),
         trim: byId("editTrim").value.trim()
       };
+      invalidateAiAssist();
       if (event && event.target && event.target.id === "editMake") {
         updateModelSuggestions(state.decodedCar.make);
       }
@@ -2261,6 +2583,7 @@
       }
       renderCats();
       renderSelectedParts();
+      invalidateAiAssist();
       refreshAllValidity();
       saveDraft();
     }
@@ -2281,6 +2604,7 @@
       byId("customPartInput").value = "";
       byId("customQtyInput").value = "1";
       renderSelectedParts();
+      invalidateAiAssist();
       refreshAllValidity();
       saveDraft();
     }
@@ -2353,6 +2677,7 @@
             file: file,
             dataUrl: event.target.result
           });
+          invalidateAiAssist();
           renderPhotos();
           refreshAllValidity();
         };
@@ -2373,6 +2698,7 @@
         del.textContent = "×";
         del.addEventListener("click", function () {
           state.uploadedPhotos = state.uploadedPhotos.filter(function (entry) { return entry.id !== photo.id; });
+          invalidateAiAssist();
           renderPhotos();
           refreshAllValidity();
         });
@@ -2483,6 +2809,7 @@
         "<div><strong>" + t("locationSummary") + ":</strong> " + safeText(byId("partLocationInput").value.trim()) + "</div>" +
         "<div><strong>" + t("photosSummary") + ":</strong> " + state.uploadedPhotos.length + (state.noPhoto ? " + no-photo-override" : "") + "</div>" +
         "<div><strong>" + t("commentSummary") + ":</strong> " + safeText(byId("commentInput").value.trim()) + "</div>" +
+        "<div><strong>AI:</strong> " + safeText(state.aiAssist.analysis && state.aiAssist.analysis.summary) + "</div>" +
         "<div><strong>" + t("contactSummary") + ":</strong> " + safeText(contact) + "</div>";
     }
 
@@ -2527,7 +2854,8 @@
         checks: {
           chk1: byId("chk1").checked,
           chk2: byId("chk2").checked
-        }
+        },
+        aiAssist: state.aiAssist
       };
     }
 
@@ -2553,6 +2881,7 @@
         state.prefs = draft.prefs || state.prefs;
         state.selectedParts = draft.selectedParts || {};
         state.noPhoto = !!draft.noPhoto;
+        state.aiAssist = draft.aiAssist || state.aiAssist;
         byId("vinInput").value = draft.orderVin || "";
         fillCarForm(draft.decodedCar || state.decodedCar);
         byId("partLocationInput").value = draft.textFields ? draft.textFields.partLocation || "" : "";
@@ -2574,6 +2903,7 @@
         }
         renderCats();
         renderSelectedParts();
+        renderAiAssist();
         setStep(draft.currentStep || 1);
         return true;
       } catch (error) {
@@ -2595,6 +2925,7 @@
       state.noPhoto = false;
       state.prefs = { quality: "oem", alt: "no" };
       state.lastVinLookupId += 1;
+      state.aiAssist = { status: "idle", source: "", analysis: null };
       document.querySelectorAll("input, textarea").forEach(function (input) {
         if (input.type === "checkbox" || input.type === "file") {
           input.checked = false;
@@ -2612,8 +2943,21 @@
       renderCats();
       renderSelectedParts();
       renderPhotos();
+      renderAiAssist();
       refreshAllValidity();
       setStep(1);
+    }
+
+    function appendSection(lines, title, items) {
+      var filtered = (items || []).filter(Boolean);
+      if (!filtered.length) {
+        return;
+      }
+      lines.push("");
+      lines.push(title + ":");
+      filtered.forEach(function (item) {
+        lines.push("- " + item);
+      });
     }
 
     function buildTelegramText(orderId) {
@@ -2621,6 +2965,7 @@
         var item = state.selectedParts[key];
         return "- " + item.label + " x" + item.qty;
       }).join("\n");
+      var ai = state.aiAssist.analysis || {};
       var lines = [
         t("orderCreated") + ": " + orderId,
         "",
@@ -2642,6 +2987,20 @@
         "Phone: " + safeText(byId("phoneInput").value.trim()),
         "City: " + safeText(byId("cityInput").value)
       ];
+      if (ai.summary || ai.manager_brief) {
+        lines.push("");
+        lines.push("AI Summary:");
+        lines.push(ai.summary || ai.manager_brief);
+      }
+      if (ai.manager_brief && ai.summary !== ai.manager_brief) {
+        lines.push("");
+        lines.push("AI Manager Brief:");
+        lines.push(ai.manager_brief);
+      }
+      appendSection(lines, "AI Probable Parts", ai.probable_parts);
+      appendSection(lines, "AI Missing Info", ai.missing_info);
+      appendSection(lines, "AI Follow-up Questions", ai.follow_up_questions);
+      appendSection(lines, "AI Clues", (ai.extracted_clues || []).concat(ai.risk_flags || []));
       return lines.join("\n");
     }
 
@@ -2686,6 +3045,10 @@
       var orderId = "ORD-" + Date.now().toString(36).toUpperCase();
 
       try {
+        if (!state.aiAssist.analysis) {
+          await runAiAssist({ silent: true });
+        }
+
         if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
           finalizeOrder(orderId);
           return;
