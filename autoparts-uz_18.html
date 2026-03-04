@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZapchastChi</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: var(--tg-theme-bg-color, #0a0c0f);
+  --surface: var(--tg-theme-secondary-bg-color, #111318);
+  --surface2: var(--tg-theme-secondary-bg-color, #1a1d24);
+  --border: #2a2d35;
+  --accent: var(--tg-theme-button-color, #e8b84b);
+  --accent2: #3b8bff;
+  --text: var(--tg-theme-text-color, #e8eaf0);
+  --muted: var(--tg-theme-hint-color, #6b7280);
+  --success: #22c55e; --danger: #ef4444;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-body: 'IBM Plex Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+:root { --tg-safe-top: env(safe-area-inset-top, 0px); }
+body { padding-top: var(--tg-safe-top); }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; overflow-x: hidden; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(59,139,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,139,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px; pointer-events: none; z-index: 0;
+}
+header {
+  display: none !important; /* Hidden in Telegram Mini App */
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,12,15,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; height: 64px;
+}
+.logo { font-family: var(--font-display); font-size: 26px; letter-spacing: 2px; color: var(--accent); }
+.logo span { color: var(--text); }
+.lang-switcher { display: flex; gap: 4px; }
+.lang-btn {
+  background: none; border: 1px solid var(--border); color: var(--muted);
+  font-family: var(--font-mono); font-size: 11px; padding: 5px 10px;
+  cursor: pointer; border-radius: 4px; transition: all .2s; letter-spacing: 1px;
+}
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* ── Banner strip ── */
+.banner-strip {
+  position: relative;
+  padding: 10px 16px 4px;
+  background: var(--bg);
+  user-select: none; touch-action: pan-y;
+  overflow: hidden; /* MUST clip */
+}
+.banner-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  width: 100%;
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+.banner-slide {
+  min-width: 100%;
+  max-width: 100%;
+  flex: 0 0 100%;
+  border-radius: 16px;
+  padding: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; box-sizing: border-box;
+  border: 1px solid transparent;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+/* tag-specific card skin */
+.banner-slide.tag-new {
+  background: linear-gradient(135deg, rgba(34,197,94,.12) 0%, rgba(34,197,94,.04) 100%);
+  border-color: rgba(34,197,94,.25);
+}
+.banner-slide.tag-promo {
+  background: linear-gradient(135deg, rgba(232,184,75,.14) 0%, rgba(232,184,75,.04) 100%);
+  border-color: rgba(232,184,75,.3);
+}
+.banner-slide.tag-notice {
+  background: linear-gradient(135deg, rgba(59,139,255,.13) 0%, rgba(59,139,255,.04) 100%);
+  border-color: rgba(59,139,255,.25);
+}
+/* subtle glow in corner */
+.banner-slide::before {
+  content: ''; position: absolute;
+  top: -30px; right: -30px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: .25;
+  filter: blur(28px);
+}
+.banner-slide.tag-new::before    { background: #22c55e; }
+.banner-slide.tag-promo::before  { background: #e8b84b; }
+.banner-slide.tag-notice::before { background: #3b8bff; }
+
+/* top row: icon + tag + close */
+.banner-top {
+  display: flex; align-items: center; gap: 8px;
+}
+.banner-icon {
+  font-size: 22px; flex-shrink: 0; line-height: 1;
+}
+.banner-tag {
+  font-size: 9px; font-family: var(--font-mono);
+  text-transform: uppercase; letter-spacing: 1.5px;
+  padding: 3px 8px; border-radius: 20px; font-weight: 700;
+  flex-shrink: 0;
+}
+.banner-tag.new    { background: rgba(34,197,94,.18);  color: var(--success); }
+.banner-tag.promo  { background: rgba(232,184,75,.18); color: var(--accent); }
+.banner-tag.notice { background: rgba(59,139,255,.18); color: var(--accent2); }
+.banner-close {
+  margin-left: auto;
+  background: rgba(255,255,255,.06); border: 1px solid var(--border);
+  color: var(--muted); font-size: 13px;
+  cursor: pointer; padding: 0;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; flex-shrink: 0;
+  line-height: 1;
+}
+.banner-close:hover { background: rgba(255,255,255,.12); color: var(--text); }
+
+/* text block */
+.banner-body { flex: 1; min-width: 0; }
+.banner-title {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  line-height: 1.3; margin-bottom: 3px;
+}
+.banner-desc {
+  font-size: 11px; color: var(--muted); line-height: 1.4;
+}
+
+/* dots */
+.banner-dots {
+  display: flex; justify-content: center; gap: 5px;
+  padding: 6px 0 2px;
+}
+.banner-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--border); cursor: pointer; transition: all .25s;
+}
+.banner-dot.active { background: var(--accent); width: 16px; border-radius: 3px; }
+.banner-strip.hidden { display: none; }
+.steps-bar {
+  position: sticky; top: 52px; z-index: 90;
+  display: flex; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  margin: 0; padding: 0;
+}
+.step-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 10px 4px; position: relative; cursor: default;
+  transition: background .2s;
+}
+.step-item::after { display: none !important; }
+.step-item.active { background: var(--surface2); }
+.step-item.active::before {
+  content: ''; position: absolute; bottom: 0; left: 10%; right: 10%;
+  height: 2px; background: var(--accent); border-radius: 2px 2px 0 0;
+}
+.step-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  background: var(--bg); position: relative; z-index: 1; transition: all .3s;
+  margin-bottom: 4px;
+}
+.step-item.active .step-num { border-color: var(--accent); color: var(--accent); }
+.step-item.done .step-num { background: var(--accent); border-color: var(--accent); color: var(--bg); font-size: 0; }
+.step-item.done .step-num::after { content: '✓'; font-size: 10px; }
+.step-label { font-size: 9px; font-family: var(--font-mono); color: var(--muted); text-align: center; letter-spacing: .3px; line-height: 1.2; }
+.step-item.active .step-label { color: var(--accent); }
+.card-wrap { position:relative; z-index:1; max-width:700px; margin:0 auto; padding:0 16px 80px; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:0 0 16px 16px; border-top: none; padding:28px 24px; animation:fadeUp .3s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.card-title { font-family:var(--font-display); font-size:24px; letter-spacing:1px; margin-bottom:6px; }
+.card-subtitle { font-size:12px; color:var(--muted); margin-bottom:20px; line-height:1.5; }
+.field { margin-bottom: 20px; }
+.field label { display:block; font-size:11px; font-family:var(--font-mono); letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:8px; }
+.field input, .field select, .field textarea {
+  width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px;
+  color:var(--text); font-family:var(--font-mono); font-size:14px; padding:12px 16px; outline:none; transition:border-color .2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--accent2); box-shadow:0 0 0 3px rgba(59,139,255,0.1); }
+.field input.error { border-color: var(--danger); }
+.field .hint { font-size:11px; color:var(--muted); font-family:var(--font-mono); margin-top:6px; }
+.field .hint.error-msg { color: var(--danger); }
+.vin-wrap { position: relative; }
+.vin-wrap input { padding-right:52px; text-transform:uppercase; letter-spacing:2px; font-size:15px; }
+.vin-badge { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:10px; font-family:var(--font-mono); padding:3px 7px; border-radius:4px; letter-spacing:1px; }
+.vin-badge.ok  { background:rgba(34,197,94,.2); color:var(--success); }
+.vin-badge.bad { background:rgba(239,68,68,.2); color:var(--danger); }
+
+/* VIN guide */
+.vin-guide-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-family: var(--font-mono);
+  color: var(--accent2); cursor: pointer; margin-top: 10px;
+  background: none; border: none; padding: 0; text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.vin-guide-toggle:hover { color: var(--text); }
+.vin-guide {
+  display: none; margin-top: 14px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.vin-guide.open { display: block; animation: fadeUp .25s ease both; }
+.vin-guide-title {
+  font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;
+  letter-spacing: 1px; color: var(--muted); padding: 14px 16px 8px;
+}
+.vin-locations {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--border);
+}
+.vin-loc {
+  background: var(--surface2); padding: 14px 12px; text-align: center;
+}
+.vin-loc-icon { font-size: 26px; margin-bottom: 8px; }
+.vin-loc-name {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  margin-bottom: 4px; line-height: 1.3;
+}
+.vin-loc-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.vin-diagram {
+  padding: 16px; border-top: 1px solid var(--border);
+}
+.vin-diagram-label {
+  font-size: 11px; font-family: var(--font-mono);
+  color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+/* SVG car diagram */
+.car-svg-wrap { position: relative; }
+.car-svg-wrap svg { width: 100%; height: auto; }
+.vin-sample-box {
+  background: rgba(59,139,255,0.1); border: 1px solid var(--accent2);
+  border-radius: 6px; padding: 8px 12px; margin-top: 12px;
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: 2px;
+  color: var(--accent2); text-align: center;
+}
+.vin-sample-box span { color: var(--muted); font-size: 10px; display: block; margin-top: 2px; letter-spacing: 1px; }
+.vin-digits {
+  display: flex; margin-top: 10px; border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border); font-family: var(--font-mono);
+}
+.vin-digit-group { flex: 1; padding: 8px 6px; text-align: center; font-size: 11px; }
+.vin-digit-group.g1 { background: rgba(232,184,75,0.15); border-right: 1px solid var(--border); }
+.vin-digit-group.g2 { background: rgba(59,139,255,0.1); border-right: 1px solid var(--border); }
+.vin-digit-group.g3 { background: rgba(34,197,94,0.1); }
+.vin-digit-group .dg-val { font-size: 14px; font-weight: 600; letter-spacing: 2px; margin-bottom: 3px; }
+.vin-digit-group.g1 .dg-val { color: var(--accent); }
+.vin-digit-group.g2 .dg-val { color: var(--accent2); }
+.vin-digit-group.g3 .dg-val { color: var(--success); }
+.vin-digit-group .dg-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+@media(max-width:500px){ .vin-locations { grid-template-columns: 1fr 1fr; } }
+
+.car-edit-notice {
+  font-size: 11px; font-family: var(--font-mono);
+  color: var(--accent2); margin-bottom: 14px; letter-spacing: .3px;
+}
+.car-edit-notice::before { content: 'ℹ '; }
+.car-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width:500px){ .car-edit-grid { grid-template-columns: 1fr; } }
+.car-info .field { margin-bottom: 14px; }
+.car-info .field:last-child { margin-bottom: 0; }
+.car-info { background:var(--surface2); border:1px solid var(--accent); border-radius:10px; padding:18px 20px; display:none; margin-bottom:24px; animation:fadeUp .3s ease both; }
+.car-info.show { display: block; }
+.car-info-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.car-info-item .label { font-size:10px; font-family:var(--font-mono); color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+.car-info-item .value { font-size:16px; font-family:var(--font-display); letter-spacing:1px; color:var(--accent); }
+.parts-categories { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:24px; }
+.cat-card { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; cursor:pointer; transition:all .2s; user-select:none; display:flex; align-items:center; gap:12px; }
+.cat-card:hover { border-color: var(--accent2); }
+.cat-card.selected { border-color:var(--accent); background:rgba(232,184,75,0.08); }
+.cat-icon { font-size:22px; flex-shrink:0; }
+.cat-name { font-size:13px; font-weight:500; }
+.cat-desc { font-size:11px; color:var(--muted); margin-top:2px; }
+.subparts-wrap { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:20px; display:none; }
+.subparts-wrap.show { display: block; }
+.subparts-title { font-size:11px; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:12px; }
+.subparts-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.sub-tag { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; transition:all .2s; font-family:var(--font-mono); }
+.sub-tag:hover { border-color:var(--accent2); color:var(--accent2); }
+.sub-tag.selected { background:rgba(232,184,75,0.12); border-color:var(--accent); color:var(--accent); }
+.selected-parts-list { min-height:48px; background:var(--surface2); border:1px dashed var(--border); border-radius:8px; padding:12px; display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.selected-parts-list.empty::after { content:attr(data-empty); font-size:12px; color:var(--muted); font-family:var(--font-mono); }
+.part-chip { background:rgba(232,184,75,0.12); border:1px solid var(--accent); border-radius:20px; padding:4px 10px 4px 12px; font-size:11px; font-family:var(--font-mono); color:var(--accent); display:flex; align-items:center; gap:6px; }
+.part-chip button { background:none; border:none; color:var(--accent); cursor:pointer; font-size:14px; line-height:1; padding:0; opacity:.7; }
+.part-chip button:hover { opacity:1; }
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.btn { width:100%; padding:14px 24px; font-family:var(--font-display); font-size:18px; letter-spacing:2px; border:none; border-radius:10px; cursor:pointer; transition:all .2s; }
+.tg-mode .btn-primary { display: none; } /* Replaced by Telegram MainButton */
+.tg-mode .btn-secondary { display: none; } /* Replaced by Telegram BackButton */
+.btn-primary { background:var(--accent); color:var(--bg); }
+.btn-primary:hover { background:#f5c85a; transform:translateY(-1px); }
+.btn-primary:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; transform:none; }
+.btn-secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); margin-bottom:12px; }
+.btn-secondary:hover { border-color: var(--accent2); }
+.success-screen { text-align:center; padding:20px 0; }
+.success-icon { font-size:64px; margin-bottom:24px; animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both; }
+@keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+.success-screen h2 { font-family:var(--font-display); font-size:36px; letter-spacing:2px; margin-bottom:12px; }
+.success-screen p { color:var(--muted); font-size:14px; line-height:1.7; max-width:400px; margin:0 auto 24px; }
+.order-id-box { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px 20px; font-family:var(--font-mono); font-size:14px; display:inline-block; color:var(--accent); margin-bottom:24px; }
+.spinner { width:18px; height:18px; border:2px solid transparent; border-top-color:var(--bg); border-radius:50%; animation:spin .6s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+@keyframes spin { to{transform:rotate(360deg)} }
+footer { position:relative; z-index:1; text-align:center; padding:14px; border-top:1px solid var(--border); }
+footer a { color:var(--accent2); text-decoration:none; }
+
+/* Photo upload */
+.photo-upload-area {
+  border: 2px dashed var(--border); border-radius: 10px;
+  padding: 20px; text-align: center; cursor: pointer;
+  transition: all .2s; margin-bottom: 8px; position: relative;
+}
+.photo-upload-area:hover, .photo-upload-area.dragover { border-color: var(--accent2); background: rgba(59,139,255,0.04); }
+.photo-upload-area input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; }
+.photo-upload-icon { font-size: 28px; margin-bottom: 8px; }
+.photo-upload-text { font-size: 13px; color: var(--muted); }
+.photo-upload-text strong { color: var(--text); }
+.photo-previews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.photo-thumb {
+  width: 72px; height: 72px; border-radius: 8px; object-fit: cover;
+  border: 1px solid var(--border); position: relative;
+}
+.photo-thumb-wrap { position: relative; display: inline-block; }
+.photo-thumb-del {
+  position:absolute; top:-6px; right:-6px; width:18px; height:18px;
+  background: var(--danger); color: #fff; border: none; border-radius: 50%;
+  font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.photo-count { font-size: 11px; font-family: var(--font-mono); color: var(--muted); margin-top: 6px; }
+.photo-count.ok { color: var(--success); }
+.photo-count.warn { color: var(--danger); }
+
+/* Preference toggles */
+.pref-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.pref-toggle {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 14px; cursor: pointer;
+  font-size: 12px; font-family: var(--font-mono); transition: all .2s;
+  user-select: none;
+}
+.pref-toggle:hover { border-color: var(--accent2); }
+.pref-toggle.selected { background: rgba(232,184,75,0.12); border-color: var(--accent); color: var(--accent); }
+
+/* Disclaimer checkboxes */
+.disclaimer-box {
+  background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 10px; padding: 16px 18px; margin-bottom: 20px;
+}
+.disclaimer-title {
+  font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;
+  letter-spacing: 1px; color: var(--danger); margin-bottom: 12px;
+}
+.disclaimer-item {
+  display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; cursor: pointer;
+}
+.disclaimer-item:last-child { margin-bottom: 0; }
+.disclaimer-item input[type=checkbox] { margin-top: 3px; accent-color: var(--accent); flex-shrink: 0; width:15px; height:15px; cursor:pointer; }
+.disclaimer-item span { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.disclaimer-item span strong { color: var(--text); }
+
+@media(max-width:600px){.card{padding:24px 20px}.parts-categories{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}.car-info-row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="app-header-left">
+    <div class="logo">Z<span>CHI</span></div>
+    <div class="app-brand-full">ZapchastChi</div>
+  </div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('ru')">РУС</button>
+    <button class="lang-btn" onclick="setLang('uz')">UZB</button>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+  </div>
+</header>
+
+<!-- App subtitle bar -->
+<div class="app-subbar">
+  <span data-i18n="appSubbar"></span>
+</div>
+
+<!-- ═══ ANNOUNCEMENT BANNER — edit banners[] in JS to update ═══ -->
+<div class="banner-strip" id="bannerStrip">
+  <div class="banner-track" id="bannerTrack">
+    <!-- Injected by JS -->
+  </div>
+  <div class="banner-dots" id="bannerDots"></div>
+</div>
+
+<div class="steps-bar" id="stepsBar" role="tablist">
+  <div class="step-item active" id="step-ind-1"><div class="step-num">1</div><div class="step-label" data-i18n="step1"></div></div>
+  <div class="step-item" id="step-ind-2"><div class="step-num">2</div><div class="step-label" data-i18n="step2"></div></div>
+  <div class="step-item" id="step-ind-3"><div class="step-num">3</div><div class="step-label" data-i18n="step3"></div></div>
+  <div class="step-item" id="step-ind-4"><div class="step-num">4</div><div class="step-label" data-i18n="step4"></div></div>
+</div>
+
+<div class="card-wrap">
+  <!-- STEP 1 -->
+  <div class="card" id="step1">
+    <div class="card-title" data-i18n="s1title"></div>
+    <div class="card-subtitle" data-i18n="s1sub"></div>
+    <div class="field">
+      <label data-i18n="vinLabel"></label>
+      <div class="vin-wrap">
+        <input type="text" id="vinInput" maxlength="17" placeholder="LSGRC52U3HY234567" autocomplete="off" spellcheck="false" oninput="onVinInput(this)">
+        <span class="vin-badge" id="vinBadge" style="display:none"></span>
+      </div>
+      <div class="hint" id="vinHint" data-i18n="vinHint"></div>
+      <button class="vin-guide-toggle" onclick="toggleVinGuide()" data-i18n="vinGuideBtn"></button>
+    </div>
+
+    <!-- VIN Guide -->
+    <div class="vin-guide" id="vinGuide">
+      <div class="vin-guide-title" data-i18n="vinGuideTitle"></div>
+      <div class="vin-locations">
+        <div class="vin-loc">
+          <div class="vin-loc-icon">🪟</div>
+          <div class="vin-loc-name" data-i18n="vinLoc1name"></div>
+          <div class="vin-loc-desc" data-i18n="vinLoc1desc"></div>
+        </div>
+        <div class="vin-loc">
+          <div class="vin-loc-icon">📄</div>
+          <div class="vin-loc-name" data-i18n="vinLoc2name"></div>
+          <div class="vin-loc-desc" data-i18n="vinLoc2desc"></div>
+        </div>
+        <div class="vin-loc">
+          <div class="vin-loc-icon">🚪</div>
+          <div class="vin-loc-name" data-i18n="vinLoc3name"></div>
+          <div class="vin-loc-desc" data-i18n="vinLoc3desc"></div>
+        </div>
+      </div>
+      <div class="vin-diagram">
+        <div class="vin-diagram-label" data-i18n="vinDiagramLabel"></div>
+        <!-- Simple car SVG with callout -->
+        <div class="car-svg-wrap">
+          <svg viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Car body -->
+            <rect x="40" y="80" width="320" height="55" rx="8" fill="#1a1d24" stroke="#2a2d35" stroke-width="1.5"/>
+            <!-- Roof -->
+            <path d="M110 80 L150 40 L260 40 L300 80Z" fill="#1a1d24" stroke="#2a2d35" stroke-width="1.5"/>
+            <!-- Windshield -->
+            <path d="M155 78 L168 46 L248 46 L262 78Z" fill="#0d1117" stroke="#3b8bff" stroke-width="1" opacity="0.7"/>
+            <!-- Wheels -->
+            <circle cx="110" cy="135" r="22" fill="#111318" stroke="#2a2d35" stroke-width="2"/>
+            <circle cx="110" cy="135" r="10" fill="#1a1d24" stroke="#2a2d35" stroke-width="1.5"/>
+            <circle cx="290" cy="135" r="22" fill="#111318" stroke="#2a2d35" stroke-width="2"/>
+            <circle cx="290" cy="135" r="10" fill="#1a1d24" stroke="#2a2d35" stroke-width="1.5"/>
+            <!-- Door line -->
+            <line x1="200" y1="82" x2="200" y2="133" stroke="#2a2d35" stroke-width="1"/>
+            <!-- Door handle left -->
+            <rect x="165" y="108" width="18" height="5" rx="2" fill="#2a2d35"/>
+            <!-- Door handle right -->
+            <rect x="218" y="108" width="18" height="5" rx="2" fill="#2a2d35"/>
+            <!-- VIN location dot on dashboard/windshield area -->
+            <circle cx="190" cy="78" r="5" fill="#3b8bff" opacity="0.9"/>
+            <line x1="190" y1="73" x2="190" y2="30" stroke="#3b8bff" stroke-width="1.5" stroke-dasharray="3,2"/>
+            <rect x="145" y="12" width="90" height="20" rx="4" fill="rgba(59,139,255,0.15)" stroke="#3b8bff" stroke-width="1"/>
+            <text x="190" y="26" text-anchor="middle" fill="#3b8bff" font-size="9" font-family="monospace">① DASHBOARD</text>
+            <!-- Door sticker dot -->
+            <circle cx="145" cy="107" r="5" fill="#e8b84b" opacity="0.9"/>
+            <line x1="140" y1="107" x2="90" y2="107" stroke="#e8b84b" stroke-width="1.5" stroke-dasharray="3,2"/>
+            <rect x="20" y="97" width="68" height="20" rx="4" fill="rgba(232,184,75,0.15)" stroke="#e8b84b" stroke-width="1"/>
+            <text x="54" y="111" text-anchor="middle" fill="#e8b84b" font-size="9" font-family="monospace">② DOOR JAM</text>
+            <!-- Engine bay dot -->
+            <circle cx="330" cy="90" r="5" fill="#22c55e" opacity="0.9"/>
+            <line x1="335" y1="90" x2="375" y2="70" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="3,2"/>
+            <rect x="313" y="56" width="78" height="20" rx="4" fill="rgba(34,197,94,0.15)" stroke="#22c55e" stroke-width="1"/>
+            <text x="352" y="70" text-anchor="middle" fill="#22c55e" font-size="9" font-family="monospace">③ ENGINE BAY</text>
+          </svg>
+        </div>
+        <!-- VIN anatomy -->
+        <div class="vin-sample-box">
+          LFZ 6 3 A V 5 3 S D 0 0 8 6 8 7
+          <span data-i18n="vinSampleLabel"></span>
+        </div>
+        <div class="vin-digits">
+          <div class="vin-digit-group g1">
+            <div class="dg-val">LFZ</div>
+            <div class="dg-label" data-i18n="vinDigitMake"></div>
+          </div>
+          <div class="vin-digit-group g2">
+            <div class="dg-val">63AV53</div>
+            <div class="dg-label" data-i18n="vinDigitModel"></div>
+          </div>
+          <div class="vin-digit-group g3">
+            <div class="dg-val">SD008687</div>
+            <div class="dg-label" data-i18n="vinDigitSerial"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decoded + editable car info -->
+    <div class="car-info" id="carInfo">
+      <div class="car-edit-notice" data-i18n="carEditNotice"></div>
+      <div class="car-edit-grid">
+        <div class="field">
+          <label data-i18n="ciMake"></label>
+          <input type="text" id="editMake" list="makesList" oninput="onMakeChange(this)" placeholder="BYD">
+          <datalist id="makesList"></datalist>
+        </div>
+        <div class="field">
+          <label data-i18n="ciYear"></label>
+          <input type="text" id="editYear" placeholder="2023" maxlength="4" oninput="checkCarFields()">
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="ciModel"></label>
+        <input type="text" id="editModel" list="modelsList" placeholder="Han EV" oninput="checkCarFields()">
+        <datalist id="modelsList"></datalist>
+      </div>
+      <div class="field">
+        <label data-i18n="ciTrim"></label>
+        <input type="text" id="editTrim" placeholder="600km Elite / 4WD / Long Range..." oninput="checkCarFields()">
+        <div class="hint" data-i18n="ciTrimHint"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="btnStep1" onclick="goStep2()" disabled data-i18n="confirm"></button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card" id="step2" style="display:none">
+    <div class="card-title" data-i18n="s2title"></div>
+    <div class="card-subtitle" data-i18n="s2sub"></div>
+    <div class="parts-categories" id="partsCats"></div>
+    <div class="subparts-wrap" id="subpartsWrap">
+      <div class="subparts-title" data-i18n="subcatsLabel"></div>
+      <div class="subparts-grid" id="subpartsGrid"></div>
+    </div>
+    <div class="field">
+      <label data-i18n="selectedLabel"></label>
+      <div class="selected-parts-list" id="selectedList"></div>
+    </div>
+
+    <!-- PART PREFERENCES -->
+    <div class="field">
+      <label data-i18n="prefQualityLabel"></label>
+      <div class="pref-group" id="prefQuality">
+        <div class="pref-toggle selected" data-group="quality" data-val="OEM" onclick="togglePref(this)" data-i18n-val="prefOem"></div>
+        <div class="pref-toggle" data-group="quality" data-val="Aftermarket" onclick="togglePref(this)" data-i18n-val="prefAfter"></div>
+        <div class="pref-toggle" data-group="quality" data-val="Used/Salvage" onclick="togglePref(this)" data-i18n-val="prefUsed"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="prefAltLabel"></label>
+      <div class="pref-group" id="prefAlt">
+        <div class="pref-toggle selected" data-group="alt" data-val="yes" onclick="togglePref(this)" data-i18n-val="prefAltYes"></div>
+        <div class="pref-toggle" data-group="alt" data-val="no" onclick="togglePref(this)" data-i18n-val="prefAltNo"></div>
+      </div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="field">
+      <label data-i18n="photoLabel"></label>
+      <div class="photo-upload-area" id="photoDropArea">
+        <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(this.files)">
+        <div class="photo-upload-icon">📸</div>
+        <div class="photo-upload-text"><strong data-i18n="photoStrong"></strong><br><span data-i18n="photoHint"></span></div>
+      </div>
+      <div class="photo-previews" id="photoPreviews"></div>
+      <div class="photo-count" id="photoCount"></div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="partLocationLabel"></label>
+      <input type="text" id="partLocationInput" data-i18n-placeholder="partLocationPlaceholder">
+    </div>
+    <div class="field">
+      <label data-i18n="commentLabel"></label>
+      <textarea id="commentInput" rows="3" style="resize:vertical"></textarea>
+    </div>
+    <button class="btn btn-secondary" onclick="goStep1()" data-i18n="back"></button>
+    <button class="btn btn-primary" id="btnStep2" onclick="goStep3()" disabled data-i18n="next"></button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card" id="step3" style="display:none">
+    <div class="card-title" data-i18n="s3title"></div>
+    <div class="card-subtitle" data-i18n="s3sub"></div>
+    <div class="contact-grid">
+      <div class="field"><label data-i18n="nameLabel"></label><input type="text" id="nameInput" placeholder="Alibek" oninput="validateContact()"></div>
+      <div class="field"><label data-i18n="tgLabel"></label><input type="text" id="tgInput" placeholder="@username" oninput="validateContact()"></div>
+    </div>
+    <div class="field"><label data-i18n="phoneLabel"></label><input type="tel" id="phoneInput" placeholder="+998 90 123 45 67" oninput="validateContact()"></div>
+    <div class="field">
+      <label data-i18n="cityLabel"></label>
+      <select id="cityInput" onchange="validateContact()">
+        <option value="">—</option>
+        <option>Toshkent</option><option>Samarqand</option><option>Buxoro</option>
+        <option>Namangan</option><option>Andijon</option><option>Farg'ona</option>
+        <option>Qarshi</option><option>Nukus</option>
+      </select>
+    </div>
+    <!-- DISCLAIMER -->
+    <div class="disclaimer-box">
+      <div class="disclaimer-title" data-i18n="disclaimerTitle"></div>
+      <label class="disclaimer-item">
+        <input type="checkbox" id="chk1" onchange="validateContact()">
+        <span data-i18n="disclaimer1"></span>
+      </label>
+      <label class="disclaimer-item">
+        <input type="checkbox" id="chk2" onchange="validateContact()">
+        <span data-i18n="disclaimer2"></span>
+      </label>
+    </div>
+    <button class="btn btn-secondary" onclick="goStep2()" data-i18n="back"></button>
+    <button class="btn btn-primary" id="btnStep3" onclick="submitOrder()" disabled data-i18n="submit"></button>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="card" id="step4" style="display:none">
+    <div class="success-screen">
+      <div class="success-icon">✅</div>
+      <h2 data-i18n="s4title"></h2>
+      <p data-i18n="s4sub"></p>
+      <div class="order-id-box" id="orderIdBox">ORDER #——</div><br>
+      <button class="btn btn-secondary" onclick="resetAll()" style="max-width:300px;margin:0 auto" data-i18n="newOrder"></button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">ZapchastChi · Xitoy → O'zbekiston · </span><a href="https://t.me/YOUR_SUPPORT_USERNAME" target="_blank" style="font-family:var(--font-mono);font-size:10px;color:var(--accent2)">Telegram</a>
+</footer>
+
+<script>
+// ============================================================
+//  TELEGRAM CONFIG
+// ============================================================
+var TELEGRAM_BOT_TOKEN = '8361968349:AAFfkJipJRbwdcztrF4r0eyaobeBsDHY748';
+var TELEGRAM_CHAT_ID   = '-1003602094842';
+
+// ============================================================
+//  TELEGRAM MINI APP INIT
+// ============================================================
+var tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+var isTgApp = !!(tg && tg.initData);
+
+if(tg){
+  tg.ready();
+  tg.expand(); // Full screen
+}
+
+// ============================================================
+//  AUTO.DEV VIN API
+// ============================================================
+var AUTODEV_API_KEY = 'sk_ad_ywK8N35fwL8RacnqUTDD-rcp';
+
+// ============================================================
+//  i18n
+// ============================================================
+var i18n = {
+  ru: {
+    eyebrow:'Запчасти для электромобилей · Китай → Узбекистан',
+    title:'НАЙДИ <span>НУЖНУЮ</span><br>ЗАПЧАСТЬ',
+    subtitle:'Оригинальные и аналоговые запчасти для любого электромобиля. Авиа и наземная доставка из Китая.',
+    step1:'VIN',step2:'Запчасти',step3:'Контакты',step4:'Готово',
+    s1title:'ВВЕДИТЕ VIN',s1sub:'17-значный номер кузова. Указан в техпаспорте или на табличке под лобовым стеклом.',
+    vinLabel:'Номер VIN',vinHint:'17 символов: цифры и буквы A-Z (кроме I, O, Q)',
+    ciMake:'Марка',ciYear:'Год',ciType:'Тип',
+    confirm:'ПОДТВЕРДИТЬ АВТОМОБИЛЬ',
+    s2title:'ВЫБЕРИТЕ ЗАПЧАСТИ',s2sub:'Выберите категорию и нужные позиции. Если нет нужной позиции — опишите в комментарии.',
+    subcatsLabel:'Позиции',selectedLabel:'Выбранные позиции',
+    commentLabel:'Комментарий (необязательно)',
+    commentPlaceholder:'Уточните модификацию или укажите запчасти которых нет в списке...',
+    back:'← НАЗАД',next:'ДАЛЕЕ: КОНТАКТЫ →',
+    s3title:'КОНТАКТЫ',s3sub:'Расчёт стоимости отправим в Telegram в течение 24 часов.',
+    nameLabel:'Имя',tgLabel:'Telegram',phoneLabel:'Телефон',cityLabel:'Город',
+    submit:'ОТПРАВИТЬ ЗАЯВКУ',
+    s4title:'ЗАЯВКА ПРИНЯТА',s4sub:'Наш менеджер свяжется с вами в Telegram в течение 24 часов.',
+    newOrder:'НОВАЯ ЗАЯВКА',
+    footerText:'© 2025 ZapchastChi',
+    emptyParts:'Нет выбранных позиций',
+    carEditNotice:'Данные получены из VIN — проверьте и при необходимости исправьте',
+    ciModel:'Модель автомобиля',ciTrim:'Комплектация / версия',
+    ciTrimHint:'Напр: 600 км Elite / AWD / Long Range',
+    vinUnknown:'Бренд не определён — заполните вручную',
+    appSubbar:'Онлайн-заявка · Запчасти из Китая · Доставка в Узбекистан',
+    vinGuideBtn:'❓ Где найти VIN-код?',
+    vinGuideTitle:'Где находится VIN-код',
+    vinLoc1name:'Лобовое стекло',vinLoc1desc:'Табличка снизу со стороны водителя — видна снаружи',
+    vinLoc2name:'Техпаспорт (СТС)',vinLoc2desc:'Свидетельство о регистрации транспортного средства',
+    vinLoc3name:'Дверная стойка',vinLoc3desc:'Наклейка на торце водительской двери',
+    vinDiagramLabel:'Расположение на автомобиле',
+    vinSampleLabel:'Пример VIN-кода',
+    vinDigitMake:'Производитель',vinDigitModel:'Модель и год',vinDigitSerial:'Серийный номер',
+    vinNoModel:'Бренд и год определены — уточните модель вручную',
+    vinLooking:'Запрашиваем данные по VIN...',
+    vinNoModel:'Бренд и год определены — уточните модель вручную',
+    vinFallback:'API недоступен — данные частичные, проверьте вручную',
+    vinOk:'OK',vinBad:'ОШИБКА',unknownMake:'Авто',evType:'EV',
+    prefQualityLabel:'Качество запчасти',
+    prefOem:'Оригинал (OEM)',prefAfter:'Аналог (Aftermarket)',prefUsed:'Б/У (разборка)',
+    prefAltLabel:'Принять альтернативный бренд?',
+    prefAltYes:'Да, принять',prefAltNo:'Нет, только указанный',
+    photoLabel:'Фото старой детали (минимум 3)',
+    photoStrong:'Перетащите или нажмите для загрузки',
+    photoHint:'Нужно: фронт / тыл / разъёмы / шильдик с номером',
+    photoCount0:'Фото не загружены',
+    photoCountN:' фото загружено',
+    photoCountOk:'✓ Достаточно фото',
+    photoCountWarn:'⚠ Нужно ещё ',
+    partLocationLabel:'Расположение на автомобиле',
+    partLocationPlaceholder:'Напр: передний левый, под капотом справа...',
+    disclaimerTitle:'⚠ Важно — прочитайте перед отправкой',
+    disclaimer1:'<strong>Соответствие по VIN:</strong> VIN используется только для определения модели. Окончательное совпадение подтверждается по номеру детали, фото и поставщику. Мы не несём ответственности за несовпадение, если фото или описание предоставлены неверно.',
+    disclaimer2:'<strong>Ответственность за ошибку клиента:</strong> Если деталь куплена на основании предоставленной клиентом информации и не подошла по его вине — возврат/замена за счёт клиента (стоимость детали + доставка).'
+  },
+  uz: {
+    eyebrow:"Elektromobil ehtiyot qismlari · Xitoy → O'zbekiston",
+    title:"KERAKLI <span>EHTIYOT</span><br>QISMNI TOP",
+    subtitle:"Har qanday elektromobil uchun original va analog ehtiyot qismlar. Xitoydan avia va quruqlik yetkazib berish.",
+    step1:'VIN',step2:'Qismlar',step3:'Kontakt',step4:'Tayyor',
+    s1title:'VIN KIRITING',s1sub:"17 ta belgilik kuzov raqami. Texnik pasportda yoki old oyna ostidagi plaketada ko'rsatilgan.",
+    vinLabel:'VIN raqami',vinHint:"17 ta belgi: raqamlar va A-Z harflar (I, O, Q dan tashqari)",
+    ciMake:'Rusm',ciYear:'Yil',ciType:'Tur',
+    confirm:'AVTOMOBILNI TASDIQLASH',
+    s2title:'QISMLARNI TANLANG',s2sub:'Kategoriya va kerakli pozitsiyalarni tanlang.',
+    subcatsLabel:'Pozitsiyalar',selectedLabel:'Tanlangan pozitsiyalar',
+    commentLabel:'Izoh (ixtiyoriy)',commentPlaceholder:'Qo\'shimcha ma\'lumot kiriting...',
+    back:'← ORQAGA',next:'DAVOM: KONTAKT →',
+    s3title:'KONTAKT',s3sub:'Narx hisob-kitobini 24 soat ichida Telegramda yuboramiz.',
+    nameLabel:'Ism',tgLabel:'Telegram',phoneLabel:'Telefon',cityLabel:'Shahar',
+    submit:'ARIZANI YUBORISH',
+    s4title:'ARIZA QABUL QILINDI',s4sub:'Menejerimiz 24 soat ichida Telegramda siz bilan bog\'lanadi.',
+    newOrder:'YANGI ARIZA',
+    footerText:"© 2025 ZapchastChi",
+    emptyParts:"Tanlangan pozitsiyalar yo'q",
+    carEditNotice:"VIN dan olingan ma'lumotlar — tekshirib, kerak bo'lsa to'g'irlang",
+    ciModel:'Avtomobil modeli',ciTrim:'Komplektatsiya / versiya',
+    ciTrimHint:"Mas: 600 km Elite / AWD / Long Range",
+    vinUnknown:"Brend aniqlanmadi — qo'lda to'ldiring",
+    appSubbar:"Onlayn ariza · Xitoydan ehtiyot qismlar · O'zbekistonga yetkazib berish",
+    vinGuideBtn:"❓ VIN-kodni qayerdan topish mumkin?",
+    vinGuideTitle:"VIN-kod qayerda joylashgan",
+    vinLoc1name:"Old shisha",vinLoc1desc:"Haydovchi tomonidan pastdagi plaket — tashqaridan ko'rinadi",
+    vinLoc2name:"Texnik pasport",vinLoc2desc:"Transport vositasini ro'yxatdan o'tkazish guvohnomasi",
+    vinLoc3name:"Eshik tirqishi",vinLoc3desc:"Haydovchi eshigining chetidagi stiker",
+    vinDiagramLabel:"Avtomobilda joylashuvi",
+    vinSampleLabel:"VIN-kod namunasi",
+    vinDigitMake:"Ishlab chiqaruvchi",vinDigitModel:"Model va yil",vinDigitSerial:"Seriya raqami",
+    vinNoModel:"Brend va yil aniqlandi — modelni qo'lda kiriting",
+    vinLooking:"VIN ma'lumotlari so'ralmoqda...",
+    vinNoModel:"Brend va yil aniqlandi — modelni qo'lda kiriting",
+    vinFallback:"API mavjud emas — ma'lumotlar to'liq emas, qo'lda tekshiring",
+    vinOk:'OK',vinBad:'XATO',unknownMake:'Auto',evType:'EV',
+    prefQualityLabel:'Qism sifati',
+    prefOem:"Original (OEM)",prefAfter:"Analog (Aftermarket)",prefUsed:"Ishlatilgan (razborka)",
+    prefAltLabel:"Muqobil brendni qabul qilasizmi?",
+    prefAltYes:"Ha, qabul qilaman",prefAltNo:"Yo'q, faqat ko'rsatilgan",
+    photoLabel:"Eski qism rasmi (kamida 3 ta)",
+    photoStrong:"Sudrab olib keling yoki bosing",
+    photoHint:"Kerak: old / orqa / ulagichlar / raqamli plaket",
+    photoCount0:"Rasmlar yuklanmagan",
+    photoCountN:" ta rasm yuklandi",
+    photoCountOk:"✓ Rasmlar yetarli",
+    photoCountWarn:"⚠ Yana kerak: ",
+    partLocationLabel:"Avtomobilda joylashuvi",
+    partLocationPlaceholder:"Mas: chap old, dvigatel ostida...",
+    disclaimerTitle:"⚠ Muhim — yuborishdan oldin o'qing",
+    disclaimer1:"<strong>VIN bo'yicha moslik:</strong> VIN faqat model aniqlash uchun ishlatiladi. Yakuniy tasdiqlash raqam, rasm va yetkazuvchi orqali amalga oshiriladi.",
+    disclaimer2:"<strong>Mijoz xatosi uchun javobgarlik:</strong> Agar qism mijoz taqdim etgan noto'g'ri ma'lumot asosida sotib olinsa, qaytarish xarajatlari mijoz hisobiga."
+  },
+  zh: {
+    eyebrow:'新能源汽车配件 · 中国 → 乌兹别克斯坦',
+    title:'查找<span>所需</span><br>汽车配件',
+    subtitle:'原厂及副厂新能源汽车配件，支持空运和陆运到乌兹别克斯坦。',
+    step1:'车架号',step2:'配件',step3:'联系方式',step4:'完成',
+    s1title:'输入车架号',s1sub:'17位车辆识别代码（VIN），见行驶证或前挡风玻璃下方铭牌。',
+    vinLabel:'车架号 (VIN)',vinHint:'17位字符：数字和A-Z字母（不含I、O、Q）',
+    ciMake:'品牌',ciYear:'年份',ciType:'类型',
+    confirm:'确认车辆信息',
+    s2title:'选择配件',s2sub:'选择配件类别和所需配件。如找不到，请在备注中描述。',
+    subcatsLabel:'选择配件',selectedLabel:'已选配件',
+    commentLabel:'备注（选填）',commentPlaceholder:'请描述配件详情或特殊要求...',
+    back:'← 返回',next:'下一步：联系方式 →',
+    s3title:'联系方式',s3sub:'我们将在24小时内通过Telegram发送报价。',
+    nameLabel:'姓名',tgLabel:'Telegram',phoneLabel:'电话',cityLabel:'城市',
+    submit:'提交询价',
+    s4title:'询价已提交',s4sub:'我们的客服将在24小时内通过Telegram联系您并发送报价。',
+    newOrder:'新询价',
+    footerText:'© 2025 ZapchastChi',
+    emptyParts:'未选择配件',
+    carEditNotice:'数据来自VIN自动识别 — 请核对，如有误请手动更正',
+    ciModel:'车型',ciTrim:'配置/版本',
+    ciTrimHint:'例如：600km 旗舰版 / 四驱 / 长续航',
+    vinUnknown:'品牌未识别 — 请手动填写',
+    appSubbar:'在线询价 · 中国配件 · 发货到乌兹别克斯坦',
+    vinGuideBtn:'❓ 如何找到车架号？',
+    vinGuideTitle:'车架号在哪里',
+    vinLoc1name:'前挡风玻璃',vinLoc1desc:'驾驶员一侧底部铭牌，从车外可见',
+    vinLoc2name:'行驶证',vinLoc2desc:'车辆登记证书上印有完整VIN码',
+    vinLoc3name:'车门门柱',vinLoc3desc:'驾驶员车门边缘的贴纸上',
+    vinDiagramLabel:'车辆位置示意图',
+    vinSampleLabel:'车架号示例',
+    vinDigitMake:'制造商代码',vinDigitModel:'车型年份',vinDigitSerial:'序列号',
+    vinNoModel:'品牌和年份已识别 — 请手动填写车型',
+    vinLooking:'正在查询VIN数据...',
+    vinNoModel:'品牌和年份已识别 — 请手动填写车型',
+    vinFallback:'API暂时不可用 — 数据不完整，请手动核对',
+    vinOk:'有效',vinBad:'无效',unknownMake:'未知品牌',evType:'EV',
+    prefQualityLabel:'配件质量要求',
+    prefOem:'原厂件 (OEM)',prefAfter:'副厂件 (Aftermarket)',prefUsed:'拆车件 (二手)',
+    prefAltLabel:'是否接受替代品牌？',
+    prefAltYes:'接受替代品牌',prefAltNo:'只要指定品牌',
+    photoLabel:'旧件照片（至少3张）',
+    photoStrong:'拖拽或点击上传',
+    photoHint:'需要：正面 / 背面 / 接口孔位 / 铭牌编号',
+    photoCount0:'尚未上传照片',
+    photoCountN:'张照片已上传',
+    photoCountOk:'✓ 照片数量足够',
+    photoCountWarn:'⚠ 还需要 ',
+    partLocationLabel:'配件在车辆上的位置',
+    partLocationPlaceholder:'例如：左前方、发动机舱右侧...',
+    disclaimerTitle:'⚠ 重要提示 — 提交前请阅读',
+    disclaimer1:'<strong>VIN匹配说明：</strong>VIN仅用于确认车型，最终配件匹配以零件号、照片及供应商确认为准。如因客户提供信息有误导致匹配失败，本公司不承担责任。',
+    disclaimer2:'<strong>客户责任条款：</strong>若因客户提供错误信息（照片/描述不准确）导致配件购买错误，退换及运费由客户自行承担。'
+  }
+};
+
+var currentLang = 'ru';
+function t(k){ return (i18n[currentLang]||i18n.ru)[k]||k; }
+
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
+  var btns = document.querySelectorAll('.lang-btn');
+  btns.forEach(function(b){ if(b.getAttribute('onclick').indexOf("'"+lang+"'")>=0) b.classList.add('active'); });
+  applyTranslations();
+  renderCats();
+  updateSelectedList();
+}
+
+function applyTranslations(){
+  applyPrefLabels();
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k = el.getAttribute('data-i18n');
+    var v = t(k);
+    if(v) el.innerHTML = v;
+  });
+  var ca = document.getElementById('commentInput');
+  if(ca) ca.placeholder = t('commentPlaceholder');
+  document.getElementById('selectedList').setAttribute('data-empty', t('emptyParts'));
+}
+
+// ============================================================
+//  VIN DECODER
+// ============================================================
+// WMI database - Chinese & common EV brands
+var WMI_DB = {
+  // BYD (比亚迪)
+  'LVV':'BYD','LGJ':'BYD','LS5':'BYD','LFP':'BYD','LDC':'BYD','L3A':'BYD','L4T':'BYD',
+  // Geely (吉利) / Lynk&Co / Galaxy
+  'LFV':'Geely','LGX':'Geely','LZB':'Geely','LS4':'Geely','L6V':'Geely',
+  'LGE':'Lynk & Co','LBE':'Lynk & Co',
+  // Chery (奇瑞) / Omoda / Exeed
+  'LHG':'Chery','L6T':'Chery','LVS':'Chery','LS6':'Chery','LDN':'Chery','LTV':'Exeed',
+  // SAIC / MG / Roewe / IM
+  'LSJ':'MG','LSY':'MG','LSF':'SAIC-GM','LRW':'Roewe','LSC':'Roewe','LJL':'IM Motors',
+  // GWM / Haval / Tank / Ora / WEY
+  'LB1':'Haval','LGW':'GWM','LKL':'Tank','LYY':'Ora','L9N':'WEY',
+  // NIO (蔚来)
+  'LSH':'NIO','LNB':'NIO',
+  // Xpeng (小鹏)
+  'LPB':'Xpeng','LPA':'Xpeng',
+  // Li Auto (理想)
+  'L7B':'Li Auto','L2N':'Li Auto',
+  // Wuling / Baojun / SGMW
+  'LZE':'Wuling','L5Y':'Wuling','LB4':'Baojun','LS6B':'Baojun',
+  // BAIC / Beijing / Arcfox
+  'LVH':'BAIC','LB2':'BAIC','LS4B':'Arcfox','L4B':'Arcfox',
+  // Dongfeng / Voyah / Aion / Aeolus
+  'LDY':'Dongfeng','LFP2':'Dongfeng','LVR':'Voyah','LKJ':'Aeolus',
+  // GAC / Aion (广汽/埃安)
+  'LB3':'GAC Aion','LHM':'GAC Aion','LHD':'GAC',
+  // JAC (江淮)
+  'LHB':'JAC','LHN':'JAC','LJH':'JAC',
+  // ZEEKR (极氪)
+  'LVV2':'ZEEKR','L6G':'ZEEKR',
+  // Leapmotor (零跑)
+  'LL9':'Leapmotor',
+  // AITO / Huawei-Seres
+  'LS9':'AITO (Seres)','LSE':'Seres',
+  // Deep Blue / Avatr / Changan
+  'L6C':'Changan','LFM':'Changan','LSV2':'Avatr','L8A':'Deep Blue (Changan)',
+  // Neta (哪吒)
+  'LNR':'Neta','LNA':'Neta',
+  // Volkswagen China
+  'LVW':'Volkswagen','LSV':'Volkswagen','LFB':'Volkswagen',
+  // Toyota China
+  'LSU':'Toyota','LTA':'Toyota','LGB':'Toyota',
+  // BMW China
+  'LBY':'BMW','LCI':'BMW',
+  // Hyundai / Kia China
+  'LNB2':'Hyundai','LKJ2':'Kia',
+};
+
+// Model hints per brand (for dropdown suggestion)
+var BRAND_MODELS = {
+  'BYD':['Han EV','Tang EV','Song Plus EV','Seal','Dolphin','Atto 3','Yuan Plus','Han DM','Tang DM','Song Pro DM','Destroyer 05','Sea Lion','Seagull'],
+  'Geely':['Geometry C','Geometry A','Galaxy L7','Galaxy E8','Preface','Xingyue L','Borui GE'],
+  'Lynk & Co':['01','02','03','05','06','08','09'],
+  'Chery':['Arrizo 8','Tiggo 8 Pro','Omoda 5','Omoda C5','Exeed TXL','Exeed RX'],
+  'MG':['MG4 EV','MG5 EV','MG ZS EV','Marvel R','MG Cyberster','One'],
+  'Roewe':['Ei5','Ei6','RX5','Marvel X'],
+  'Haval':['H6','H9','Jolion','Dargo','Big Dog'],
+  'GWM':['Poer','Cannon','WEY Coffee 01','WEY Coffee 02'],
+  'Tank':['300','400','500','700'],
+  'Ora':['Good Cat','Black Cat','Punk Cat','Lightning Cat'],
+  'NIO':['ET5','ET7','ES6','ES7','ES8','EC6','EC7','ET5T'],
+  'Xpeng':['P5','P7','G3','G6','G9','X9'],
+  'Li Auto':['L6','L7','L8','L9','MEGA'],
+  'Wuling':['Hongguang Mini EV','Bingo','Starlight','Victory','Air EV'],
+  'BAIC':['EU5','EU7','EX3','EX5','Arcfox Alpha-T','Arcfox Alpha-S'],
+  'GAC Aion':['S','Y','LX','V','Hyper GT','Hyper SSR'],
+  'ZEEKR':['001','007','009','X'],
+  'Leapmotor':['C10','C11','C01','T03'],
+  'AITO (Seres)':['M5','M7','M9'],
+  'Changan':['Deepal S7','Deepal L07','Avatr 11','Avatr 12','Uni-K','Uni-V','Lamore'],
+  'Neta':['V','U','S','GT'],
+  'Volkswagen':['ID.4','ID.6','ID.3','Passat','Tiguan'],
+  'Toyota':['bZ4X','Camry','RAV4'],
+  'BMW':['iX3','i3','3 Series','5 Series','X5'],
+};
+
+var YEAR_MAP = {
+  'A':2010,'B':2011,'C':2012,'D':2013,'E':2014,'F':2015,'G':2016,'H':2017,
+  'J':2018,'K':2019,'L':2020,'M':2021,'N':2022,'P':2023,'R':2024,'S':2025,'T':2026,
+  '1':2001,'2':2002,'3':2003,'4':2004,'5':2005,'6':2006,'7':2007,'8':2008,'9':2009,'0':2000
+};
+
+var decodedCar = null;
+
+function validateVin(vin){ return /^[A-HJ-NPR-Z0-9]{17}$/i.test(vin); }
+
+function toggleVinGuide(){
+  var g = document.getElementById('vinGuide');
+  var btn = document.querySelector('.vin-guide-toggle');
+  g.classList.toggle('open');
+  var isOpen = g.classList.contains('open');
+  btn.innerHTML = isOpen ? '▲ ' + t('vinGuideBtn').replace('❓ ','') : '❓ ' + t('vinGuideBtn').replace('❓ ','');
+}
+
+function checkCarFields(){
+  var make  = document.getElementById('editMake').value.trim();
+  var year  = document.getElementById('editYear').value.trim();
+  var model = document.getElementById('editModel').value.trim();
+  document.getElementById('btnStep1').disabled = !(make && year && model);
+}
+
+function populateMakesList(){} // no-op, kept for compat
+
+var vinLookupTimer = null;
+
+function onVinInput(el){
+  var v = el.value.toUpperCase().replace(/[IOQ]/g,'');
+  el.value = v;
+  var badge = document.getElementById('vinBadge');
+  var hint  = document.getElementById('vinHint');
+  var info  = document.getElementById('carInfo');
+  var btn   = document.getElementById('btnStep1');
+
+  // Clear any pending lookup
+  if(vinLookupTimer) clearTimeout(vinLookupTimer);
+
+  if(v.length < 17){
+    badge.style.display='none';
+    info.classList.remove('show');
+    btn.disabled=true;
+    el.classList.remove('error');
+    hint.className='hint';
+    hint.textContent = t('vinHint');
+    return;
+  }
+
+  if(!validateVin(v)){
+    badge.style.display=''; badge.className='vin-badge bad'; badge.textContent=t('vinBad');
+    el.classList.add('error'); info.classList.remove('show'); btn.disabled=true;
+    hint.className='hint error-msg'; hint.textContent='✗ '+t('vinHint');
+    return;
+  }
+
+  // Valid format — show loading state
+  el.classList.remove('error');
+  badge.style.display=''; badge.className='vin-badge'; 
+  badge.style.background='rgba(59,139,255,0.15)'; badge.style.color='var(--accent2)';
+  badge.textContent='...';
+  hint.className='hint'; hint.textContent=t('vinLooking');
+  btn.disabled=true;
+
+  // Debounce 400ms then call API
+  vinLookupTimer = setTimeout(function(){ lookupVin(v); }, 400);
+}
+
+async function proxyFetch(url){
+  // Try direct first, then CORS proxy
+  try {
+    var r = await fetch(url); if(r.ok) return r.json();
+  } catch(e){}
+  var r2 = await fetch('https://corsproxy.io/?url='+encodeURIComponent(url));
+  if(!r2.ok) throw new Error('HTTP '+r2.status);
+  return r2.json();
+}
+
+async function lookupVin(vin){
+  var badge = document.getElementById('vinBadge');
+  var hint  = document.getElementById('vinHint');
+  var info  = document.getElementById('carInfo');
+
+  try {
+    // Call VIN + specs in parallel
+    var base = 'https://api.auto.dev/vin/'+vin+'?apiKey='+AUTODEV_API_KEY;
+    var spec = 'https://api.auto.dev/specs/'+vin+'?apiKey='+AUTODEV_API_KEY;
+
+    var results = await Promise.allSettled([proxyFetch(base), proxyFetch(spec)]);
+    var d  = results[0].status==='fulfilled' ? results[0].value : null;
+    var ds = results[1].status==='fulfilled' ? results[1].value : null;
+
+    if(!d || d.errorCode) throw new Error('VIN API failed');
+
+    // ── Fields from /vin endpoint ──
+    var make = (d.make || (d.vehicle && d.vehicle.make) || '').trim();
+    var year = (
+      (d.vehicle && d.vehicle.year) ||
+      (d.years && d.years[0]) ||
+      ''
+    ).toString();
+
+    // ── Fields from /specs endpoint (richer data) ──
+    var model = '', trim = '', engine = '';
+    if(ds && !ds.errorCode){
+      // specs returns array of matching specs
+      var specs = Array.isArray(ds) ? ds : (ds.data || ds.specs || [ds]);
+      if(specs.length > 0){
+        var s = specs[0];
+        model  = (s.model  || s.modelName || '').trim();
+        trim   = (s.trim   || s.submodel  || s.series || '').trim();
+        var disp = s.engineDisplacement || (s.engine && s.engine.displacement) || '';
+        var fuel = s.fuelType || (s.engine && s.engine.fuelType) || '';
+        var pwr  = s.horsepower ? s.horsepower+'hp' : '';
+        engine = [disp, fuel, pwr].filter(Boolean).join(' ');
+      }
+    }
+
+    // If specs gave nothing, try BRAND_MODELS suggestions
+    if(!model && BRAND_MODELS[make] && BRAND_MODELS[make].length){
+      // populate dropdown but leave field blank for user to pick
+      var dl = document.getElementById('modelsList');
+      dl.innerHTML = '';
+      BRAND_MODELS[make].forEach(function(m){
+        var o = document.createElement('option'); o.value=m; dl.appendChild(o);
+      });
+    }
+
+    document.getElementById('editMake').value  = make;
+    document.getElementById('editModel').value = model;
+    document.getElementById('editYear').value  = year;
+    document.getElementById('editTrim').value  = [trim, engine].filter(Boolean).join(' · ');
+
+    decodedCar = {make:make, model:model, year:year, trim:trim};
+
+    badge.className='vin-badge ok';
+    badge.style.background=''; badge.style.color='';
+    badge.textContent = make || t('vinOk');
+
+    // Tell user if model needs manual input
+    if(!model){
+      hint.className='hint';
+      hint.textContent = t('vinNoModel');
+    } else {
+      hint.textContent = '';
+    }
+
+    info.classList.add('show');
+    checkCarFields();
+
+  } catch(e) {
+    // Full fallback to local WMI
+    console.warn('[VIN] API failed, using local WMI:', e.message);
+    var wmi = vin.substring(0,3).toUpperCase();
+    var localMake = WMI_DB[vin.substring(0,4).toUpperCase()] || WMI_DB[wmi] || '';
+    var yearChar  = vin[9].toUpperCase();
+    var localYear = YEAR_MAP[yearChar] || '';
+
+    document.getElementById('editMake').value  = localMake;
+    document.getElementById('editYear').value  = localYear;
+    document.getElementById('editModel').value = '';
+    document.getElementById('editTrim').value  = '';
+
+    badge.className='vin-badge';
+    badge.style.background='rgba(232,184,75,0.2)'; badge.style.color='var(--accent)';
+    badge.textContent = t('vinUnknown');
+    hint.className='hint';
+    hint.textContent = t('vinFallback');
+    info.classList.add('show');
+    checkCarFields();
+  }
+}
+
+// ============================================================
+//  PARTS DATA
+// ============================================================
+var PARTS_DATA = {
+  ru:[
+    {id:'battery',icon:'🔋',name:'Батарея / ВВ система',desc:'Аккумулятор, BMS, охлаждение',subs:['Ячейки АКБ','BMS (контроллер батареи)','Система охлаждения батареи','ВВ-кабели','Разъёмы батареи','Датчики АКБ']},
+    {id:'motor',icon:'⚡',name:'Электродвигатель',desc:'Мотор, инвертор, редуктор',subs:['Тяговый электродвигатель','Инвертор/Контроллер мотора','Редуктор','Подшипники мотора','Уплотнения мотора']},
+    {id:'charging',icon:'🔌',name:'Зарядная система',desc:'OBC, разъём, DC-DC',subs:['Бортовое зарядное (OBC)','Зарядный разъём AC','Разъём DC быстрой зарядки','DC-DC конвертер','Зарядные кабели']},
+    {id:'brakes',icon:'🛞',name:'Тормозная система',desc:'Колодки, диски, ABS',subs:['Тормозные колодки передние','Тормозные колодки задние','Тормозные диски','Электровакуумный усилитель','Насос ABS/ESP','Тормозные шланги']},
+    {id:'suspension',icon:'🔩',name:'Подвеска и рулевое',desc:'Амортизаторы, рычаги, ЭУР',subs:['Амортизаторы передние','Амортизаторы задние','Рычаги передней подвески','Шаровые опоры','Электроусилитель руля','Рулевая рейка','Рулевые тяги','Стойки стабилизатора']},
+    {id:'body',icon:'🚗',name:'Кузов и экстерьер',desc:'Бамперы, двери, стёкла',subs:['Передний бампер','Задний бампер','Крылья','Двери','Лобовое стекло','Боковые стёкла','Зеркала','Капот','Крышка багажника']},
+    {id:'lights',icon:'💡',name:'Освещение',desc:'Фары, фонари, DRL',subs:['Фары передние','Задние фонари','Ходовые огни (DRL)','Противотуманные фары','Подсветка салона']},
+    {id:'hvac',icon:'❄️',name:'Климат / Отопление',desc:'Тепловой насос, компрессор',subs:['Тепловой насос','Компрессор кондиционера','Испаритель','Конденсатор','ПТК (нагреватель салона)']},
+    {id:'electronics',icon:'📡',name:'Электроника',desc:'Экран, ЭБУ, сенсоры',subs:['Центральный дисплей','ЭБУ/VCU','Камеры (360°, задняя)','Радар парктроника','Датчики','Жгут проводов']},
+    {id:'interior',icon:'🪑',name:'Салон',desc:'Сиденья, панель, консоль',subs:['Сиденья','Приборная панель','Центральная консоль','Обшивка дверей','Потолочная обшивка','Коврики']}
+  ],
+  uz:[
+    {id:'battery',icon:'🔋',name:'Batareya / YV tizimi',desc:'Akkumulyator, BMS, sovutish',subs:['AKB xujayralar','BMS (batareya kontrolleri)','Batareya sovutish tizimi','YV-kabellar','Batareya ulagichlari','AKB datchiklari']},
+    {id:'motor',icon:'⚡',name:'Elektr motor',desc:'Motor, invertor, reduktor',subs:['Tortish elektromotori','Invertor/Motor kontrolleri','Reduktor','Motor podshipniklari','Motor muhrlamalari']},
+    {id:'charging',icon:'🔌',name:'Zaryadlash tizimi',desc:'OBC, ulagich, DC-DC',subs:['Bort zaryadlash qurilmasi (OBC)','AC zaryadlash ulagichi','DC tez zaryadlash ulagichi','DC-DC konverter','Zaryadlash kabellari']},
+    {id:'brakes',icon:'🛞',name:'Tormoz tizimi',desc:'Tormoz bloklari, disklar, ABS',subs:['Old tormoz bloklari','Orqa tormoz bloklari','Tormoz disklari','Elektrovakuum kuchaytirgich','ABS/ESP nasosi','Tormoz shlanglar']},
+    {id:'suspension',icon:'🔩',name:'Muallaq va rul',desc:'Amortizatorlar, tutqichlar',subs:["Old amortizatorlar","Orqa amortizatorlar","Old muallaq tutqichlari","To'p tayanchi","Elektr rul kuchaytirgichi","Rul reykasi","Rul tiyraklari","Stabilizator tayanchlari"]},
+    {id:'body',icon:'🚗',name:'Kuzov va tashqi',desc:'Bamperlar, eshiklar, oynalar',subs:['Old bamper','Orqa bamper','Qanotlar','Eshiklar','Old shisha','Yon oynalar','Ko\'zgular','Kaput','Bagaj qopqog\'i']},
+    {id:'lights',icon:'💡',name:'Yoritish',desc:'Faralar, fonarlar, DRL',subs:['Old faralar','Orqa fonarlar','Kunduzgi yorug\'lik (DRL)','Tuman faralari','Salon yoritishi']},
+    {id:'hvac',icon:'❄️',name:'Iqlim / Isitish',desc:'Issiqlik nasosi, kompressor',subs:['Issiqlik nasosi','Konditsioner kompressori','Bug\'lantiruvchi','Kondensator','Salon isitgichi']},
+    {id:'electronics',icon:'📡',name:'Elektronika',desc:'Ekran, ECU, sensorlar',subs:['Markaziy displey','ECU/VCU','Kameralar (360, orqa)','Parktronik radari','Sensorlar','Sim tutami']},
+    {id:'interior',icon:'🪑',name:'Salon',desc:"O'rindiqlar, panel",subs:["O'rindiqlar","Asboblar paneli","Markaziy konsol","Eshik qoplamasi","Shiftlama","Gilam"]}
+  ],
+  zh:[
+    {id:'battery',icon:'🔋',name:'电池/高压系统',desc:'电芯、BMS、冷却',subs:['动力电池模组','电池管理系统(BMS)','电池冷却系统','高压线束','电池连接器','电池传感器']},
+    {id:'motor',icon:'⚡',name:'驱动系统',desc:'电机、逆变器、减速器',subs:['驱动电机','逆变器/电机控制器','减速器','电机轴承','电机密封件']},
+    {id:'charging',icon:'🔌',name:'充电系统',desc:'车载充电机、充电口',subs:['车载充电机(OBC)','交流充电口','直流快充口','DC-DC转换器','充电线缆']},
+    {id:'brakes',icon:'🛞',name:'制动系统',desc:'刹车片、制动盘、ABS',subs:['前刹车片','后刹车片','制动盘','电子制动助力器','ABS/ESP泵','制动软管']},
+    {id:'suspension',icon:'🔩',name:'悬架与转向',desc:'减震器、摆臂、EPS',subs:['前减震器','后减震器','前悬架摆臂','球头','电动助力转向(EPS)','转向齿条','横拉杆','稳定杆连接杆']},
+    {id:'body',icon:'🚗',name:'车身外饰',desc:'保险杠、车门、玻璃',subs:['前保险杠','后保险杠','翼子板','车门','前挡风玻璃','侧车窗','后视镜','引擎盖','行李箱盖']},
+    {id:'lights',icon:'💡',name:'照明系统',desc:'大灯、尾灯、日行灯',subs:['前大灯','尾灯','日行灯(DRL)','雾灯','内饰灯']},
+    {id:'hvac',icon:'❄️',name:'空调/暖通',desc:'热泵、压缩机',subs:['热泵','空调压缩机','蒸发器','冷凝器','PTC加热器']},
+    {id:'electronics',icon:'📡',name:'车载电子',desc:'屏幕、ECU、传感器',subs:['中控屏','ECU/VCU','摄像头(360/倒车)','倒车雷达','传感器','线束']},
+    {id:'interior',icon:'🪑',name:'内饰',desc:'座椅、仪表台、中控台',subs:['座椅','仪表台','中控台','门板','车顶内衬','脚垫']}
+  ]
+};
+
+// ============================================================
+//  STATE
+// ============================================================
+var selectedParts = {};
+var activeCatId = null;
+var orderVin = '';
+
+// ============================================================
+//  STEPS
+// ============================================================
+function setStep(n){
+  for(var i=1;i<=4;i++){
+    document.getElementById('step'+i).style.display = i===n?'block':'none';
+    var ind = document.getElementById('step-ind-'+i);
+    ind.className = 'step-item' + (i===n?' active':'') + (i<n?' done':'');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goStep1(){ setStep(1); }
+function goStep2(){
+  orderVin = document.getElementById('vinInput').value.toUpperCase();
+  decodedCar = {
+    make:  document.getElementById('editMake').value.trim(),
+    model: document.getElementById('editModel').value.trim(),
+    year:  document.getElementById('editYear').value.trim(),
+    trim:  document.getElementById('editTrim').value.trim()
+  };
+  renderCats(); updateSelectedList(); setStep(2);
+}
+function goStep3(){ if(Object.keys(selectedParts).length>0) setStep(3); }
+function resetAll(){
+  document.getElementById('vinInput').value='';
+  document.getElementById('vinBadge').style.display='none';
+  document.getElementById('carInfo').classList.remove('show');
+  document.getElementById('editMake').value='';
+  document.getElementById('editModel').value='';
+  document.getElementById('editYear').value='';
+  document.getElementById('editTrim').value='';
+  document.getElementById('btnStep1').disabled=true;
+  selectedParts={}; activeCatId=null; decodedCar=null;
+  document.getElementById('nameInput').value='';
+  document.getElementById('tgInput').value='';
+  document.getElementById('phoneInput').value='';
+  document.getElementById('cityInput').value='';
+  document.getElementById('commentInput').value='';
+  setStep(1);
+}
+
+// ============================================================
+//  PARTS RENDERING
+// ============================================================
+function renderCats(){
+  var cats = PARTS_DATA[currentLang]||PARTS_DATA.ru;
+  var container = document.getElementById('partsCats');
+  container.innerHTML='';
+  cats.forEach(function(cat){
+    var count = Object.keys(selectedParts).filter(function(k){ return k.indexOf(cat.id+'::')===0; }).length;
+    var div = document.createElement('div');
+    div.className='cat-card'+(activeCatId===cat.id?' selected':'');
+    div.innerHTML='<div class="cat-icon">'+cat.icon+'</div><div><div class="cat-name">'+cat.name+(count?' <span style="color:var(--accent);font-size:11px;font-family:var(--font-mono)">('+count+')</span>':'')+'</div><div class="cat-desc">'+cat.desc+'</div></div>';
+    div.onclick=(function(id){ return function(){ toggleCat(id); }; })(cat.id);
+    container.appendChild(div);
+  });
+  renderSubparts();
+}
+
+function toggleCat(id){ activeCatId=(activeCatId===id)?null:id; renderCats(); }
+
+function renderSubparts(){
+  var wrap = document.getElementById('subpartsWrap');
+  var grid = document.getElementById('subpartsGrid');
+  if(!activeCatId){ wrap.classList.remove('show'); return; }
+  var cats = PARTS_DATA[currentLang]||PARTS_DATA.ru;
+  var cat = null;
+  for(var i=0;i<cats.length;i++){ if(cats[i].id===activeCatId){ cat=cats[i]; break; } }
+  if(!cat){ wrap.classList.remove('show'); return; }
+  wrap.classList.add('show');
+  grid.innerHTML='';
+  cat.subs.forEach(function(sub){
+    var key = cat.id+'::'+sub;
+    var tag = document.createElement('div');
+    tag.className='sub-tag'+(selectedParts[key]?' selected':'');
+    tag.textContent=sub;
+    tag.onclick=(function(k){ return function(){ togglePart(k); }; })(key);
+    grid.appendChild(tag);
+  });
+}
+
+function togglePart(key){
+  if(selectedParts[key]) delete selectedParts[key];
+  else selectedParts[key]=true;
+  renderCats(); updateSelectedList();
+  document.getElementById('btnStep2').disabled = Object.keys(selectedParts).length===0;
+}
+
+function updateSelectedList(){
+  var list = document.getElementById('selectedList');
+  list.innerHTML='';
+  var keys = Object.keys(selectedParts);
+  if(keys.length===0){ list.classList.add('empty'); return; }
+  list.classList.remove('empty');
+  keys.forEach(function(key){
+    var partName = key.split('::')[1];
+    var chip = document.createElement('div');
+    chip.className='part-chip';
+    var btn = document.createElement('button');
+    btn.textContent='×'; btn.title='Remove';
+    btn.onclick=(function(k){ return function(){ togglePart(k); }; })(key);
+    chip.appendChild(document.createTextNode(partName+' '));
+    chip.appendChild(btn);
+    list.appendChild(chip);
+  });
+}
+
+// ============================================================
+//  CONTACT VALIDATION
+// ============================================================
+function validateContact(){
+  var name  = document.getElementById('nameInput').value.trim();
+  var tg    = document.getElementById('tgInput').value.trim();
+  var phone = document.getElementById('phoneInput').value.trim();
+  var city  = document.getElementById('cityInput').value;
+  var chk1  = document.getElementById('chk1').checked;
+  var chk2  = document.getElementById('chk2').checked;
+  document.getElementById('btnStep3').disabled = !(name && (tg||phone) && city && chk1 && chk2);
+}
+
+// ============================================================
+//  SUBMIT
+// ============================================================
+async function submitOrder(){
+  var btn = document.getElementById('btnStep3');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>...';
+
+  var name  = document.getElementById('nameInput').value.trim();
+  var tg    = document.getElementById('tgInput').value.trim();
+  var phone = document.getElementById('phoneInput').value.trim();
+  var city  = document.getElementById('cityInput').value;
+  var comment = document.getElementById('commentInput').value.trim();
+  var orderId = 'ORD-'+Date.now().toString(36).toUpperCase();
+  var carInfo = decodedCar
+    ? [decodedCar.make, decodedCar.model, decodedCar.trim, decodedCar.year ? '('+decodedCar.year+')' : ''].filter(Boolean).join(' ')
+    : 'Unknown';
+
+  var partLines = Object.keys(selectedParts).map(function(k){ return '  - '+k.split('::')[1]; }).join('\n');
+  var location = document.getElementById('partLocationInput').value.trim();
+  var quality  = getPref('quality');
+  var altBrand = getPref('alt');
+
+  var lines = [
+    'NEW ORDER - '+orderId,
+    '',
+    'Car: '+carInfo,
+    'VIN: '+orderVin,
+    '',
+    'Parts:',
+    partLines || '  - not specified',
+    '',
+    'Preferences:',
+    '  Quality: '+quality,
+    '  Alt brand: '+altBrand,
+    location ? '  Location: '+location : ''
+  ];
+  if(comment) lines.push('', 'Comment: '+comment);
+  if(uploadedPhotos.length > 0) lines.push('', 'Photos: '+uploadedPhotos.length+' (see next message)');
+  lines.push('', 'Contact:', '  Name: '+name, '  Telegram: '+(tg||'-'), '  Phone: '+(phone||'-'), '  City: '+city, '', 'zapchastchi.com');
+
+  var message = lines.filter(function(l){ return l !== undefined; }).join('\n');
+
+  try {
+    // 1. Send text message
+    var res = await fetch('https://api.telegram.org/bot'+TELEGRAM_BOT_TOKEN+'/sendMessage', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({chat_id: TELEGRAM_CHAT_ID, text: message})
+    });
+    var data = await res.json();
+    if(!data.ok) throw new Error(data.description||'Telegram error');
+
+    // 2. Send photos if any (using sendMediaGroup for 2+, sendPhoto for 1)
+    if(uploadedPhotos.length > 0) {
+      if(uploadedPhotos.length === 1) {
+        // Single photo via sendPhoto
+        var fd = new FormData();
+        fd.append('chat_id', TELEGRAM_CHAT_ID);
+        fd.append('photo', uploadedPhotos[0].file);
+        fd.append('caption', 'Photos for ' + orderId);
+        await fetch('https://api.telegram.org/bot'+TELEGRAM_BOT_TOKEN+'/sendPhoto', {
+          method:'POST', body: fd
+        });
+      } else {
+        // Multiple photos via sendMediaGroup (max 10)
+        var fd2 = new FormData();
+        fd2.append('chat_id', TELEGRAM_CHAT_ID);
+        var mediaArr = [];
+        uploadedPhotos.slice(0,10).forEach(function(p, i){
+          var fieldName = 'photo'+i;
+          fd2.append(fieldName, p.file);
+          mediaArr.push({
+            type: 'photo',
+            media: 'attach://'+fieldName,
+            caption: i === 0 ? 'Photos for '+orderId : ''
+          });
+        });
+        fd2.append('media', JSON.stringify(mediaArr));
+        await fetch('https://api.telegram.org/bot'+TELEGRAM_BOT_TOKEN+'/sendMediaGroup', {
+          method:'POST', body: fd2
+        });
+      }
+    }
+
+    document.getElementById('orderIdBox').textContent = orderId;
+    setStep(4);
+    // In Mini App, send data back to bot and show close button
+    if(tg && isTgApp){ tg.MainButton.show(); tg.MainButton.enable(); }
+  } catch(e) {
+    btn.disabled=false;
+    btn.innerHTML = t('submit');
+    alert('Error: '+e.message);
+  }
+}
+
+// ============================================================
+//  PREFERENCES
+// ============================================================
+function togglePref(el) {
+  var group = el.getAttribute('data-group');
+  // single-select within group
+  document.querySelectorAll('.pref-toggle[data-group="'+group+'"]').forEach(function(t){ t.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function getPref(group) {
+  var sel = document.querySelector('.pref-toggle[data-group="'+group+'"].selected');
+  return sel ? sel.getAttribute('data-val') : '';
+}
+
+function applyPrefLabels() {
+  document.querySelectorAll('.pref-toggle[data-i18n-val]').forEach(function(el){
+    var k = el.getAttribute('data-i18n-val');
+    el.textContent = t(k);
+  });
+  var loc = document.getElementById('partLocationInput');
+  if(loc) loc.placeholder = t('partLocationPlaceholder');
+}
+
+// ============================================================
+//  PHOTO UPLOAD
+// ============================================================
+var uploadedPhotos = []; // array of {file, dataUrl}
+
+function handlePhotos(files) {
+  for(var i=0;i<files.length;i++){
+    if(uploadedPhotos.length >= 6) break;
+    (function(file){
+      var reader = new FileReader();
+      reader.onload = function(e){
+        uploadedPhotos.push({file:file, dataUrl:e.target.result});
+        renderPreviews();
+        checkStep2Btn();
+      };
+      reader.readAsDataURL(file);
+    })(files[i]);
+  }
+}
+
+function renderPreviews(){
+  var wrap = document.getElementById('photoPreviews');
+  var countEl = document.getElementById('photoCount');
+  wrap.innerHTML = '';
+  uploadedPhotos.forEach(function(p, idx){
+    var w = document.createElement('div'); w.className='photo-thumb-wrap';
+    var img = document.createElement('img'); img.className='photo-thumb'; img.src=p.dataUrl;
+    var del = document.createElement('button'); del.className='photo-thumb-del'; del.innerHTML='&times;';
+    del.onclick = (function(i){ return function(){ uploadedPhotos.splice(i,1); renderPreviews(); checkStep2Btn(); }; })(idx);
+    w.appendChild(img); w.appendChild(del); wrap.appendChild(w);
+  });
+  var n = uploadedPhotos.length;
+  if(n===0){ countEl.className='photo-count warn'; countEl.textContent=t('photoCount0'); }
+  else if(n<3){ countEl.className='photo-count warn'; countEl.textContent=t('photoCountWarn')+(3-n); }
+  else{ countEl.className='photo-count ok'; countEl.textContent=t('photoCountOk')+' ('+n+')'; }
+}
+
+function checkStep2Btn(){
+  var hasparts = Object.keys(selectedParts).length > 0;
+  document.getElementById('btnStep2').disabled = !hasparts;
+}
+
+// drag & drop
+document.addEventListener('DOMContentLoaded', function(){
+  var area = document.getElementById('photoDropArea');
+  if(!area) return;
+  area.addEventListener('dragover', function(e){ e.preventDefault(); area.classList.add('dragover'); });
+  area.addEventListener('dragleave', function(){ area.classList.remove('dragover'); });
+  area.addEventListener('drop', function(e){ e.preventDefault(); area.classList.remove('dragover'); handlePhotos(e.dataTransfer.files); });
+});
+
+// ============================================================
+//  TELEGRAM MAIN BUTTON & BACK BUTTON
+// ============================================================
+function setupTgButtons(step){
+  if(!tg) return;
+
+  // BackButton
+  if(step > 1){
+    tg.BackButton.show();
+    tg.BackButton.onClick(function(){
+      if(step === 2) goStep1();
+      else if(step === 3) goStep2();
+    });
+  } else {
+    tg.BackButton.hide();
+  }
+
+  // MainButton
+  tg.MainButton.setParams({
+    color: tg.themeParams.button_color || '#e8b84b',
+    text_color: tg.themeParams.button_text_color || '#000000'
+  });
+
+  if(step === 1){
+    tg.MainButton.setText(t('confirm').replace('ПОДТВЕРДИТЬ ','').replace('AVTOMOBILNI ','').replace('确认',''));
+    tg.MainButton.setText(t('confirm'));
+    tg.MainButton.onClick(goStep2);
+    tg.MainButton.disable();
+    tg.MainButton.show();
+  } else if(step === 2){
+    tg.MainButton.setText(t('next'));
+    tg.MainButton.onClick(goStep3);
+    var hasParts = Object.keys(selectedParts).length > 0;
+    hasParts ? tg.MainButton.enable() : tg.MainButton.disable();
+    tg.MainButton.show();
+  } else if(step === 3){
+    tg.MainButton.setText(t('submit'));
+    tg.MainButton.onClick(submitOrder);
+    tg.MainButton.disable();
+    tg.MainButton.show();
+  } else if(step === 4){
+    tg.MainButton.setText('✓ OK');
+    tg.MainButton.onClick(function(){ tg.close(); });
+    tg.MainButton.enable();
+    tg.BackButton.hide();
+    tg.MainButton.show();
+  }
+}
+
+// Patch setStep to also update Telegram buttons
+var _origSetStep = setStep;
+setStep = function(n){
+  _origSetStep(n);
+  if(tg) {
+    // Remove old listeners by recreating (simple approach)
+    tg.MainButton.offClick(goStep2);
+    tg.MainButton.offClick(goStep3);
+    tg.MainButton.offClick(submitOrder);
+    setupTgButtons(n);
+  }
+};
+
+// Patch checkCarFields to sync MainButton state
+var _origCheckCarFields = checkCarFields;
+checkCarFields = function(){
+  _origCheckCarFields();
+  if(tg && tg.MainButton){
+    var disabled = document.getElementById('btnStep1').disabled;
+    disabled ? tg.MainButton.disable() : tg.MainButton.enable();
+  }
+};
+
+// Patch togglePart to sync step 2 MainButton
+var _origTogglePart = togglePart;
+togglePart = function(key){
+  _origTogglePart(key);
+  if(tg && tg.MainButton){
+    var hasParts = Object.keys(selectedParts).length > 0;
+    hasParts ? tg.MainButton.enable() : tg.MainButton.disable();
+  }
+};
+
+// Patch validateContact to sync step 3 MainButton
+var _origValidateContact = validateContact;
+validateContact = function(){
+  _origValidateContact();
+  if(tg && tg.MainButton){
+    var disabled = document.getElementById('btnStep3').disabled;
+    disabled ? tg.MainButton.disable() : tg.MainButton.enable();
+  }
+};
+
+// ============================================================
+//  ANNOUNCEMENT BANNERS — edit this array to update banners
+// ============================================================
+var BANNERS = [
+  {
+    tag: 'new', icon: '⚡',
+    title: { ru: 'Запчасти для BYD, NIO, Xpeng — в наличии', uz: "BYD, NIO, Xpeng ehtiyot qismlari — mavjud", zh: 'BYD、NIO、小鹏配件现货供应' },
+    desc:  { ru: 'Популярные позиции доступны к быстрой отправке', uz: "Mashhur pozitsiyalar tezkor yuborishga tayyor", zh: '热门配件可快速发货' }
+  },
+  {
+    tag: 'promo', icon: '✈️',
+    title: { ru: 'Авиадоставка Ташкент — 7–10 дней', uz: "Toshkentga avia yetkazish — 7–10 kun", zh: '空运至塔什干 7–10天' },
+    desc:  { ru: 'Наземная доставка от 18 дней — экономия до 40%', uz: "Quruqlik yetkazish 18 kundan — 40% tejam", zh: '陆运18天起，节省高达40%运费' }
+  },
+  {
+    tag: 'notice', icon: '🔔',
+    title: { ru: 'Сезонный спрос: тормозные колодки и АКБ', uz: "Mavsumiy talab: tormoz bloklari va AKB", zh: '季节性热销：刹车片与电池' },
+    desc:  { ru: 'Рекомендуем подавать заявки заранее', uz: "Arizalarni oldindan topshirishni tavsiya etamiz", zh: '建议提前提交询价' }
+  }
+];
+
+var bannerIdx = 0;
+var bannerTimer = null;
+
+function renderBanners(){
+  var track = document.getElementById('bannerTrack');
+  var dots  = document.getElementById('bannerDots');
+  if(!track) return;
+  track.innerHTML = '';
+  dots.innerHTML  = '';
+
+  BANNERS.forEach(function(b, i){
+    var slide = document.createElement('div');
+    slide.className = 'banner-slide tag-'+b.tag;
+    slide.innerHTML =
+      '<div class="banner-top">' +
+        '<div class="banner-icon">'+b.icon+'</div>' +
+        '<div class="banner-tag '+b.tag+'">' + b.tag.toUpperCase() + '</div>' +
+        '<button class="banner-close" onclick="closeBanners()" title="Close">×</button>' +
+      '</div>' +
+      '<div class="banner-body">' +
+        '<div class="banner-title">'+(b.title[currentLang]||b.title.ru)+'</div>' +
+        '<div class="banner-desc">' +(b.desc[currentLang] ||b.desc.ru) +'</div>' +
+      '</div>';
+    track.appendChild(slide);
+
+    var dot = document.createElement('div');
+    dot.className = 'banner-dot' + (i===0?' active':'');
+    dot.onclick = (function(idx){ return function(){ goBanner(idx); }; })(i);
+    dots.appendChild(dot);
+  });
+
+  // Wait for layout to settle before positioning
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      goBanner(0);
+      startBannerAuto();
+      addBannerSwipe();
+    });
+  });
+}
+
+function goBanner(idx){
+  bannerIdx = (idx + BANNERS.length) % BANNERS.length;
+  var track = document.getElementById('bannerTrack');
+  var strip = document.getElementById('bannerStrip');
+  if(!track || !strip) return;
+  // Use strip's actual rendered width to compute pixel offset
+  // This avoids % issues when strip has padding
+  var slideW = strip.clientWidth;
+  track.style.transform = 'translateX(-'+(bannerIdx * slideW)+'px)';
+  document.querySelectorAll('.banner-dot').forEach(function(d,i){
+    d.classList.toggle('active', i===bannerIdx);
+  });
+}
+
+// Recalculate on resize (orientation change etc.)
+window.addEventListener('resize', function(){
+  goBanner(bannerIdx);
+});
+
+function startBannerAuto(){
+  if(bannerTimer) clearInterval(bannerTimer);
+  if(BANNERS.length > 1){
+    bannerTimer = setInterval(function(){ goBanner(bannerIdx+1); }, 5000);
+  }
+}
+
+function closeBanners(){
+  clearInterval(bannerTimer);
+  var strip = document.getElementById('bannerStrip');
+  strip.style.height = strip.offsetHeight+'px';
+  strip.style.overflow = 'hidden';
+  strip.style.transition = 'height .3s ease, opacity .3s ease';
+  requestAnimationFrame(function(){
+    strip.style.height = '0'; strip.style.opacity = '0';
+    setTimeout(function(){ strip.style.display='none'; }, 310);
+  });
+}
+
+function addBannerSwipe(){
+  var track = document.getElementById('bannerTrack');
+  var startX = 0;
+  track.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; clearInterval(bannerTimer); }, {passive:true});
+  track.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - startX;
+    var strip = document.getElementById('bannerStrip');
+    var threshold = strip ? strip.clientWidth * 0.2 : 60;
+    if(Math.abs(dx) > threshold) goBanner(bannerIdx + (dx < 0 ? 1 : -1));
+    startBannerAuto();
+  }, {passive:true});
+  // Mouse drag for desktop
+  var dragging = false, dragStartX = 0;
+  track.addEventListener('mousedown', function(e){ dragging=true; dragStartX=e.clientX; clearInterval(bannerTimer); e.preventDefault(); });
+  window.addEventListener('mouseup', function(e){
+    if(!dragging) return; dragging=false;
+    var dx = e.clientX - dragStartX;
+    if(Math.abs(dx) > 60) goBanner(bannerIdx + (dx < 0 ? 1 : -1));
+    startBannerAuto();
+  });
+}
+
+// Re-render banners on language switch
+var _origSetLang = setLang;
+setLang = function(lang){ _origSetLang(lang); renderBanners(); };
+
+// ============================================================
+//  INIT
+// ============================================================
+populateMakesList();
+applyTranslations();
+renderBanners();
+renderCats();
+updateSelectedList();
+
+if(isTgApp){
+  // Apply tg-mode class to hide custom buttons
+  document.body.classList.add('tg-mode');
+
+  // Pre-fill contact info from Telegram user
+  var tgUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
+  if(tgUser){
+    var nameEl = document.getElementById('nameInput');
+    var tgEl   = document.getElementById('tgInput');
+    if(nameEl && !nameEl.value){
+      nameEl.value = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(' ');
+    }
+    if(tgEl && !tgEl.value && tgUser.username){
+      tgEl.value = '@' + tgUser.username;
+    }
+  }
+
+  // Mini App — remove banner for cleaner experience
+  var strip = document.getElementById('bannerStrip');
+  if(strip) strip.style.display = 'none';
+
+  // Init Telegram buttons for step 1
+  setupTgButtons(1);
+}
+</script>
+</body>
+</html>
