@@ -784,7 +784,6 @@
     }
 
     @media (max-width: 860px) {
-      .steps-bar,
       .grid-2,
       .summary-grid,
       .toolbar-row {
@@ -802,6 +801,248 @@
       footer {
         padding-left: 16px;
         padding-right: 16px;
+      }
+
+      .steps-bar {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        position: sticky;
+        top: 0;
+      }
+
+      .header-content {
+        gap: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+
+      .logo {
+        gap: 10px;
+        font-size: 18px;
+        min-width: 0;
+      }
+
+      .logo-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        font-size: 18px;
+      }
+
+      .lang-switcher {
+        gap: 4px;
+        padding: 4px;
+        border-radius: 10px;
+      }
+
+      .lang-btn {
+        padding: 10px 10px;
+        min-width: 58px;
+        font-size: 11px;
+      }
+
+      .hero {
+        padding-top: 22px;
+        padding-bottom: 4px;
+      }
+
+      .hero-eyebrow {
+        margin-bottom: 10px;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+      }
+
+      .hero-title {
+        font-size: clamp(22px, 8vw, 34px);
+        line-height: 1.04;
+        letter-spacing: -0.05em;
+        margin-bottom: 12px;
+      }
+
+      .hero-subtitle {
+        font-size: 14px;
+        line-height: 1.55;
+        max-width: none;
+      }
+
+      .steps-bar {
+        gap: 8px;
+        margin-top: 14px;
+        margin-bottom: 16px;
+      }
+
+      .step-item {
+        padding: 10px 6px 12px;
+        border-radius: 14px;
+        min-height: 82px;
+      }
+
+      .step-number {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 6px;
+        border-radius: 10px;
+        font-size: 16px;
+      }
+
+      .step-label {
+        font-size: 10px;
+        letter-spacing: 0.03em;
+      }
+
+      .main-content {
+        padding-bottom: 52px;
+      }
+
+      .card {
+        padding: 16px;
+        border-radius: 20px;
+        margin-bottom: 18px;
+      }
+
+      .card-head {
+        margin-bottom: 16px;
+        gap: 10px;
+      }
+
+      .card-title {
+        font-size: 22px;
+        margin-bottom: 6px;
+      }
+
+      .card-subtitle {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .badge {
+        padding: 6px 8px;
+        font-size: 10px;
+      }
+
+      .field {
+        margin-bottom: 16px;
+      }
+
+      .field-label {
+        margin-bottom: 6px;
+        font-size: 10px;
+      }
+
+      input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+      select,
+      textarea {
+        padding: 12px;
+        font-size: 15px;
+      }
+
+      textarea {
+        min-height: 92px;
+      }
+
+      .cats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .cat-card {
+        padding: 12px;
+        border-radius: 14px;
+      }
+
+      .cat-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        font-size: 22px;
+      }
+
+      .toggle-group {
+        gap: 8px;
+      }
+
+      .toggle-btn,
+      .btn {
+        padding: 12px 14px;
+      }
+
+      .action-row[style],
+      .toolbar-row,
+      .summary-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .photo-upload-area {
+        padding: 22px 14px;
+        border-radius: 16px;
+      }
+
+      .upload-icon {
+        font-size: 34px;
+        margin-bottom: 8px;
+      }
+
+      .upload-text {
+        font-size: 14px;
+      }
+
+      .upload-hint,
+      .field-meta,
+      .checkbox-wrap,
+      .summary-list {
+        font-size: 12px;
+      }
+
+      footer {
+        padding-top: 8px;
+        padding-bottom: 22px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .header-content,
+      .hero,
+      .steps-bar,
+      .main-content,
+      footer {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .logo {
+        font-size: 16px;
+      }
+
+      .lang-btn {
+        min-width: 52px;
+        padding: 9px 8px;
+      }
+
+      .hero-title {
+        font-size: 20px;
+      }
+
+      .hero-subtitle {
+        font-size: 13px;
+      }
+
+      .step-item {
+        min-height: 74px;
+        padding: 8px 4px 10px;
+      }
+
+      .step-number {
+        width: 28px;
+        height: 28px;
+        font-size: 15px;
+      }
+
+      .step-label {
+        font-size: 9px;
       }
     }
   </style>
