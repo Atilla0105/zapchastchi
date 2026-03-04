@@ -1,1594 +1,2297 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZapchastChi - EV Parts Direct from China</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --primary: #00d9ff;
-  --secondary: #ff006e;
-  --accent: #8338ec;
-  --success: #3dd68e;
-  --warning: #ffb703;
-  --danger: #ff006e;
-  
-  --bg-dark: #0f1419;
-  --bg-light: #ffffff;
-  --surface-1: #1a1f2e;
-  --surface-2: #252d3d;
-  --surface-3: #31394b;
-  
-  --text-primary: #ffffff;
-  --text-secondary: #b0b3c1;
-  --text-tertiary: #7a7e8f;
-  
-  --border: rgba(255, 255, 255, 0.1);
-  --border-light: rgba(255, 255, 255, 0.05);
-  
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Sora', sans-serif;
-  --font-mono: 'DM Mono', monospace;
-  
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: linear-gradient(135deg, var(--bg-dark) 0%, #1a0033 100%);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(131, 56, 236, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 40% 20%, rgba(255, 0, 110, 0.04) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
-  animation: gradientShift 15s ease-in-out infinite;
-}
-
-@keyframes gradientShift {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(20px, 20px); }
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: 
-    linear-gradient(0deg, transparent 24%, rgba(0, 217, 255, 0.02) 25%, rgba(0, 217, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(0, 217, 255, 0.02) 75%, rgba(0, 217, 255, 0.02) 76%, transparent 77%, transparent),
-    linear-gradient(90deg, transparent 24%, rgba(0, 217, 255, 0.02) 25%, rgba(0, 217, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(0, 217, 255, 0.02) 75%, rgba(0, 217, 255, 0.02) 76%, transparent 77%, transparent);
-  background-size: 60px 60px;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.glass {
-  background: rgba(26, 31, 46, 0.4);
-  backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-}
-
-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(15, 20, 25, 0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-light);
-  padding: 16px 24px;
-}
-
-.header-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 24px;
-  font-weight: 700;
-  font-family: var(--font-display);
-  letter-spacing: -1px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-icon {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.lang-switcher {
-  display: flex;
-  gap: 6px;
-  background: var(--surface-1);
-  padding: 6px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-}
-
-.lang-btn {
-  background: transparent;
-  color: var(--text-secondary);
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.lang-btn:hover {
-  background: rgba(0, 217, 255, 0.1);
-  color: var(--primary);
-}
-
-.lang-btn.active {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: var(--text-primary);
-  box-shadow: 0 8px 20px rgba(0, 217, 255, 0.3);
-}
-
-.hero {
-  max-width: 1200px;
-  margin: 60px auto 40px;
-  padding: 0 24px;
-  text-align: center;
-  animation: fadeInUp 0.8s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.hero-eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--primary);
-  margin-bottom: 16px;
-  font-family: var(--font-mono);
-}
-
-.hero-title {
-  font-size: 48px;
-  font-weight: 700;
-  font-family: var(--font-display);
-  line-height: 1.2;
-  margin-bottom: 20px;
-  letter-spacing: -2px;
-}
-
-.hero-subtitle {
-  font-size: 16px;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto 30px;
-  line-height: 1.6;
-}
-
-.steps-bar {
-  max-width: 1200px;
-  margin: 40px auto 0;
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
-.step-item {
-  position: relative;
-  padding: 20px 12px;
-  border-radius: var(--radius-md);
-  background: var(--surface-1);
-  border: 2px solid var(--border);
-  transition: all 0.3s ease;
-  text-align: center;
-}
-
-.step-item.active {
-  border-color: var(--primary);
-  background: rgba(0, 217, 255, 0.05);
-}
-
-.step-number {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0 auto 8px;
-  font-family: var(--font-display);
-  box-shadow: 0 4px 12px rgba(0, 217, 255, 0.2);
-}
-
-.step-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.3px;
-}
-
-.main-content {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 0 24px 80px;
-}
-
-.card {
-  padding: 32px;
-  margin-bottom: 24px;
-  border-radius: var(--radius-md);
-  background: rgba(26, 31, 46, 0.4);
-  backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid var(--border);
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.card-title {
-  font-size: 28px;
-  font-weight: 700;
-  font-family: var(--font-display);
-  margin-bottom: 8px;
-  letter-spacing: -0.5px;
-}
-
-.card-subtitle {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 24px;
-  line-height: 1.5;
-}
-
-.field {
-  margin-bottom: 20px;
-}
-
-.field-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  font-family: var(--font-mono);
-}
-
-.field input, .field select, .field textarea {
-  width: 100%;
-  background: var(--surface-2);
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 14px;
-  padding: 12px 14px;
-  transition: all 0.3s ease;
-}
-
-.field input::placeholder, .field textarea::placeholder {
-  color: var(--text-tertiary);
-}
-
-.field input:focus, .field select:focus, .field textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-  background: rgba(0, 217, 255, 0.05);
-  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
-}
-
-.field textarea {
-  resize: vertical;
-  min-height: 100px;
-  font-family: var(--font-body);
-}
-
-.btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  font-family: var(--font-display);
-  letter-spacing: 0.5px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: var(--text-primary);
-  box-shadow: 0 6px 16px rgba(0, 217, 255, 0.25);
-}
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(0, 217, 255, 0.35);
-}
-
-.btn-secondary {
-  background: var(--surface-2);
-  color: var(--text-primary);
-  border: 1.5px solid var(--border);
-}
-
-.btn-secondary:hover:not(:disabled) {
-  border-color: var(--primary);
-  background: rgba(0, 217, 255, 0.05);
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-
-@media (max-width: 768px) {
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-  .steps-bar {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.cat-card {
-  padding: 14px;
-  border-radius: 10px;
-  background: var(--surface-2);
-  border: 1.5px solid var(--border);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.cat-card:hover {
-  border-color: var(--primary);
-  background: rgba(0, 217, 255, 0.05);
-  transform: translateY(-2px);
-}
-
-.cat-card.selected {
-  border-color: var(--primary);
-  background: rgba(0, 217, 255, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 217, 255, 0.15);
-}
-
-.cat-icon {
-  font-size: 28px;
-  flex-shrink: 0;
-}
-
-.cat-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.cat-desc {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.subparts-wrap {
-  display: none;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-
-.subparts-wrap.show {
-  display: block;
-}
-
-.subparts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 10px;
-}
-
-.sub-tag {
-  padding: 10px 12px;
-  background: var(--surface-3);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-align: center;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.sub-tag:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.sub-tag.selected {
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(131, 56, 236, 0.15));
-  border-color: var(--primary);
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.selected-list {
-  padding: 12px;
-  background: var(--surface-1);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  min-height: 40px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: flex-start;
-  margin-bottom: 20px;
-}
-
-.selected-list.empty::after {
-  content: attr(data-empty);
-  color: var(--text-tertiary);
-  font-size: 12px;
-  width: 100%;
-}
-
-.part-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(131, 56, 236, 0.2));
-  border: 1px solid var(--primary);
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 12px;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-.part-chip button {
-  background: none;
-  border: none;
-  color: var(--primary);
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-}
-
-.photo-upload-area {
-  border: 2px dashed var(--border);
-  border-radius: 12px;
-  padding: 32px 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: rgba(0, 217, 255, 0.02);
-  position: relative;
-}
-
-.photo-upload-area:hover {
-  border-color: var(--primary);
-  background: rgba(0, 217, 255, 0.06);
-}
-
-.photo-upload-area.dragover {
-  border-color: var(--secondary);
-  background: rgba(255, 0, 110, 0.08);
-}
-
-.photo-upload-input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.upload-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.upload-text {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-
-.upload-hint {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.photo-previews {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.photo-thumb-wrap {
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  aspect-ratio: 1;
-}
-
-.photo-thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 1px solid var(--border);
-}
-
-.photo-thumb-del {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 20px;
-  height: 20px;
-  background: var(--danger);
-  border: none;
-  border-radius: 4px;
-  color: white;
-  font-size: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: all 0.2s ease;
-}
-
-.photo-thumb-wrap:hover .photo-thumb-del {
-  opacity: 1;
-}
-
-.toggle-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.toggle-btn {
-  padding: 8px 14px;
-  background: var(--surface-2);
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  font-family: var(--font-body);
-}
-
-.toggle-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: rgba(0, 217, 255, 0.05);
-}
-
-.toggle-btn.active {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: var(--text-primary);
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(0, 217, 255, 0.2);
-}
-
-.checkbox-wrap {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px;
-  background: rgba(255, 0, 110, 0.08);
-  border: 1px solid rgba(255, 0, 110, 0.2);
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
-
-.checkbox-wrap input {
-  width: 16px;
-  height: 16px;
-  margin-top: 3px;
-  cursor: pointer;
-  accent-color: var(--primary);
-  flex-shrink: 0;
-}
-
-.checkbox-wrap label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  line-height: 1.4;
-}
-
-footer {
-  text-align: center;
-  padding: 30px 24px;
-  color: var(--text-secondary);
-  font-size: 12px;
-  border-top: 1px solid var(--border);
-  margin-top: 40px;
-}
-
-footer a {
-  color: var(--primary);
-  text-decoration: none;
-}
-
-footer a:hover {
-  color: var(--secondary);
-}
-
-.hidden { display: none; }
-.spinner {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: var(--text-primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.vin-badge {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 9px;
-  font-family: var(--font-mono);
-  padding: 4px 8px;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-}
-
-.vin-badge.ok {
-  background: rgba(61, 214, 142, 0.2);
-  color: var(--success);
-}
-
-.vin-badge.bad {
-  background: rgba(255, 0, 110, 0.2);
-  color: var(--danger);
-}
-
-.car-info {
-  background: rgba(0, 217, 255, 0.05);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  display: none;
-  margin-bottom: 20px;
-}
-
-.car-info.show { display: block; }
-
-.vin-hint {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  margin-top: 6px;
-  font-family: var(--font-mono);
-}
-
-.vin-hint.error-msg {
-  color: var(--danger);
-}
-
-.field.error input {
-  border-color: var(--danger);
-  background: rgba(255, 0, 110, 0.05);
-}
-
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 32px;
-  }
-  .card {
-    padding: 20px;
-  }
-  .steps-bar {
-    gap: 8px;
-  }
-  .step-item {
-    padding: 16px 8px;
-  }
-  .main-content {
-    padding: 0 16px 60px;
-  }
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZapchastChi - EV Parts Direct from China</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00d9ff;
+      --secondary: #ff006e;
+      --accent: #8338ec;
+      --success: #3dd68e;
+      --warning: #ffb703;
+      --danger: #ff4d6d;
+      --bg-dark: #0f1419;
+      --bg-gradient: linear-gradient(135deg, #0f1419 0%, #12072a 55%, #1e0d3e 100%);
+      --surface-1: rgba(26, 31, 46, 0.72);
+      --surface-2: rgba(37, 45, 61, 0.92);
+      --surface-3: rgba(49, 57, 75, 0.98);
+      --text-primary: #ffffff;
+      --text-secondary: #b0b3c1;
+      --text-tertiary: #7a7e8f;
+      --border: rgba(255, 255, 255, 0.1);
+      --border-light: rgba(255, 255, 255, 0.05);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
+      --font-display: "Space Grotesk", sans-serif;
+      --font-body: "Sora", sans-serif;
+      --font-mono: "DM Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body::before {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0, 217, 255, 0.12) 0%, transparent 34%),
+        radial-gradient(circle at 78% 72%, rgba(131, 56, 236, 0.16) 0%, transparent 36%),
+        radial-gradient(circle at 40% 85%, rgba(255, 0, 110, 0.08) 0%, transparent 28%);
+      animation: drift 16s ease-in-out infinite;
+    }
+
+    body::after {
+      background-image:
+        linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%, transparent);
+      background-size: 60px 60px;
+      opacity: 0.4;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(18px, -12px, 0); }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(15, 20, 25, 0.78);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .header-content,
+    .hero,
+    .steps-bar,
+    .main-content,
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      box-shadow: 0 12px 24px rgba(0, 217, 255, 0.22);
+    }
+
+    .logo-text {
+      background: linear-gradient(135deg, var(--primary), #ffffff 60%, var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lang-switcher {
+      display: flex;
+      gap: 6px;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 6px;
+    }
+
+    .lang-btn,
+    .btn,
+    .toggle-btn,
+    .chip-btn,
+    .tag-btn {
+      border: 0;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+
+    .lang-btn {
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-secondary);
+      font: 600 12px var(--font-mono);
+      padding: 8px 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: var(--text-primary);
+      box-shadow: 0 8px 20px rgba(0, 217, 255, 0.2);
+    }
+
+    .hero {
+      padding-top: 56px;
+      padding-bottom: 20px;
+      text-align: center;
+      animation: reveal 0.8s ease;
+    }
+
+    .hero-eyebrow {
+      font: 600 12px var(--font-mono);
+      letter-spacing: 0.18em;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font: 700 clamp(34px, 5vw, 56px)/1.1 var(--font-display);
+      letter-spacing: -0.06em;
+      margin-bottom: 18px;
+    }
+
+    .hero-subtitle {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(32px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .steps-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 26px;
+      margin-bottom: 28px;
+    }
+
+    .step-item,
+    .card,
+    .summary-box,
+    .status-box {
+      background: var(--surface-1);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .step-item {
+      border-radius: var(--radius-md);
+      padding: 18px 14px;
+      text-align: center;
+    }
+
+    .step-item.active {
+      border-color: rgba(0, 217, 255, 0.8);
+      background: rgba(0, 217, 255, 0.08);
+    }
+
+    .step-item.done {
+      border-color: rgba(61, 214, 142, 0.6);
+    }
+
+    .step-number {
+      width: 38px;
+      height: 38px;
+      margin: 0 auto 8px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      font: 700 18px var(--font-display);
+    }
+
+    .step-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .main-content {
+      padding-bottom: 80px;
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 24px;
+      animation: reveal 0.5s ease;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .card-title {
+      font: 700 28px var(--font-display);
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+
+    .card-subtitle {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 14px;
+      max-width: 760px;
+    }
+
+    .badge {
+      font: 600 11px var(--font-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 8px 10px;
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      font: 600 11px var(--font-mono);
+      color: var(--text-secondary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .field-row,
+    .action-row,
+    .summary-grid,
+    .toolbar-row,
+    .grid-2,
+    .chips-row {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid-2,
+    .summary-grid,
+    .toolbar-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-primary);
+      padding: 13px 14px;
+      font: 500 14px var(--font-body);
+      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"])::placeholder,
+    textarea::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(0, 217, 255, 0.06);
+      box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.12);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .field-inline {
+      position: relative;
+    }
+
+    .field-meta {
+      margin-top: 7px;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .field-meta.error {
+      color: var(--danger);
+    }
+
+    .vin-badge {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      border-radius: 999px;
+      padding: 5px 8px;
+      font: 600 10px var(--font-mono);
+      letter-spacing: 0.06em;
+      background: rgba(255, 255, 255, 0.08);
+      display: none;
+    }
+
+    .vin-badge.ok { color: var(--success); background: rgba(61, 214, 142, 0.18); }
+    .vin-badge.warn { color: var(--warning); background: rgba(255, 183, 3, 0.18); }
+    .vin-badge.bad { color: var(--danger); background: rgba(255, 77, 109, 0.16); }
+
+    .car-info,
+    .status-box,
+    .summary-box,
+    .draft-note {
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .car-info,
+    .summary-box {
+      background: rgba(0, 217, 255, 0.06);
+      border: 1px solid rgba(0, 217, 255, 0.18);
+    }
+
+    .status-box {
+      background: rgba(255, 183, 3, 0.08);
+      border: 1px solid rgba(255, 183, 3, 0.22);
+      color: #ffe5a6;
+    }
+
+    .draft-note {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(131, 56, 236, 0.12);
+      border: 1px solid rgba(131, 56, 236, 0.22);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .runtime-note {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+      background: rgba(255, 183, 3, 0.1);
+      border: 1px solid rgba(255, 183, 3, 0.28);
+      color: #ffe5a6;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 12px;
+      padding: 13px 20px;
+      font: 600 13px var(--font-display);
+      letter-spacing: 0.03em;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: var(--text-primary);
+      box-shadow: 0 10px 24px rgba(0, 217, 255, 0.18);
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .cats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .cat-card {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+
+    .cat-card:hover,
+    .cat-card.active {
+      border-color: rgba(0, 217, 255, 0.7);
+      transform: translateY(-2px);
+      background: rgba(0, 217, 255, 0.08);
+    }
+
+    .cat-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 26px;
+    }
+
+    .cat-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .cat-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .subparts-wrap {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+    }
+
+    .subparts-wrap.show {
+      display: block;
+    }
+
+    .subparts-grid,
+    .selected-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag-btn,
+    .chip-btn {
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .tag-btn {
+      background: var(--surface-3);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .tag-btn.selected,
+    .tag-btn:hover {
+      color: var(--text-primary);
+      border-color: rgba(0, 217, 255, 0.8);
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.18), rgba(131, 56, 236, 0.22));
+    }
+
+    .selected-panel {
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 64px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+    }
+
+    .selected-panel.empty::after {
+      content: attr(data-empty);
+      color: var(--text-tertiary);
+      font-size: 13px;
+    }
+
+    .chip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.18), rgba(131, 56, 236, 0.24));
+      color: var(--text-primary);
+      border: 1px solid rgba(0, 217, 255, 0.8);
+    }
+
+    .chip-remove {
+      width: 18px;
+      height: 18px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.22);
+      font-size: 12px;
+    }
+
+    .toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .toggle-btn {
+      border-radius: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .toggle-btn.active {
+      color: var(--text-primary);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-color: rgba(0, 217, 255, 0.75);
+      box-shadow: 0 8px 18px rgba(0, 217, 255, 0.18);
+    }
+
+    .photo-upload-area {
+      position: relative;
+      padding: 30px 20px;
+      border-radius: 18px;
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      text-align: center;
+      background: rgba(0, 217, 255, 0.04);
+      transition: all 0.2s ease;
+    }
+
+    .photo-upload-area.dragover {
+      border-color: var(--secondary);
+      background: rgba(255, 0, 110, 0.08);
+    }
+
+    .photo-upload-input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .upload-text {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .upload-hint {
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .photo-previews {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .photo-item {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: var(--surface-2);
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-del {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .checkbox-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .checkbox-wrap.warn {
+      background: rgba(255, 0, 110, 0.08);
+      border-color: rgba(255, 0, 110, 0.22);
+    }
+
+    .checkbox-wrap input {
+      accent-color: var(--primary);
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .checkbox-wrap label {
+      flex: 1;
+      min-width: 0;
+      word-break: break-word;
+    }
+
+    .summary-box h3 {
+      font: 700 16px var(--font-display);
+      margin-bottom: 14px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .summary-list strong {
+      color: var(--text-primary);
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+    }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    footer {
+      padding-top: 16px;
+      padding-bottom: 30px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      text-align: center;
+      border-top: 1px solid var(--border-light);
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    @media (max-width: 860px) {
+      .steps-bar,
+      .grid-2,
+      .summary-grid,
+      .toolbar-row {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 22px;
+      }
+
+      .header-content,
+      .hero,
+      .steps-bar,
+      .main-content,
+      footer {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <div class="header-content">
-    <div class="logo">
-      <div class="logo-icon">⚡</div>
-      <span>ZapchastChi</span>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        <div class="logo-text">ZapchastChi</div>
+      </div>
+      <div class="lang-switcher">
+        <button class="lang-btn active" type="button" data-lang="uz">UZB</button>
+        <button class="lang-btn" type="button" data-lang="ru">РУС</button>
+        <button class="lang-btn" type="button" data-lang="zh">中文</button>
+      </div>
     </div>
-    <div class="lang-switcher">
-      <button class="lang-btn active" onclick="setLang('uz')">UZB</button>
-      <button class="lang-btn" onclick="setLang('ru')">РУС</button>
-      <button class="lang-btn" onclick="setLang('zh')">中文</button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-eyebrow" data-i18n="eyebrow"></div>
+    <h1 class="hero-title" data-i18n="heroTitle"></h1>
+    <p class="hero-subtitle" data-i18n="subtitle"></p>
+  </section>
+
+  <div class="steps-bar">
+    <div class="step-item active" id="step-ind-1">
+      <div class="step-number">1</div>
+      <div class="step-label" data-i18n="step1"></div>
+    </div>
+    <div class="step-item" id="step-ind-2">
+      <div class="step-number">2</div>
+      <div class="step-label" data-i18n="step2"></div>
+    </div>
+    <div class="step-item" id="step-ind-3">
+      <div class="step-number">3</div>
+      <div class="step-label" data-i18n="step3"></div>
+    </div>
+    <div class="step-item" id="step-ind-4">
+      <div class="step-number">4</div>
+      <div class="step-label" data-i18n="step4"></div>
     </div>
   </div>
-</header>
 
-<section class="hero">
-  <div class="hero-eyebrow" data-i18n="eyebrow"></div>
-  <h1 class="hero-title" data-i18n="heroTitle"></h1>
-  <p class="hero-subtitle" data-i18n="subtitle"></p>
-</section>
+  <main class="main-content">
+    <section class="draft-note hidden" id="draftNote">
+      <span data-i18n="draftLoaded"></span>
+      <button class="btn btn-ghost" type="button" id="clearDraftBtn" data-i18n="clearDraft"></button>
+    </section>
 
-<div class="steps-bar">
-  <div class="step-item active" id="step-ind-1">
-    <div class="step-number">1</div>
-    <div class="step-label" data-i18n="step1"></div>
-  </div>
-  <div class="step-item" id="step-ind-2">
-    <div class="step-number">2</div>
-    <div class="step-label" data-i18n="step2"></div>
-  </div>
-  <div class="step-item" id="step-ind-3">
-    <div class="step-number">3</div>
-    <div class="step-label" data-i18n="step3"></div>
-  </div>
-  <div class="step-item" id="step-ind-4">
-    <div class="step-number">4</div>
-    <div class="step-label" data-i18n="step4"></div>
-  </div>
-</div>
+    <section class="runtime-note hidden" id="runtimeNote">
+      <span data-i18n="runtimeNote"></span>
+    </section>
 
-<div class="main-content">
+    <section class="card" id="step1">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title" data-i18n="s1title"></h2>
+          <p class="card-subtitle" data-i18n="s1sub"></p>
+        </div>
+        <div class="badge mono">VIN</div>
+      </div>
 
-  <!-- STEP 1: VIN -->
-  <div class="card" id="step1">
-    <h2 class="card-title" data-i18n="s1title"></h2>
-    <p class="card-subtitle" data-i18n="s1sub"></p>
-    
-    <div class="field" style="position:relative;">
-      <label class="field-label" data-i18n="vinLabel"></label>
-      <input type="text" id="vinInput" class="field-input" maxlength="17" style="padding-right:60px;" placeholder="17VIN_CODE" oninput="onVinInput(this)">
-      <div class="vin-badge" id="vinBadge" style="display:none;"></div>
-      <div class="vin-hint" id="vinHint" data-i18n="vinHint"></div>
-    </div>
+      <div class="field">
+        <label class="field-label" for="vinInput" data-i18n="vinLabel"></label>
+        <div class="field-inline">
+          <input id="vinInput" type="text" maxlength="17" placeholder="17VINCODE..." autocomplete="off">
+          <div class="vin-badge" id="vinBadge"></div>
+        </div>
+        <div class="field-meta" id="vinHint" data-i18n="vinHint"></div>
+      </div>
 
-    <div class="car-info" id="carInfo">
+      <div class="status-box hidden" id="vinStatus"></div>
+
+      <div class="car-info hidden" id="carInfo">
+        <div class="grid-2">
+          <div class="field">
+            <label class="field-label" for="editMake" data-i18n="ciMake"></label>
+            <input id="editMake" type="text" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label class="field-label" for="editYear" data-i18n="ciYear"></label>
+            <input id="editYear" type="number" min="2000" max="2035">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label class="field-label" for="editModel" data-i18n="ciModel"></label>
+            <input id="editModel" type="text" list="modelsList" autocomplete="off">
+            <datalist id="modelsList"></datalist>
+          </div>
+          <div class="field">
+            <label class="field-label" for="editTrim" data-i18n="ciTrim"></label>
+            <input id="editTrim" type="text" autocomplete="off">
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary" type="button" id="btnStep1" disabled>
+          <span>✓</span>
+          <span data-i18n="confirm"></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card hidden" id="step2">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title" data-i18n="s2title"></h2>
+          <p class="card-subtitle" data-i18n="s2sub"></p>
+        </div>
+        <div class="badge" data-i18n="partsBadge"></div>
+      </div>
+
+      <div class="toolbar-row">
+        <div class="field">
+          <label class="field-label" for="partsSearch" data-i18n="partsSearchLabel"></label>
+          <input id="partsSearch" type="text">
+        </div>
+        <div class="field">
+          <label class="field-label" for="partLocationInput" data-i18n="partLocationLabel"></label>
+          <input id="partLocationInput" type="text">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" data-i18n="subcatsLabel"></label>
+        <div class="cats-grid" id="partsCats"></div>
+      </div>
+
+      <div class="subparts-wrap" id="subpartsWrap">
+        <div class="field">
+          <label class="field-label" data-i18n="availablePartsLabel"></label>
+          <div class="subparts-grid" id="subpartsGrid"></div>
+        </div>
+      </div>
+
       <div class="grid-2">
         <div class="field">
-          <label class="field-label" data-i18n="ciMake"></label>
-          <input type="text" id="editMake" class="field-input" placeholder="">
+          <label class="field-label" for="customPartInput" data-i18n="customPartLabel"></label>
+          <input id="customPartInput" type="text">
         </div>
         <div class="field">
-          <label class="field-label" data-i18n="ciYear"></label>
-          <input type="number" id="editYear" class="field-input" min="2000" max="2030">
+          <label class="field-label" for="customQtyInput" data-i18n="qtyLabel"></label>
+          <input id="customQtyInput" type="number" min="1" max="99" value="1">
         </div>
       </div>
+
       <div class="field">
-        <label class="field-label" data-i18n="ciModel"></label>
-        <input type="text" id="editModel" class="field-input" list="modelsList">
-        <datalist id="modelsList"></datalist>
+        <button class="btn btn-secondary" type="button" id="addCustomPartBtn">
+          <span>＋</span>
+          <span data-i18n="addCustomPart"></span>
+        </button>
       </div>
+
       <div class="field">
-        <label class="field-label" data-i18n="ciTrim"></label>
-        <input type="text" id="editTrim" class="field-input" placeholder="">
+        <label class="field-label" data-i18n="selectedLabel"></label>
+        <div class="selected-panel empty" id="selectedList" data-empty=""></div>
       </div>
-    </div>
 
-    <button class="btn btn-primary" id="btnStep1" onclick="goStep2()" disabled>
-      <span>✓</span>
-      <span data-i18n="confirm"></span>
-    </button>
-  </div>
-
-  <!-- STEP 2: PARTS -->
-  <div class="card hidden" id="step2">
-    <h2 class="card-title" data-i18n="s2title"></h2>
-    <p class="card-subtitle" data-i18n="s2sub"></p>
-
-    <div class="field">
-      <label class="field-label" data-i18n="subcatsLabel"></label>
-      <div id="partsCats" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;"></div>
-      <div class="subparts-wrap" id="subpartsWrap">
-        <div id="subpartsGrid" class="subparts-grid"></div>
+      <div class="field">
+        <label class="field-label" for="commentInput" data-i18n="commentLabel"></label>
+        <textarea id="commentInput"></textarea>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="field-label" data-i18n="selectedLabel"></label>
-      <div class="selected-list" id="selectedList" data-empty="" style="min-height:30px;"></div>
-    </div>
-
-    <div class="field">
-      <label class="field-label" data-i18n="partLocationLabel"></label>
-      <input type="text" id="partLocationInput" class="field-input" placeholder="">
-    </div>
-
-    <div class="field">
-      <label class="field-label" data-i18n="commentLabel"></label>
-      <textarea id="commentInput" class="field-textarea" placeholder=""></textarea>
-    </div>
-
-    <div class="field">
-      <label class="field-label" data-i18n="prefQualityLabel"></label>
-      <div class="toggle-group">
-        <button class="toggle-btn active" onclick="setPref('quality','oem')" data-i18n="prefOem"></button>
-        <button class="toggle-btn" onclick="setPref('quality','aftermarket')" data-i18n="prefAfter"></button>
-        <button class="toggle-btn" onclick="setPref('quality','used')" data-i18n="prefUsed"></button>
+      <div class="grid-2">
+        <div class="field">
+          <label class="field-label" data-i18n="prefQualityLabel"></label>
+          <div class="toggle-group" id="qualityGroup"></div>
+        </div>
+        <div class="field">
+          <label class="field-label" data-i18n="prefAltLabel"></label>
+          <div class="toggle-group" id="altGroup"></div>
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="field-label" data-i18n="prefAltLabel"></label>
-      <div class="toggle-group">
-        <button class="toggle-btn" onclick="setPref('alt','yes')" data-i18n="prefAltYes"></button>
-        <button class="toggle-btn active" onclick="setPref('alt','no')" data-i18n="prefAltNo"></button>
+      <div class="field">
+        <label class="field-label" data-i18n="photoLabel"></label>
+        <div class="photo-upload-area" id="photoDropArea">
+          <input class="photo-upload-input" id="photoInput" type="file" accept="image/*" multiple>
+          <div class="upload-icon">📷</div>
+          <div class="upload-text" data-i18n="photoStrong"></div>
+          <div class="upload-hint" data-i18n="photoHint"></div>
+        </div>
+        <div class="photo-previews" id="photoPreviews"></div>
+        <div class="field-meta" id="photoCount"></div>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="field-label" data-i18n="photoLabel"></label>
-      <div class="photo-upload-area" id="photoDropArea" ondrop="handleDrop(event)" ondragover="event.preventDefault()" ondragleave="event.target.classList.remove('dragover')" ondragover="event.target.classList.add('dragover')">
-        <input type="file" class="photo-upload-input" id="photoInput" multiple accept="image/*" onchange="handlePhotos(this.files)">
-        <div class="upload-icon">📷</div>
-        <div class="upload-text" data-i18n="photoStrong"></div>
-        <div class="upload-hint" data-i18n="photoHint"></div>
+      <div class="checkbox-wrap warn">
+        <input id="noPhotoCheck" type="checkbox">
+        <label for="noPhotoCheck" data-i18n="noPhotoLabel"></label>
       </div>
-      <div id="photoPreviews" class="photo-previews"></div>
-      <div id="photoCount" style="font-size:12px;color:var(--text-tertiary);margin-top:10px;"></div>
-    </div>
 
-    <div style="display:flex;gap:12px;margin-top:24px;">
-      <button class="btn btn-secondary" onclick="goStep1()">
-        <span>←</span>
-        <span data-i18n="back"></span>
+      <div class="action-row" style="grid-template-columns:repeat(2,minmax(0,1fr));">
+        <button class="btn btn-secondary" type="button" id="backToStep1">
+          <span>←</span>
+          <span data-i18n="back"></span>
+        </button>
+        <button class="btn btn-primary" type="button" id="btnStep2" disabled>
+          <span data-i18n="next"></span>
+          <span>→</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card hidden" id="step3">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title" data-i18n="s3title"></h2>
+          <p class="card-subtitle" data-i18n="s3sub"></p>
+        </div>
+        <div class="badge" data-i18n="contactBadge"></div>
+      </div>
+
+      <div class="summary-grid">
+        <div>
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label" for="nameInput" data-i18n="nameLabel"></label>
+              <input id="nameInput" type="text" autocomplete="name">
+            </div>
+            <div class="field">
+              <label class="field-label" for="tgInput" data-i18n="tgLabel"></label>
+              <input id="tgInput" type="text" placeholder="@username">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label" for="phoneInput" data-i18n="phoneLabel"></label>
+              <input id="phoneInput" type="tel" placeholder="+998...">
+            </div>
+            <div class="field">
+              <label class="field-label" for="cityInput" data-i18n="cityLabel"></label>
+              <select id="cityInput"></select>
+            </div>
+          </div>
+
+          <div class="checkbox-wrap">
+            <input id="chk1" type="checkbox">
+            <label for="chk1" data-i18n="disclaimer1"></label>
+          </div>
+          <div class="checkbox-wrap">
+            <input id="chk2" type="checkbox">
+            <label for="chk2" data-i18n="disclaimer2"></label>
+          </div>
+        </div>
+
+        <aside class="summary-box">
+          <h3 data-i18n="summaryTitle"></h3>
+          <div class="summary-list" id="orderSummary"></div>
+        </aside>
+      </div>
+
+      <div class="action-row" style="grid-template-columns:repeat(2,minmax(0,1fr)); margin-top: 12px;">
+        <button class="btn btn-secondary" type="button" id="backToStep2">
+          <span>←</span>
+          <span data-i18n="back"></span>
+        </button>
+        <button class="btn btn-primary" type="button" id="btnStep3" disabled>
+          <span>📤</span>
+          <span data-i18n="submit"></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card hidden" id="step4" style="text-align:center;">
+      <div style="font-size:56px; margin-bottom:20px;">✨</div>
+      <h2 class="card-title" data-i18n="s4title"></h2>
+      <p class="card-subtitle" data-i18n="s4sub" style="margin:0 auto 20px; max-width:560px;"></p>
+      <div class="summary-box" style="max-width: 420px; margin: 0 auto 20px;">
+        <div class="field-label">Order ID</div>
+        <div class="mono" id="orderIdBox" style="font-size:18px; color:var(--primary);"></div>
+      </div>
+      <button class="btn btn-primary" type="button" id="newOrderBtn">
+        <span>↻</span>
+        <span data-i18n="newOrder"></span>
       </button>
-      <button class="btn btn-primary" id="btnStep2" onclick="goStep3()" disabled>
-        <span data-i18n="next"></span>
-        <span>→</span>
-      </button>
-    </div>
-  </div>
+    </section>
+  </main>
 
-  <!-- STEP 3: CONTACT -->
-  <div class="card hidden" id="step3">
-    <h2 class="card-title" data-i18n="s3title"></h2>
-    <p class="card-subtitle" data-i18n="s3sub"></p>
+  <footer>
+    <span data-i18n="footerText"></span> ·
+    <a href="https://t.me/zapchastchi_bot" target="_blank" rel="noreferrer">Telegram</a>
+  </footer>
 
-    <div class="grid-2">
-      <div class="field">
-        <label class="field-label" data-i18n="nameLabel"></label>
-        <input type="text" id="nameInput" class="field-input" oninput="validateContact()">
-      </div>
-      <div class="field">
-        <label class="field-label" data-i18n="tgLabel"></label>
-        <input type="text" id="tgInput" class="field-input" placeholder="@username" oninput="validateContact()">
-      </div>
-    </div>
+  <script>
+    var TELEGRAM_BOT_TOKEN = "8361968349:AAFfkJipJRbwdcztrF4r0eyaobeBsDHY748";
+    var TELEGRAM_CHAT_ID = "-1003602094842";
+    var VIN_PROXY_ENDPOINT = location.protocol === "file:" ? "http://127.0.0.1:8000/api/vin" : "/api/vin";
+    var tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+    var DRAFT_KEY = "zapchastchi-draft-v2";
+    var MAX_PHOTOS = 8;
+    var MIN_PHOTOS = 3;
 
-    <div class="grid-2">
-      <div class="field">
-        <label class="field-label" data-i18n="phoneLabel"></label>
-        <input type="tel" id="phoneInput" class="field-input" oninput="validateContact()">
-      </div>
-      <div class="field">
-        <label class="field-label" data-i18n="cityLabel"></label>
-        <select id="cityInput" class="field-input" onchange="validateContact()">
-          <option value=""></option>
-          <option value="Tashkent">Tashkent</option>
-          <option value="Samarkand">Samarkand</option>
-          <option value="Bukhara">Bukhara</option>
-          <option value="Khiva">Khiva</option>
-          <option value="Fergana">Fergana</option>
-          <option value="Andijan">Andijan</option>
-          <option value="Namangan">Namangan</option>
-          <option value="Jizzakh">Jizzakh</option>
-          <option value="Kashkadarya">Kashkadarya</option>
-          <option value="Surxandarya">Surxandarya</option>
-          <option value="Navoiy">Navoiy</option>
-          <option value="Khorezm">Khorezm</option>
-          <option value="Karakalpakstan">Karakalpakstan</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="checkbox-wrap">
-      <input type="checkbox" id="chk1" onchange="validateContact()">
-      <label for="chk1" data-i18n="disclaimer1"></label>
-    </div>
-
-    <div class="checkbox-wrap">
-      <input type="checkbox" id="chk2" onchange="validateContact()">
-      <label for="chk2" data-i18n="disclaimer2"></label>
-    </div>
-
-    <div style="display:flex;gap:12px;margin-top:24px;">
-      <button class="btn btn-secondary" onclick="goStep2()">
-        <span>←</span>
-        <span data-i18n="back"></span>
-      </button>
-      <button class="btn btn-primary" id="btnStep3" onclick="submitOrder()" disabled>
-        <span>📤</span>
-        <span data-i18n="submit"></span>
-      </button>
-    </div>
-  </div>
-
-  <!-- STEP 4: SUCCESS -->
-  <div class="card hidden text-center" id="step4" style="text-align:center;">
-    <div style="font-size:56px;margin-bottom:20px;">✨</div>
-    <h2 class="card-title" data-i18n="s4title"></h2>
-    <p class="card-subtitle" data-i18n="s4sub"></p>
-    <div style="background:var(--surface-1);padding:16px;border-radius:10px;margin-bottom:20px;font-family:var(--font-mono);font-size:14px;font-weight:600;color:var(--primary);">
-      <div style="font-size:11px;color:var(--text-secondary);margin-bottom:6px;">Order ID:</div>
-      <div id="orderIdBox"></div>
-    </div>
-    <button class="btn btn-primary" onclick="location.reload()">
-      <span>↻</span>
-      <span data-i18n="newOrder"></span>
-    </button>
-  </div>
-
-</div>
-
-<footer>
-  <p><span data-i18n="footerText"></span> · <a href="https://t.me/zapchastchi_bot" target="_blank">Telegram</a></p>
-</footer>
-
-<script>
-// ============================================================
-//  CONFIG
-// ============================================================
-var TELEGRAM_BOT_TOKEN = '8361968349:AAFfkJipJRbwdcztrF4r0eyaobeBsDHY748';
-var TELEGRAM_CHAT_ID   = '-1003602094842';
-var AUTODEV_API_KEY    = 'sk_ad_ywK8N35fwL8RacnqUTDD-rcp';
-
-var tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-var isTgApp = !!(tg && tg.initData);
-if(tg) { tg.ready(); tg.expand(); }
-
-// ============================================================
-//  i18n
-// ============================================================
-var i18n = {
-  ru: {
-    eyebrow: 'Запчасти для электромобилей · Китай → Узбекистан',
-    heroTitle: 'НАЙДИ <span style="color:var(--secondary);">НУЖНУЮ</span><br>ЗАПЧАСТЬ',
-    subtitle: 'Оригинальные и аналоговые запчасти для любого электромобиля. Авиа и наземная доставка из Китая.',
-    step1:'VIN', step2:'Запчасти', step3:'Контакты', step4:'Готово',
-    s1title: 'ВВЕДИТЕ VIN',
-    s1sub: '17-значный номер кузова. Указан в техпаспорте или на табличке под лобовым стеклом.',
-    vinLabel: 'Номер VIN',
-    vinHint: '17 символов: цифры и буквы A-Z (кроме I, O, Q)',
-    ciMake: 'Марка', ciYear: 'Год',
-    ciModel: 'Модель',
-    ciTrim: 'Комплектация',
-    confirm: 'Подтвердить автомобиль',
-    s2title: 'Выберите запчасти',
-    s2sub: 'Выберите категорию и нужные позиции.',
-    subcatsLabel: 'Категории',
-    selectedLabel: 'Выбранные позиции',
-    partLocationLabel: 'Расположение на автомобиле',
-    commentLabel: 'Комментарий',
-    back: 'Назад',
-    next: 'Далее',
-    s3title: 'Контакты',
-    s3sub: 'Расчёт стоимости отправим в Telegram в течение 24 часов.',
-    nameLabel: 'Имя',
-    tgLabel: 'Telegram',
-    phoneLabel: 'Телефон',
-    cityLabel: 'Город',
-    submit: 'Отправить заявку',
-    s4title: 'Заявка принята',
-    s4sub: 'Наш менеджер свяжется с вами в Telegram в течение 24 часов.',
-    newOrder: 'Новая заявка',
-    footerText: '© 2025 ZapchastChi',
-    prefQualityLabel: 'Качество запчасти',
-    prefOem: 'Оригинал (OEM)',
-    prefAfter: 'Аналог',
-    prefUsed: 'Б/У',
-    prefAltLabel: 'Принять альтернативный бренд?',
-    prefAltYes: 'Да',
-    prefAltNo: 'Нет',
-    photoLabel: 'Фото старой детали (минимум 3)',
-    photoStrong: 'Перетащите или нажмите для загрузки',
-    photoHint: 'Нужно: фронт / тыл / разъёмы / шильдик',
-    disclaimer1: '<strong>Соответствие по VIN:</strong> VIN используется только для определения модели. Окончательное совпадение подтверждается по номеру детали, фото и поставщику.',
-    disclaimer2: '<strong>Ответственность:</strong> Если деталь куплена на основании ошибочной информации - возврат/замена за счёт клиента.'
-  },
-  uz: {
-    eyebrow: "Elektromobil ehtiyot qismlari · Xitoy → O'zbekiston",
-    heroTitle: "KERAKLI <span style='color:var(--secondary);'>EHTIYOT</span><br>QISMNI TOP",
-    subtitle: "Har qanday elektromobil uchun original va analog ehtiyot qismlar. Xitoydan avia va quruqlik yetkazib berish.",
-    step1:'VIN', step2:'Qismlar', step3:'Kontakt', step4:'Tayyor',
-    s1title: 'VIN KIRITING',
-    s1sub: "17 ta belgilik kuzov raqami. Texnik pasportda yoki old oyna ostidagi plaketada ko'rsatilgan.",
-    vinLabel: 'VIN raqami',
-    vinHint: "17 ta belgi: raqamlar va A-Z harflar",
-    ciMake: 'Rusm', ciYear: 'Yil',
-    ciModel: 'Avtomobil modeli',
-    ciTrim: 'Komplektatsiya',
-    confirm: 'Avtomobilni tasdiqlash',
-    s2title: 'Qismlarni tanlang',
-    s2sub: 'Kategoriya va kerakli pozitsiyalarni tanlang.',
-    subcatsLabel: 'Kategoriyalar',
-    selectedLabel: 'Tanlangan pozitsiyalar',
-    partLocationLabel: 'Avtomobilda joylashuvi',
-    commentLabel: 'Izoh',
-    back: 'Orqaga',
-    next: 'Davom',
-    s3title: 'Kontakt',
-    s3sub: 'Narx hisob-kitobini 24 soat ichida Telegramda yuboramiz.',
-    nameLabel: 'Ism',
-    tgLabel: 'Telegram',
-    phoneLabel: 'Telefon',
-    cityLabel: 'Shahar',
-    submit: 'Arizani yuborish',
-    s4title: 'Ariza qabul qilindi',
-    s4sub: 'Menejerimiz 24 soat ichida Telegramda siz bilan boglanadi.',
-    newOrder: 'Yangi ariza',
-    footerText: '© 2025 ZapchastChi',
-    prefQualityLabel: 'Qism sifati',
-    prefOem: 'Original (OEM)',
-    prefAfter: 'Analog',
-    prefUsed: 'Ishlatilgan',
-    prefAltLabel: 'Muqobil brendni qabul qilasizmi?',
-    prefAltYes: 'Ha',
-    prefAltNo: 'Yoq',
-    photoLabel: 'Eski qism rasmi (kamida 3 ta)',
-    photoStrong: 'Sudrab olib keling yoki bosing',
-    photoHint: 'Kerak: old / orqa / ulagichlar / plaket',
-    disclaimer1: '<strong>VIN bo\'yicha moslik:</strong> VIN faqat model aniqlash uchun ishlatiladi.',
-    disclaimer2: '<strong>Mijoz xatosi uchun javobgarlik:</strong> Agar qism noto\'g\'ri taqdim etilgan ma\'lumot asosida sotib olinsa - qaytarish hajmi mijozga.'
-  },
-  zh: {
-    eyebrow: '新能源汽车配件 · 中国 → 乌兹别克斯坦',
-    heroTitle: '查找<span style="color:var(--secondary);">所需</span><br>汽车配件',
-    subtitle: '原厂及副厂新能源汽车配件，支持空运和陆运到乌兹别克斯坦。',
-    step1:'VIN', step2:'配件', step3:'联系', step4:'完成',
-    s1title: '输入车架号',
-    s1sub: '17位车辆识别代码（VIN），见行驶证或前挡风玻璃下方铭牌。',
-    vinLabel: '车架号 (VIN)',
-    vinHint: '17位字符：数字和A-Z字母',
-    ciMake: '品牌', ciYear: '年份',
-    ciModel: '车型',
-    ciTrim: '配置',
-    confirm: '确认车辆信息',
-    s2title: '选择配件',
-    s2sub: '选择配件类别和所需配件。',
-    subcatsLabel: '分类',
-    selectedLabel: '已选配件',
-    partLocationLabel: '配件位置',
-    commentLabel: '备注',
-    back: '返回',
-    next: '继续',
-    s3title: '联系方式',
-    s3sub: '我们将在24小时内通过Telegram发送报价。',
-    nameLabel: '姓名',
-    tgLabel: 'Telegram',
-    phoneLabel: '电话',
-    cityLabel: '城市',
-    submit: '提交询价',
-    s4title: '询价已提交',
-    s4sub: '我们的客服将在24小时内通过Telegram联系您。',
-    newOrder: '新询价',
-    footerText: '© 2025 ZapchastChi',
-    prefQualityLabel: '配件质量',
-    prefOem: '原厂 (OEM)',
-    prefAfter: '副厂',
-    prefUsed: '二手',
-    prefAltLabel: '接受替代品牌?',
-    prefAltYes: '接受',
-    prefAltNo: '不接受',
-    photoLabel: '旧件照片 (至少3张)',
-    photoStrong: '拖拽或点击上传',
-    photoHint: '需要：正面/背面/接口/编码',
-    disclaimer1: '<strong>VIN匹配说明：</strong>VIN仅用于确认车型，最终配件匹配以零件号、照片及供应商确认为准。',
-    disclaimer2: '<strong>客户责任条款：</strong>若因客户提供错误信息导致配件购买错误，退换及运费由客户自行承担。'
-  }
-};
-
-var currentLang = 'uz';
-function t(k){ return (i18n[currentLang]||i18n.uz)[k]||k; }
-
-function setLang(lang){
-  if(!i18n[lang]) lang = 'uz';
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
-  applyTranslations();
-  renderCats();
-}
-
-function applyTranslations(){
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    var k = el.getAttribute('data-i18n');
-    el.innerHTML = t(k);
-  });
-  document.getElementById('selectedList').setAttribute('data-empty', t('emptyParts')||'No selected parts');
-}
-
-// ============================================================
-//  PARTS DATA
-// ============================================================
-var PARTS_DATA = {
-  ru: [
-    {id:'battery',icon:'🔋',name:'Батарея / ВВ система',desc:'Аккумулятор, BMS',subs:['Батарея','BMS','Охлаждение батареи','ВВ-кабели','Разъёмы']},
-    {id:'motor',icon:'⚡',name:'Электродвигатель',desc:'Мотор, инвертор',subs:['Электромотор','Инвертор','Редуктор','Подшипники','Уплотнения']},
-    {id:'charging',icon:'🔌',name:'Зарядная система',desc:'OBC, разъём, DC-DC',subs:['Зарядное устройство','Разъём AC','Разъём DC','DC-DC конвертер','Кабели']},
-    {id:'brakes',icon:'🛞',name:'Тормозная система',desc:'Колодки, диски, ABS',subs:['Колодки передние','Колодки задние','Диски','Усилитель','ABS/ESP']},
-    {id:'suspension',icon:'🔩',name:'Подвеска',desc:'Амортизаторы, рычаги',subs:['Амортизаторы','Рычаги','Шаровые опоры','ЭУР','Рулевая рейка']},
-    {id:'body',icon:'🚗',name:'Кузов',desc:'Бамперы, двери, стёкла',subs:['Передний бампер','Задний бампер','Крылья','Двери','Стёкла']},
-    {id:'lights',icon:'💡',name:'Освещение',desc:'Фары, фонари, DRL',subs:['Фары','Фонари','Дневные огни','Противотуманные','Подсветка']},
-    {id:'hvac',icon:'❄️',name:'Климат',desc:'Тепловой насос, кондиционер',subs:['Тепловой насос','Компрессор','Испаритель','Конденсатор','ПТК']},
-    {id:'electronics',icon:'📡',name:'Электроника',desc:'Экран, ЭБУ, сенсоры',subs:['Дисплей','ЭБУ/VCU','Камеры','Радар','Датчики']},
-    {id:'interior',icon:'🪑',name:'Салон',desc:'Сиденья, панель, консоль',subs:['Сиденья','Панель','Консоль','Обшивка','Коврики']}
-  ],
-  uz: [
-    {id:'battery',icon:'🔋',name:'Batareya',desc:'Akkumulyator, BMS',subs:['Batareya xujayralar','BMS kontrolleri','Sovutish tizimi','YV-kabellar','Ulagichlar']},
-    {id:'motor',icon:'⚡',name:'Elektr motor',desc:'Motor, invertor',subs:['Elektromotor','Invertor','Reduktor','Podshipniklar','Muhrlamalar']},
-    {id:'charging',icon:'🔌',name:'Zaryadlash',desc:'OBC, ulagich',subs:['Zaryadlash qurilmasi','AC ulagichi','DC ulagichi','DC-DC konverter','Kabellar']},
-    {id:'brakes',icon:'🛞',name:'Tormoz',desc:'Bloklari, disklar, ABS',subs:['Old bloklar','Orqa bloklar','Disklar','Kuchaytirgich','ABS']},
-    {id:'suspension',icon:'🔩',name:'Muallaq',desc:'Amortizatorlar, tutqichlar',subs:['Amortizatorlar','Tutqichlar','To\'p tayanchi','Rul kuci','Rul reykasi']},
-    {id:'body',icon:'🚗',name:'Kuzov',desc:'Bamperlar, eshiklar',subs:['Old bamper','Orqa bamper','Qanotlar','Eshiklar','Oynalar']},
-    {id:'lights',icon:'💡',name:'Yoritish',desc:'Faralar, fonarlar',subs:['Faralar','Fonarlar','Kun yorug\'ligi','Tuman','Salon']},
-    {id:'hvac',icon:'❄️',name:'Iqlim',desc:'Issiqlik nasosi',subs:['Nasosi','Kompressor','Bug\'lantiruvchi','Kondensator','Isitgich']},
-    {id:'electronics',icon:'📡',name:'Elektronika',desc:'Ekran, ECU',subs:['Displey','ECU/VCU','Kameralar','Radar','Sensorlar']},
-    {id:'interior',icon:'🪑',name:'Salon',desc:'O\'rindiqlar, panel',subs:['O\'rindiqlar','Panel','Konsol','Qoplama','Gilam']}
-  ],
-  zh: [
-    {id:'battery',icon:'🔋',name:'电池系统',desc:'电芯、BMS',subs:['动力电池','BMS','冷却','高压线','连接器']},
-    {id:'motor',icon:'⚡',name:'驱动系统',desc:'电机、逆变器',subs:['电机','逆变器','减速器','轴承','密封']},
-    {id:'charging',icon:'🔌',name:'充电系统',desc:'车载充电机',subs:['充电机','交流口','直流口','转换器','线缆']},
-    {id:'brakes',icon:'🛞',name:'制动系统',desc:'刹车片、盘片',subs:['前片','后片','盘片','助力','ABS']},
-    {id:'suspension',icon:'🔩',name:'悬架',desc:'减震器、摆臂',subs:['减震器','摆臂','球头','转向','齿条']},
-    {id:'body',icon:'🚗',name:'车身',desc:'保险杠、车门',subs:['前保杠','后保杠','翼子板','车门','玻璃']},
-    {id:'lights',icon:'💡',name:'照明',desc:'大灯、尾灯',subs:['大灯','尾灯','日行灯','雾灯','内灯']},
-    {id:'hvac',icon:'❄️',name:'空调',desc:'热泵、压缩机',subs:['热泵','压缩机','蒸发','冷凝','加热']},
-    {id:'electronics',icon:'📡',name:'电子',desc:'屏幕、ECU',subs:['中控屏','ECU','摄像','雷达','传感']},
-    {id:'interior',icon:'🪑',name:'内饰',desc:'座椅、仪表',subs:['座椅','仪表','中控','门板','脚垫']}
-  ]
-};
-
-var CITIES_RU = ['Москва','СПб','Казань','Новосибирск','Екатеринбург'];
-var CITIES_UZ = ['Tashkent','Samarkand','Bukhara','Khiva','Fergana','Andijan','Namangan','Jizzakh'];
-
-var selectedParts = {};
-var activeCatId = null;
-var uploadedPhotos = [];
-var decodedCar = null;
-var orderVin = '';
-var prefs = {quality:'oem', alt:'no'};
-
-var WMI_DB = {
-  'LVV':'BYD','LGJ':'BYD','LS5':'BYD','LVW':'Volkswagen','LTA':'Toyota','LBY':'BMW',
-  'LFV':'Geely','LSJ':'MG','LSH':'NIO','LPB':'Xpeng','L7B':'Li Auto'
-};
-
-var YEAR_MAP = {
-  'A':2010,'B':2011,'C':2012,'D':2013,'E':2014,'F':2015,'G':2016,'H':2017,
-  'J':2018,'K':2019,'L':2020,'M':2021,'N':2022,'P':2023,'R':2024,'S':2025
-};
-
-function setStep(n){
-  for(var i=1;i<=4;i++){
-    document.getElementById('step'+i).style.display = i===n?'block':'none';
-    var ind = document.getElementById('step-ind-'+i);
-    if(ind){
-      ind.classList.remove('active','done');
-      if(i===n) ind.classList.add('active');
-      else if(i<n) ind.classList.add('done');
+    if (tg) {
+      tg.ready();
+      tg.expand();
     }
-  }
-  window.scrollTo({top:0,behavior:'smooth'});
-}
 
-function validateVin(v){ return /^[A-HJ-NPR-Z0-9]{17}$/i.test(v); }
-
-function onVinInput(el){
-  var v = el.value.toUpperCase().replace(/[IOQ]/g,'');
-  el.value = v;
-  var badge = document.getElementById('vinBadge');
-  var hint = document.getElementById('vinHint');
-  var info = document.getElementById('carInfo');
-  var btn = document.getElementById('btnStep1');
-  
-  if(v.length < 17){
-    badge.style.display='none';
-    info.classList.remove('show');
-    btn.disabled=true;
-    hint.textContent = t('vinHint');
-    return;
-  }
-  
-  if(!validateVin(v)){
-    badge.style.display=''; 
-    badge.className='vin-badge bad'; 
-    badge.textContent='ERROR';
-    hint.textContent = '✗ Invalid VIN format';
-    btn.disabled=true;
-    return;
-  }
-  
-  badge.style.display=''; 
-  badge.className='vin-badge'; 
-  badge.textContent='...';
-  hint.textContent = 'Looking up VIN...';
-  setTimeout(() => lookupVin(v), 400);
-}
-
-async function lookupVin(vin){
-  var badge = document.getElementById('vinBadge');
-  var hint = document.getElementById('vinHint');
-  var info = document.getElementById('carInfo');
-  
-  try {
-    var base = 'https://api.auto.dev/vin/'+vin+'?apiKey='+AUTODEV_API_KEY;
-    var res = await fetch(base);
-    var d = await res.json();
-    
-    if(!d || d.errorCode) throw new Error('API failed');
-    
-    var make = d.make || (d.vehicle && d.vehicle.make) || '';
-    var year = (d.vehicle && d.vehicle.year) || '';
-    var model = '';
-    
-    document.getElementById('editMake').value = make;
-    document.getElementById('editYear').value = year;
-    document.getElementById('editModel').value = model;
-    
-    decodedCar = {make, model, year};
-    
-    badge.className='vin-badge ok';
-    badge.textContent = make || 'OK';
-    info.classList.add('show');
-    checkCarFields();
-    
-  } catch(e) {
-    console.log('VIN lookup failed, using local DB');
-    var wmi = vin.substring(0,3).toUpperCase();
-    var localMake = WMI_DB[wmi] || 'Unknown';
-    var yearChar = vin[9].toUpperCase();
-    var localYear = YEAR_MAP[yearChar] || '';
-    
-    document.getElementById('editMake').value = localMake;
-    document.getElementById('editYear').value = localYear;
-    document.getElementById('editModel').value = '';
-    
-    badge.className='vin-badge';
-    badge.textContent = 'PARTIAL';
-    hint.textContent = 'VIN partially decoded, please fill model manually';
-    info.classList.add('show');
-    checkCarFields();
-  }
-}
-
-function checkCarFields(){
-  var make = document.getElementById('editMake').value.trim();
-  var year = document.getElementById('editYear').value.trim();
-  var model = document.getElementById('editModel').value.trim();
-  document.getElementById('btnStep1').disabled = !(make && year && model);
-}
-
-function goStep2(){
-  if(!document.getElementById('btnStep1').disabled){
-    orderVin = document.getElementById('vinInput').value;
-    decodedCar = {
-      make: document.getElementById('editMake').value,
-      model: document.getElementById('editModel').value,
-      year: document.getElementById('editYear').value
+    var i18n = {
+      ru: {
+        eyebrow: "Запчасти для электромобилей · Китай → Узбекистан",
+        heroTitle: "НАЙДИ <span style='color:var(--secondary);'>НУЖНУЮ</span><br>ЗАПЧАСТЬ",
+        subtitle: "Оригинальные и аналоговые запчасти для электромобилей. Заполните форму, приложите фото, и мы вернемся с предложением.",
+        step1: "VIN",
+        step2: "Запчасти",
+        step3: "Контакты",
+        step4: "Готово",
+        s1title: "Проверьте автомобиль",
+        s1sub: "Введите VIN, после чего уточните модель вручную, если автоматическое определение неполное.",
+        vinLabel: "VIN номер",
+        vinHint: "17 символов: цифры и буквы A-Z, кроме I, O, Q",
+        vinLookup: "Ищем данные по VIN...",
+        vinOk: "VIN подтвержден",
+        vinPartial: "VIN определен частично. Уточните модель и комплектацию вручную.",
+        vinInvalid: "Неверный формат VIN.",
+        vinNetworkFail: "Внешний VIN-сервис недоступен, используется локальное определение.",
+        vinPartialStatus: "Внешний VIN-сервис вернул неполные данные. Проверьте модель, год и комплектацию вручную.",
+        ciMake: "Марка",
+        ciYear: "Год",
+        ciModel: "Модель",
+        ciTrim: "Комплектация",
+        confirm: "Подтвердить автомобиль",
+        s2title: "Выберите нужные запчасти",
+        s2sub: "Можно отметить готовые позиции, найти их через поиск или добавить вручную.",
+        partsBadge: "Поиск деталей",
+        partsSearchLabel: "Поиск по категориям и деталям",
+        subcatsLabel: "Категории",
+        availablePartsLabel: "Доступные позиции",
+        selectedLabel: "Выбранные позиции",
+        selectedEmpty: "Пока ничего не выбрано",
+        customPartLabel: "Нет в списке? Добавьте вручную",
+        qtyLabel: "Количество",
+        addCustomPart: "Добавить свою позицию",
+        partLocationLabel: "Где находится деталь",
+        commentLabel: "Комментарий",
+        prefQualityLabel: "Качество запчасти",
+        prefAltLabel: "Разрешить альтернативный бренд?",
+        prefOem: "Оригинал (OEM)",
+        prefAfter: "Аналог",
+        prefUsed: "Б/У",
+        prefAltYes: "Да",
+        prefAltNo: "Нет",
+        photoLabel: "Фото старой детали",
+        photoStrong: "Перетащите или нажмите для загрузки",
+        photoHint: "Рекомендуется минимум 3 фото: общий вид, крепления, разъемы/маркировка.",
+        noPhotoLabel: "У меня пока нет 3 фото. Продолжить без них, но менеджеру понадобится дополнительное подтверждение.",
+        photoNeedMore: "Нужно еще фото: ",
+        photoReady: "Фото загружены: ",
+        partsRequired: "Добавьте хотя бы одну позицию.",
+        customPartRequired: "Введите название своей позиции.",
+        customPartExists: "Такая позиция уже добавлена.",
+        back: "Назад",
+        next: "Далее",
+        s3title: "Контактные данные",
+        s3sub: "Мы отправим расчет стоимости и сроки в Telegram или свяжемся по телефону.",
+        contactBadge: "Контакты",
+        nameLabel: "Имя",
+        tgLabel: "Telegram",
+        phoneLabel: "Телефон",
+        cityLabel: "Город",
+        summaryTitle: "Итог заявки",
+        submit: "Отправить заявку",
+        submitError: "Не удалось отправить заявку.",
+        s4title: "Заявка отправлена",
+        s4sub: "Менеджер свяжется с вами после проверки VIN, фото и выбранных деталей.",
+        newOrder: "Новая заявка",
+        footerText: "© 2026 ZapchastChi",
+        disclaimer1: "<strong>Проверка соответствия:</strong> VIN помогает определить автомобиль, но окончательная совместимость детали подтверждается по фото, артикулу и поставщику.",
+        disclaimer2: "<strong>Ответственность за исходные данные:</strong> Если клиент указал неверные данные и по ним куплена неправильная деталь, расходы на замену и обратную логистику несет клиент.",
+        draftLoaded: "Черновик найден и восстановлен автоматически.",
+        clearDraft: "Очистить черновик",
+        qualitySummary: "Качество",
+        altSummary: "Альтернатива",
+        locationSummary: "Локация детали",
+        commentSummary: "Комментарий",
+        photosSummary: "Фото",
+        vehicleSummary: "Автомобиль",
+        contactSummary: "Контакт",
+        orderCreated: "Заявка создана",
+        cityPlaceholder: "Выберите город",
+        runtimeNote: "Чтобы VIN-распознавание работало стабильно, запустите локальный proxy: `python3 server.py`. После этого можно открыть `http://127.0.0.1:8000` или даже текущий HTML-файл."
+      },
+      uz: {
+        eyebrow: "Elektromobil ehtiyot qismlari · Xitoy → O'zbekiston",
+        heroTitle: "KERAKLI <span style='color:var(--secondary);'>EHTIYOT</span><br>QISMNI TOPING",
+        subtitle: "Elektromobil uchun original va analog ehtiyot qismlar. So'rovni to'ldiring, rasm yuklang va biz sizga taklif bilan qaytamiz.",
+        step1: "VIN",
+        step2: "Qismlar",
+        step3: "Kontakt",
+        step4: "Tayyor",
+        s1title: "Avtomobilni aniqlang",
+        s1sub: "VIN kiriting. Agar avtomatik aniqlash to'liq bo'lmasa, modelni qo'lda to'ldiring.",
+        vinLabel: "VIN raqami",
+        vinHint: "17 ta belgi: A-Z harflar va raqamlar, I, O, Q dan tashqari",
+        vinLookup: "VIN bo'yicha ma'lumot qidirilmoqda...",
+        vinOk: "VIN tasdiqlandi",
+        vinPartial: "VIN qisman aniqlandi. Model va komplektatsiyani qo'lda kiriting.",
+        vinInvalid: "VIN formati noto'g'ri.",
+        vinNetworkFail: "Tashqi VIN xizmati ishlamadi, mahalliy aniqlash ishlatildi.",
+        vinPartialStatus: "Tashqi VIN xizmati qisman ma'lumot qaytardi. Model, yil va komplektatsiyani qo'lda tekshiring.",
+        ciMake: "Marka",
+        ciYear: "Yil",
+        ciModel: "Model",
+        ciTrim: "Komplektatsiya",
+        confirm: "Avtomobilni tasdiqlash",
+        s2title: "Kerakli qismlarni tanlang",
+        s2sub: "Tayyor ro'yxatdan tanlang, qidiruvdan foydalaning yoki qismni qo'lda qo'shing.",
+        partsBadge: "Qism tanlash",
+        partsSearchLabel: "Kategoriya yoki qism qidirish",
+        subcatsLabel: "Kategoriyalar",
+        availablePartsLabel: "Mavjud qismlar",
+        selectedLabel: "Tanlangan qismlar",
+        selectedEmpty: "Hali qism tanlanmagan",
+        customPartLabel: "Ro'yxatda yo'qmi? Qo'lda yozing",
+        qtyLabel: "Soni",
+        addCustomPart: "O'z qismimni qo'shish",
+        partLocationLabel: "Qism qayerda joylashgan",
+        commentLabel: "Izoh",
+        prefQualityLabel: "Qism sifati",
+        prefAltLabel: "Muqobil brendga ruxsat berilsinmi?",
+        prefOem: "Original (OEM)",
+        prefAfter: "Analog",
+        prefUsed: "Ishlatilgan",
+        prefAltYes: "Ha",
+        prefAltNo: "Yo'q",
+        photoLabel: "Eski qism rasmi",
+        photoStrong: "Sudrab olib keling yoki bosing",
+        photoHint: "Kamida 3 ta rasm tavsiya qilinadi: umumiy ko'rinish, mahkamlash joyi, raz'yom yoki markirovka.",
+        noPhotoLabel: "Hozircha 3 ta rasmim yo'q. Rasmsiz davom etaman, lekin menejer qo'shimcha tasdiq so'rashi mumkin.",
+        photoNeedMore: "Yana kerakli rasm soni: ",
+        photoReady: "Yuklangan rasm soni: ",
+        partsRequired: "Kamida bitta qism qo'shing.",
+        customPartRequired: "Qo'lda qo'shiladigan qism nomini kiriting.",
+        customPartExists: "Bu qism allaqachon qo'shilgan.",
+        back: "Orqaga",
+        next: "Davom etish",
+        s3title: "Kontakt ma'lumotlari",
+        s3sub: "Narx va muddatni Telegram orqali yuboramiz yoki telefon orqali bog'lanamiz.",
+        contactBadge: "Kontakt",
+        nameLabel: "Ism",
+        tgLabel: "Telegram",
+        phoneLabel: "Telefon",
+        cityLabel: "Shahar",
+        summaryTitle: "So'rov xulosasi",
+        submit: "So'rovni yuborish",
+        submitError: "So'rovni yuborib bo'lmadi.",
+        s4title: "So'rov yuborildi",
+        s4sub: "Menejer VIN, foto va tanlangan qismlarni tekshirgach siz bilan bog'lanadi.",
+        newOrder: "Yangi so'rov",
+        footerText: "© 2026 ZapchastChi",
+        disclaimer1: "<strong>Moslik tekshiruvi:</strong> VIN avtomobilni aniqlashga yordam beradi, lekin qismning yakuniy mosligi foto, detal raqami va yetkazib beruvchi bo'yicha tasdiqlanadi.",
+        disclaimer2: "<strong>Dastlabki ma'lumot uchun javobgarlik:</strong> Mijoz noto'g'ri ma'lumot bergan bo'lsa va shunga asosan noto'g'ri qism olingan bo'lsa, almashtirish va qaytarish xarajatlari mijoz zimmasida bo'ladi.",
+        draftLoaded: "Qoralama topildi va avtomatik tiklandi.",
+        clearDraft: "Qoralamani tozalash",
+        qualitySummary: "Sifat",
+        altSummary: "Alternativa",
+        locationSummary: "Qism joyi",
+        commentSummary: "Izoh",
+        photosSummary: "Rasmlar",
+        vehicleSummary: "Avtomobil",
+        contactSummary: "Kontakt",
+        orderCreated: "So'rov yaratildi",
+        cityPlaceholder: "Shaharni tanlang",
+        runtimeNote: "VIN aniqlash ishlashi uchun sahifani `file://` emas, lokal server orqali oching. `python3 server.py` ni ishga tushiring va `http://127.0.0.1:8000` ni oching."
+      },
+      zh: {
+        eyebrow: "新能源汽车配件 · 中国 → 乌兹别克斯坦",
+        heroTitle: "快速找到<span style='color:var(--secondary);'>所需</span><br>汽车配件",
+        subtitle: "支持原厂和副厂新能源配件采购。填写信息、上传照片后，我们会尽快回传报价。",
+        step1: "VIN",
+        step2: "配件",
+        step3: "联系",
+        step4: "完成",
+        s1title: "确认车辆信息",
+        s1sub: "输入 VIN。若自动识别不完整，可手动补充车型和配置。",
+        vinLabel: "车架号 VIN",
+        vinHint: "17位字符，仅限数字和 A-Z 字母，不含 I、O、Q",
+        vinLookup: "正在查询 VIN...",
+        vinOk: "VIN 已确认",
+        vinPartial: "VIN 仅部分识别，请手动补充车型和配置。",
+        vinInvalid: "VIN 格式无效。",
+        vinNetworkFail: "外部 VIN 服务不可用，已切换到本地识别。",
+        vinPartialStatus: "外部 VIN 服务返回了不完整数据，请手动核对车型、年份和配置。",
+        ciMake: "品牌",
+        ciYear: "年份",
+        ciModel: "车型",
+        ciTrim: "配置",
+        confirm: "确认车辆信息",
+        s2title: "选择所需配件",
+        s2sub: "可从预设列表中选择，也可搜索或手动添加自定义配件。",
+        partsBadge: "配件选择",
+        partsSearchLabel: "搜索分类或配件",
+        subcatsLabel: "分类",
+        availablePartsLabel: "可选配件",
+        selectedLabel: "已选配件",
+        selectedEmpty: "暂未选择任何配件",
+        customPartLabel: "列表里没有？手动添加",
+        qtyLabel: "数量",
+        addCustomPart: "添加自定义配件",
+        partLocationLabel: "配件位置",
+        commentLabel: "备注",
+        prefQualityLabel: "配件质量",
+        prefAltLabel: "是否接受替代品牌",
+        prefOem: "原厂 (OEM)",
+        prefAfter: "副厂",
+        prefUsed: "二手",
+        prefAltYes: "接受",
+        prefAltNo: "不接受",
+        photoLabel: "旧件照片",
+        photoStrong: "拖拽或点击上传",
+        photoHint: "建议至少 3 张：整体、固定点、插头或编码。",
+        noPhotoLabel: "我暂时没有 3 张照片。允许先继续，但客服后续可能要求补充确认。",
+        photoNeedMore: "还需要照片数量：",
+        photoReady: "已上传照片：",
+        partsRequired: "请至少添加一个配件。",
+        customPartRequired: "请输入自定义配件名称。",
+        customPartExists: "该配件已存在。",
+        back: "返回",
+        next: "继续",
+        s3title: "联系方式",
+        s3sub: "我们会通过 Telegram 或电话联系您，并发送报价和时效。",
+        contactBadge: "联系信息",
+        nameLabel: "姓名",
+        tgLabel: "Telegram",
+        phoneLabel: "电话",
+        cityLabel: "城市",
+        summaryTitle: "询价摘要",
+        submit: "提交询价",
+        submitError: "提交失败。",
+        s4title: "询价已提交",
+        s4sub: "客服将在核对 VIN、照片和配件后与您联系。",
+        newOrder: "新建询价",
+        footerText: "© 2026 ZapchastChi",
+        disclaimer1: "<strong>匹配说明：</strong>VIN 仅用于确认车辆，最终配件匹配仍需结合照片、零件号及供应商确认。",
+        disclaimer2: "<strong>信息责任：</strong>若因客户提供错误信息导致采购错误，退换和返程物流成本由客户承担。",
+        draftLoaded: "已检测到草稿，并自动恢复。",
+        clearDraft: "清除草稿",
+        qualitySummary: "质量",
+        altSummary: "替代品牌",
+        locationSummary: "配件位置",
+        commentSummary: "备注",
+        photosSummary: "照片",
+        vehicleSummary: "车辆",
+        contactSummary: "联系方式",
+        orderCreated: "询价已创建",
+        cityPlaceholder: "请选择城市",
+        runtimeNote: "要让 VIN 识别正常工作，不要直接双击打开文件。请先运行 `python3 server.py`，再访问 `http://127.0.0.1:8000`。"
+      }
     };
-    renderCats();
-    updateSelectedList();
-    setStep(2);
-  }
-}
 
-function renderCats(){
-  var cats = PARTS_DATA[currentLang] || PARTS_DATA.uz;
-  var container = document.getElementById('partsCats');
-  container.innerHTML='';
-  cats.forEach(cat => {
-    var div = document.createElement('div');
-    div.className='cat-card'+(activeCatId===cat.id?' selected':'');
-    div.innerHTML=`<div class="cat-icon">${cat.icon}</div><div><div class="cat-name">${cat.name}</div><div class="cat-desc">${cat.desc}</div></div>`;
-    div.onclick=() => toggleCat(cat.id);
-    container.appendChild(div);
-  });
-  renderSubparts();
-}
-
-function toggleCat(id){
-  activeCatId = (activeCatId===id) ? null : id;
-  renderCats();
-}
-
-function renderSubparts(){
-  var wrap = document.getElementById('subpartsWrap');
-  var grid = document.getElementById('subpartsGrid');
-  if(!activeCatId){ wrap.classList.remove('show'); return; }
-  var cats = PARTS_DATA[currentLang] || PARTS_DATA.uz;
-  var cat = cats.find(c => c.id===activeCatId);
-  if(!cat){ wrap.classList.remove('show'); return; }
-  wrap.classList.add('show');
-  grid.innerHTML='';
-  cat.subs.forEach(sub => {
-    var key = cat.id+'::'+sub;
-    var tag = document.createElement('div');
-    tag.className='sub-tag'+(selectedParts[key]?' selected':'');
-    tag.textContent=sub;
-    tag.onclick=() => togglePart(key);
-    grid.appendChild(tag);
-  });
-}
-
-function togglePart(key){
-  if(selectedParts[key]) delete selectedParts[key];
-  else selectedParts[key]=true;
-  renderCats();
-  updateSelectedList();
-  document.getElementById('btnStep2').disabled = Object.keys(selectedParts).length===0;
-}
-
-function updateSelectedList(){
-  var list = document.getElementById('selectedList');
-  list.innerHTML='';
-  var keys = Object.keys(selectedParts);
-  if(keys.length===0){ list.classList.add('empty'); return; }
-  list.classList.remove('empty');
-  keys.forEach(key => {
-    var name = key.split('::')[1];
-    var chip = document.createElement('div');
-    chip.className='part-chip';
-    var btn = document.createElement('button');
-    btn.textContent='×';
-    btn.onclick=() => togglePart(key);
-    chip.appendChild(document.createTextNode(name+' '));
-    chip.appendChild(btn);
-    list.appendChild(chip);
-  });
-}
-
-function goStep3(){
-  if(Object.keys(selectedParts).length>0){
-    setStep(3);
-  }
-}
-
-function goStep1(){
-  setStep(1);
-}
-
-function goStep2(){
-  if(!document.getElementById('btnStep1').disabled){
-    orderVin = document.getElementById('vinInput').value;
-    decodedCar = {
-      make: document.getElementById('editMake').value,
-      model: document.getElementById('editModel').value,
-      year: document.getElementById('editYear').value
+    var PARTS_DATA = {
+      ru: [
+        { id: "battery", icon: "🔋", name: "Батарея / HV", desc: "Аккумулятор, BMS, охлаждение", subs: ["Батарея", "BMS", "Охлаждение батареи", "HV-кабели", "Разъемы"] },
+        { id: "motor", icon: "⚡", name: "Электропривод", desc: "Мотор, инвертор, редуктор", subs: ["Электромотор", "Инвертор", "Редуктор", "Подшипники", "Сальники"] },
+        { id: "charging", icon: "🔌", name: "Зарядка", desc: "OBC, DC-DC, разъемы", subs: ["Бортовое ЗУ", "DC-DC", "AC разъем", "DC разъем", "Зарядные кабели"] },
+        { id: "chassis", icon: "🛞", name: "Ходовая", desc: "Тормоза, подвеска, рулевое", subs: ["Тормозные колодки", "Тормозные диски", "Амортизаторы", "Рычаги", "Рулевая рейка"] },
+        { id: "body", icon: "🚗", name: "Кузов", desc: "Бамперы, двери, стекла", subs: ["Передний бампер", "Задний бампер", "Крыло", "Дверь", "Стекло"] },
+        { id: "electronics", icon: "📡", name: "Электроника", desc: "ЭБУ, экран, датчики", subs: ["ECU/VCU", "Дисплей", "Камера", "Радар", "Датчики"] }
+      ],
+      uz: [
+        { id: "battery", icon: "🔋", name: "Batareya / HV", desc: "Akkumulyator, BMS, sovutish", subs: ["Batareya", "BMS", "Batareya sovutishi", "HV kabel", "Ulagich"] },
+        { id: "motor", icon: "⚡", name: "Yuritma tizimi", desc: "Motor, invertor, reduktor", subs: ["Elektromotor", "Invertor", "Reduktor", "Podshipnik", "Muhr"] },
+        { id: "charging", icon: "🔌", name: "Zaryadlash", desc: "OBC, DC-DC, ulagichlar", subs: ["Bort zaryad qurilmasi", "DC-DC", "AC ulagich", "DC ulagich", "Zaryad kabeli"] },
+        { id: "chassis", icon: "🛞", name: "Yurish qismi", desc: "Tormoz, osma, rul", subs: ["Tormoz kolodkasi", "Tormoz disk", "Amortizator", "Richag", "Rul reyka"] },
+        { id: "body", icon: "🚗", name: "Kuzov", desc: "Bamper, eshik, oynalar", subs: ["Old bamper", "Orqa bamper", "Qanot", "Eshik", "Oyna"] },
+        { id: "electronics", icon: "📡", name: "Elektronika", desc: "ECU, ekran, sensor", subs: ["ECU/VCU", "Displey", "Kamera", "Radar", "Sensor"] }
+      ],
+      zh: [
+        { id: "battery", icon: "🔋", name: "电池 / 高压", desc: "电池、BMS、冷却", subs: ["动力电池", "BMS", "电池冷却", "高压线束", "连接器"] },
+        { id: "motor", icon: "⚡", name: "驱动系统", desc: "电机、逆变器、减速器", subs: ["驱动电机", "逆变器", "减速器", "轴承", "密封件"] },
+        { id: "charging", icon: "🔌", name: "充电系统", desc: "OBC、DC-DC、接口", subs: ["车载充电机", "DC-DC", "交流充电口", "直流充电口", "充电线"] },
+        { id: "chassis", icon: "🛞", name: "底盘", desc: "制动、悬架、转向", subs: ["刹车片", "刹车盘", "减震器", "摆臂", "转向机"] },
+        { id: "body", icon: "🚗", name: "车身", desc: "保险杠、车门、玻璃", subs: ["前保险杠", "后保险杠", "翼子板", "车门", "玻璃"] },
+        { id: "electronics", icon: "📡", name: "电子", desc: "ECU、屏幕、传感器", subs: ["ECU/VCU", "中控屏", "摄像头", "雷达", "传感器"] }
+      ]
     };
-    renderCats();
-    updateSelectedList();
-    setStep(2);
-  }
-}
 
-function setPref(type, val){
-  prefs[type] = val;
-  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-}
+    var CITY_OPTIONS = ["Tashkent", "Samarkand", "Bukhara", "Khiva", "Fergana", "Andijan", "Namangan", "Jizzakh", "Navoiy", "Nukus"];
+    var MODEL_SUGGESTIONS = {
+      BYD: ["Han", "Song Plus EV", "Yuan Plus", "Seagull", "Tang EV"],
+      Tesla: ["Model 3", "Model Y", "Model S", "Model X"],
+      Geely: ["Geometry C", "Galaxy E5", "Panda Mini EV"],
+      Volkswagen: ["ID.4", "ID.6", "ID.3"],
+      BMW: ["i3", "iX3", "i4", "iX"],
+      NIO: ["ES6", "EC6", "ET5", "ET7"],
+      Xpeng: ["P7", "G6", "G9"],
+      "Li Auto": ["L6", "L7", "L8", "L9"],
+      MG: ["MG4", "Marvel R", "ZS EV"]
+    };
+    var WMI_DB = {
+      LVV: "BYD",
+      LGJ: "BYD",
+      LS5: "BYD",
+      "5YJ": "Tesla",
+      LRW: "Tesla",
+      LFV: "Geely",
+      LVW: "Volkswagen",
+      LBY: "BMW",
+      LSH: "NIO",
+      LPB: "Xpeng",
+      L7B: "Li Auto",
+      LSJ: "MG"
+    };
+    var YEAR_MAP = {
+      A: 2010, B: 2011, C: 2012, D: 2013, E: 2014, F: 2015, G: 2016, H: 2017,
+      J: 2018, K: 2019, L: 2020, M: 2021, N: 2022, P: 2023, R: 2024, S: 2025,
+      T: 2026, V: 2027
+    };
 
-function getPref(key){ return prefs[key] || ''; }
+    var state = {
+      currentLang: "uz",
+      currentStep: 1,
+      activeCatId: null,
+      searchTerm: "",
+      orderVin: "",
+      decodedCar: { make: "", model: "", year: "", trim: "" },
+      prefs: { quality: "oem", alt: "no" },
+      selectedParts: {},
+      uploadedPhotos: [],
+      noPhoto: false,
+      lastVinLookupId: 0
+    };
 
-function validateContact(){
-  var name = document.getElementById('nameInput').value.trim();
-  var tg = document.getElementById('tgInput').value.trim();
-  var phone = document.getElementById('phoneInput').value.trim();
-  var city = document.getElementById('cityInput').value;
-  var chk1 = document.getElementById('chk1').checked;
-  var chk2 = document.getElementById('chk2').checked;
-  document.getElementById('btnStep3').disabled = !(name && (tg||phone) && city && chk1 && chk2);
-}
+    function t(key) {
+      return (i18n[state.currentLang] || i18n.uz)[key] || key;
+    }
 
-function handlePhotos(files){
-  for(var i=0; i<files.length && uploadedPhotos.length<6; i++){
-    var reader = new FileReader();
-    reader.onload = (e => function(){
-      uploadedPhotos.push({file: files[i], dataUrl: e.target.result});
-      renderPreviews();
-    })(reader);
-    reader.readAsDataURL(files[i]);
-  }
-}
+    function byId(id) {
+      return document.getElementById(id);
+    }
 
-function handleDrop(e){
-  e.preventDefault();
-  e.target.classList.remove('dragover');
-  handlePhotos(e.dataTransfer.files);
-}
+    function safeText(value) {
+      return value ? String(value) : "-";
+    }
 
-function renderPreviews(){
-  var wrap = document.getElementById('photoPreviews');
-  wrap.innerHTML='';
-  uploadedPhotos.forEach((p, idx) => {
-    var w = document.createElement('div');
-    w.className='photo-thumb-wrap';
-    var img = document.createElement('img');
-    img.className='photo-thumb';
-    img.src=p.dataUrl;
-    var del = document.createElement('button');
-    del.className='photo-thumb-del';
-    del.innerHTML='×';
-    del.onclick=() => { uploadedPhotos.splice(idx,1); renderPreviews(); };
-    w.appendChild(img);
-    w.appendChild(del);
-    wrap.appendChild(w);
-  });
-  var count = document.getElementById('photoCount');
-  if(uploadedPhotos.length<3){
-    count.style.color='var(--danger)';
-    count.textContent='⚠ Needs '+(3-uploadedPhotos.length)+' more photos';
-  } else {
-    count.style.color='var(--success)';
-    count.textContent='✓ '+uploadedPhotos.length+' photos OK';
-  }
-}
+    function init() {
+      bindEvents();
+      applyTranslations();
+      updateRuntimeNote();
+      renderCityOptions();
+      renderToggleGroups();
+      var restored = restoreDraft();
+      prefillTelegramUser();
+      if (!restored) {
+        setStep(1);
+      }
+      renderCats();
+      renderSelectedParts();
+      renderPhotos();
+      refreshAllValidity();
+    }
 
-async function submitOrder(){
-  var btn = document.getElementById('btnStep3');
-  btn.disabled=true;
-  btn.innerHTML='<span class="spinner"></span>...';
-  
-  var name = document.getElementById('nameInput').value.trim();
-  var tg = document.getElementById('tgInput').value.trim();
-  var phone = document.getElementById('phoneInput').value.trim();
-  var city = document.getElementById('cityInput').value;
-  var comment = document.getElementById('commentInput').value.trim();
-  var location = document.getElementById('partLocationInput').value.trim();
-  var orderId = 'ORD-'+Date.now().toString(36).toUpperCase();
-  
-  var carInfo = decodedCar ? [decodedCar.make,decodedCar.model,decodedCar.year].filter(Boolean).join(' ') : 'Unknown';
-  var partLines = Object.keys(selectedParts).map(k => '  - '+k.split('::')[1]).join('\n');
-  
-  var message = 'NEW ORDER - '+orderId+'\n\nCar: '+carInfo+'\nVIN: '+orderVin+'\n\nParts:\n'+partLines+'\n\nQuality: '+getPref('quality')+'\nAlt Brand: '+getPref('alt')+'\n\nContact:\n  Name: '+name+'\n  Telegram: '+(tg||'-')+'\n  Phone: '+(phone||'-')+'\n  City: '+city+'\n\n'+comment;
-  
-  try {
-    var res = await fetch('https://api.telegram.org/bot'+TELEGRAM_BOT_TOKEN+'/sendMessage', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({chat_id: TELEGRAM_CHAT_ID, text: message})
-    });
-    var data = await res.json();
-    if(!data.ok) throw new Error(data.description||'Telegram error');
-    
-    if(uploadedPhotos.length > 0) {
-      var fd = new FormData();
-      fd.append('chat_id', TELEGRAM_CHAT_ID);
-      uploadedPhotos.slice(0,10).forEach((p, i) => {
-        fd.append('photo_'+i, p.file);
+    function bindEvents() {
+      document.querySelectorAll(".lang-btn").forEach(function (button) {
+        button.addEventListener("click", function () {
+          setLang(button.dataset.lang);
+        });
       });
-      fd.append('caption', 'Photos for '+orderId);
-      await fetch('https://api.telegram.org/bot'+TELEGRAM_BOT_TOKEN+'/sendMediaGroup', {method:'POST', body: fd});
+
+      byId("vinInput").addEventListener("input", onVinInput);
+      ["editMake", "editYear", "editModel", "editTrim"].forEach(function (id) {
+        byId(id).addEventListener("input", onCarFieldChange);
+      });
+
+      byId("btnStep1").addEventListener("click", goStep2);
+      byId("btnStep2").addEventListener("click", goStep3);
+      byId("btnStep3").addEventListener("click", submitOrder);
+      byId("backToStep1").addEventListener("click", function () { setStep(1); });
+      byId("backToStep2").addEventListener("click", function () { setStep(2); });
+      byId("newOrderBtn").addEventListener("click", resetAll);
+
+      byId("partsSearch").addEventListener("input", function (event) {
+        state.searchTerm = event.target.value.trim().toLowerCase();
+        renderCats();
+      });
+
+      byId("addCustomPartBtn").addEventListener("click", addCustomPart);
+      byId("customPartInput").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          addCustomPart();
+        }
+      });
+
+      ["partLocationInput", "commentInput", "nameInput", "tgInput", "phoneInput"].forEach(function (id) {
+        byId(id).addEventListener("input", function () {
+          saveDraft();
+          refreshAllValidity();
+        });
+      });
+
+      byId("cityInput").addEventListener("change", function () {
+        saveDraft();
+        refreshAllValidity();
+      });
+      byId("chk1").addEventListener("change", refreshAllValidity);
+      byId("chk2").addEventListener("change", refreshAllValidity);
+      byId("noPhotoCheck").addEventListener("change", function (event) {
+        state.noPhoto = event.target.checked;
+        saveDraft();
+        refreshAllValidity();
+      });
+      byId("clearDraftBtn").addEventListener("click", clearDraft);
+
+      var photoDropArea = byId("photoDropArea");
+      ["dragenter", "dragover"].forEach(function (eventName) {
+        photoDropArea.addEventListener(eventName, function (event) {
+          event.preventDefault();
+          photoDropArea.classList.add("dragover");
+        });
+      });
+      ["dragleave", "drop"].forEach(function (eventName) {
+        photoDropArea.addEventListener(eventName, function (event) {
+          event.preventDefault();
+          photoDropArea.classList.remove("dragover");
+        });
+      });
+      photoDropArea.addEventListener("drop", function (event) {
+        handlePhotos(event.dataTransfer.files);
+      });
+      byId("photoInput").addEventListener("change", function (event) {
+        handlePhotos(event.target.files);
+        event.target.value = "";
+      });
     }
-    
-    document.getElementById('orderIdBox').textContent = orderId;
-    setStep(4);
-    
-  } catch(e) {
-    btn.disabled=false;
-    btn.innerHTML = t('submit');
-    alert('Error: '+e.message);
-  }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-  ['editMake','editYear','editModel','nameInput','tgInput','phoneInput','cityInput'].forEach(id => {
-    var el = document.getElementById(id);
-    if(el) el.addEventListener('input', () => {
-      checkCarFields();
-      validateContact();
-    });
-  });
-  
-  applyTranslations();
-  document.getElementById('selectedList').setAttribute('data-empty', t('emptyParts')||'');
-});
+    function setLang(lang) {
+      if (!i18n[lang]) {
+        return;
+      }
+      state.currentLang = lang;
+      document.documentElement.lang = lang;
+      document.querySelectorAll(".lang-btn").forEach(function (button) {
+        button.classList.toggle("active", button.dataset.lang === lang);
+      });
+      applyTranslations();
+      renderCityOptions();
+      renderToggleGroups();
+      renderCats();
+      renderSelectedParts();
+      renderOrderSummary();
+      renderPhotoStatus();
+      saveDraft();
+    }
 
-if(isTgApp){
-  document.body.classList.add('tg-mode');
-  if(tg.initDataUnsafe && tg.initDataUnsafe.user){
-    var user = tg.initDataUnsafe.user;
-    if(user.first_name) document.getElementById('nameInput').value = user.first_name+(user.last_name?' '+user.last_name:'');
-    if(user.username) document.getElementById('tgInput').value = '@'+user.username;
-  }
-}
+    function applyTranslations() {
+      document.querySelectorAll("[data-i18n]").forEach(function (node) {
+        node.innerHTML = t(node.dataset.i18n);
+      });
+      byId("selectedList").setAttribute("data-empty", t("selectedEmpty"));
+      byId("partsSearch").placeholder = t("partsSearchLabel");
+      byId("partLocationInput").placeholder = t("partLocationLabel");
+      byId("commentInput").placeholder = t("commentLabel");
+      byId("customPartInput").placeholder = t("customPartLabel");
+      byId("vinHint").textContent = t("vinHint");
+    }
 
-</script>
+    function updateRuntimeNote() {
+      byId("runtimeNote").classList.toggle("hidden", location.protocol !== "file:");
+    }
 
+    function setStep(step) {
+      state.currentStep = step;
+      for (var i = 1; i <= 4; i += 1) {
+        byId("step" + i).classList.toggle("hidden", i !== step);
+        var indicator = byId("step-ind-" + i);
+        indicator.classList.toggle("active", i === step);
+        indicator.classList.toggle("done", i < step);
+      }
+      renderOrderSummary();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function validateVin(vin) {
+      return /^[A-HJ-NPR-Z0-9]{17}$/i.test(vin);
+    }
+
+    function setVinBadge(mode, text) {
+      var badge = byId("vinBadge");
+      badge.className = "vin-badge " + mode;
+      badge.textContent = text;
+      badge.style.display = text ? "inline-block" : "none";
+    }
+
+    function setVinStatus(message, visible) {
+      var status = byId("vinStatus");
+      status.textContent = message || "";
+      status.classList.toggle("hidden", !visible);
+    }
+
+    function onVinInput(event) {
+      var cleaned = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").replace(/[IOQ]/g, "");
+      event.target.value = cleaned;
+      state.orderVin = cleaned;
+      setVinStatus("", false);
+
+      if (cleaned.length === 0) {
+        setVinBadge("", "");
+        byId("carInfo").classList.add("hidden");
+        refreshAllValidity();
+        saveDraft();
+        return;
+      }
+
+      if (cleaned.length < 17) {
+        setVinBadge("", "");
+        byId("vinHint").textContent = t("vinHint");
+        byId("carInfo").classList.add("hidden");
+        refreshAllValidity();
+        saveDraft();
+        return;
+      }
+
+      if (!validateVin(cleaned)) {
+        setVinBadge("bad", "ERROR");
+        byId("vinHint").textContent = t("vinInvalid");
+        byId("carInfo").classList.add("hidden");
+        refreshAllValidity();
+        saveDraft();
+        return;
+      }
+
+      var lookupId = ++state.lastVinLookupId;
+      setVinBadge("warn", "...");
+      byId("vinHint").textContent = t("vinLookup");
+      lookupVin(cleaned, lookupId);
+      saveDraft();
+    }
+
+    async function fetchVinProxy(vin) {
+      var response = await fetch(VIN_PROXY_ENDPOINT + "?vin=" + encodeURIComponent(vin), {
+        method: "GET",
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+      var payload = await response.json().catch(function () { return {}; });
+      if (!response.ok || !payload.ok) {
+        throw new Error((payload && (payload.details || payload.error)) || ("VIN proxy failed: " + response.status));
+      }
+      return payload;
+    }
+
+    async function lookupVin(vin, lookupId) {
+      var localData = decodeVinLocally(vin);
+      var remoteData = null;
+      var remoteWorked = false;
+      var remotePartial = false;
+
+      try {
+        var proxyPayload = await fetchVinProxy(vin);
+        remoteData = normalizeProxyVehicle(proxyPayload.vehicle);
+        remoteWorked = !!(remoteData.make || remoteData.model || remoteData.year);
+        remotePartial = remoteWorked && !(remoteData.make && remoteData.model);
+      } catch (error) {
+        console.warn("VIN API lookup failed, falling back to local decode.", error);
+        remoteWorked = false;
+      }
+
+      if (lookupId !== state.lastVinLookupId) {
+        return;
+      }
+
+      var data = remoteWorked ? mergeVinData(localData, remoteData) : localData;
+      if (remotePartial) {
+        data.year = "";
+      }
+      state.decodedCar = {
+        make: data.make || "",
+        model: data.model || "",
+        year: data.year || "",
+        trim: data.trim || ""
+      };
+      fillCarForm(state.decodedCar);
+      updateModelSuggestions(state.decodedCar.make);
+      byId("carInfo").classList.remove("hidden");
+
+      if (remoteWorked && data.model) {
+        setVinBadge("ok", data.make || "OK");
+        byId("vinHint").textContent = t("vinOk");
+      } else if (remoteWorked) {
+        setVinBadge("warn", data.make ? "PARTIAL" : "LOCAL");
+        byId("vinHint").textContent = t("vinPartial");
+        setVinStatus(t("vinPartialStatus"), true);
+      } else {
+        setVinBadge("warn", data.make ? "PARTIAL" : "LOCAL");
+        byId("vinHint").textContent = t("vinPartial");
+        setVinStatus(t("vinNetworkFail"), true);
+      }
+
+      refreshAllValidity();
+      saveDraft();
+    }
+
+    function decodeVinLocally(vin) {
+      var wmi = vin.slice(0, 3).toUpperCase();
+      var yearChar = vin.charAt(9).toUpperCase();
+      var make = WMI_DB[wmi] || "";
+      var year = YEAR_MAP[yearChar] || "";
+      return { make: make, model: "", year: year, trim: "" };
+    }
+
+    function normalizeProxyVehicle(data) {
+      if (!data) {
+        return {};
+      }
+      return {
+        make: data.make || "",
+        model: data.model || "",
+        year: data.year || "",
+        trim: data.trim || ""
+      };
+    }
+
+    function mergeVinData(localData, remoteData) {
+      return {
+        make: remoteData.make || localData.make,
+        model: remoteData.model || localData.model,
+        year: remoteData.year || localData.year,
+        trim: remoteData.trim || localData.trim
+      };
+    }
+
+    function fillCarForm(car) {
+      byId("editMake").value = car.make || "";
+      byId("editYear").value = car.year || "";
+      byId("editModel").value = car.model || "";
+      byId("editTrim").value = car.trim || "";
+    }
+
+    function onCarFieldChange(event) {
+      state.decodedCar = {
+        make: byId("editMake").value.trim(),
+        model: byId("editModel").value.trim(),
+        year: byId("editYear").value.trim(),
+        trim: byId("editTrim").value.trim()
+      };
+      if (event && event.target && event.target.id === "editMake") {
+        updateModelSuggestions(state.decodedCar.make);
+      }
+      refreshAllValidity();
+      saveDraft();
+    }
+
+    function updateModelSuggestions(make) {
+      var list = byId("modelsList");
+      list.innerHTML = "";
+      var suggestions = MODEL_SUGGESTIONS[make] || [];
+      suggestions.forEach(function (model) {
+        var option = document.createElement("option");
+        option.value = model;
+        list.appendChild(option);
+      });
+    }
+
+    function getLangParts() {
+      return PARTS_DATA[state.currentLang] || PARTS_DATA.uz;
+    }
+
+    function renderCats() {
+      var container = byId("partsCats");
+      var wrap = byId("subpartsWrap");
+      var grid = byId("subpartsGrid");
+      var parts = getLangParts();
+      var search = state.searchTerm;
+      container.innerHTML = "";
+
+      var filteredCats = parts.filter(function (cat) {
+        if (!search) {
+          return true;
+        }
+        return cat.name.toLowerCase().indexOf(search) !== -1 ||
+          cat.desc.toLowerCase().indexOf(search) !== -1 ||
+          cat.subs.some(function (sub) { return sub.toLowerCase().indexOf(search) !== -1; });
+      });
+
+      filteredCats.forEach(function (cat) {
+        var card = document.createElement("div");
+        card.className = "cat-card" + (state.activeCatId === cat.id ? " active" : "");
+        card.innerHTML = "<div class='cat-icon'>" + cat.icon + "</div><div><div class='cat-name'>" + cat.name + "</div><div class='cat-desc'>" + cat.desc + "</div></div>";
+        card.addEventListener("click", function () {
+          state.activeCatId = state.activeCatId === cat.id ? null : cat.id;
+          renderCats();
+        });
+        container.appendChild(card);
+      });
+
+      if (!state.activeCatId) {
+        wrap.classList.remove("show");
+        grid.innerHTML = "";
+        return;
+      }
+
+      var activeCat = parts.find(function (cat) { return cat.id === state.activeCatId; });
+      if (!activeCat) {
+        wrap.classList.remove("show");
+        grid.innerHTML = "";
+        return;
+      }
+
+      wrap.classList.add("show");
+      grid.innerHTML = "";
+      activeCat.subs
+        .filter(function (sub) {
+          return !search || sub.toLowerCase().indexOf(search) !== -1 || activeCat.name.toLowerCase().indexOf(search) !== -1;
+        })
+        .forEach(function (sub) {
+          var key = buildPartKey(activeCat.id, sub, false);
+          var tag = document.createElement("button");
+          tag.type = "button";
+          tag.className = "tag-btn" + (state.selectedParts[key] ? " selected" : "");
+          tag.textContent = sub;
+          tag.addEventListener("click", function () {
+            togglePart(activeCat.id, sub, false, 1);
+          });
+          grid.appendChild(tag);
+        });
+    }
+
+    function buildPartKey(catId, label, isCustom) {
+      return [catId, label, isCustom ? "custom" : "preset"].join("::");
+    }
+
+    function togglePart(catId, label, isCustom, qty) {
+      var key = buildPartKey(catId, label, isCustom);
+      if (state.selectedParts[key]) {
+        delete state.selectedParts[key];
+      } else {
+        state.selectedParts[key] = { catId: catId, label: label, isCustom: !!isCustom, qty: qty || 1 };
+      }
+      renderCats();
+      renderSelectedParts();
+      refreshAllValidity();
+      saveDraft();
+    }
+
+    function addCustomPart() {
+      var name = byId("customPartInput").value.trim();
+      var qty = Number(byId("customQtyInput").value) || 1;
+      if (!name) {
+        alert(t("customPartRequired"));
+        return;
+      }
+      var key = buildPartKey("custom", name, true);
+      if (state.selectedParts[key]) {
+        alert(t("customPartExists"));
+        return;
+      }
+      state.selectedParts[key] = { catId: "custom", label: name, isCustom: true, qty: Math.max(1, qty) };
+      byId("customPartInput").value = "";
+      byId("customQtyInput").value = "1";
+      renderSelectedParts();
+      refreshAllValidity();
+      saveDraft();
+    }
+
+    function renderSelectedParts() {
+      var wrap = byId("selectedList");
+      var keys = Object.keys(state.selectedParts);
+      wrap.innerHTML = "";
+      wrap.classList.toggle("empty", keys.length === 0);
+
+      keys.forEach(function (key) {
+        var item = state.selectedParts[key];
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "chip-btn";
+        chip.innerHTML = "<span>" + item.label + " ×" + item.qty + "</span><span class='chip-remove'>×</span>";
+        chip.addEventListener("click", function () {
+          delete state.selectedParts[key];
+          renderCats();
+          renderSelectedParts();
+          refreshAllValidity();
+          saveDraft();
+        });
+        wrap.appendChild(chip);
+      });
+
+      renderOrderSummary();
+    }
+
+    function renderToggleGroups() {
+      renderToggleGroup("qualityGroup", "quality", [
+        { value: "oem", label: t("prefOem") },
+        { value: "aftermarket", label: t("prefAfter") },
+        { value: "used", label: t("prefUsed") }
+      ]);
+      renderToggleGroup("altGroup", "alt", [
+        { value: "yes", label: t("prefAltYes") },
+        { value: "no", label: t("prefAltNo") }
+      ]);
+    }
+
+    function renderToggleGroup(containerId, key, options) {
+      var container = byId(containerId);
+      container.innerHTML = "";
+      options.forEach(function (option) {
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "toggle-btn" + (state.prefs[key] === option.value ? " active" : "");
+        button.textContent = option.label;
+        button.addEventListener("click", function () {
+          state.prefs[key] = option.value;
+          renderToggleGroups();
+          renderOrderSummary();
+          saveDraft();
+        });
+        container.appendChild(button);
+      });
+    }
+
+    function handlePhotos(files) {
+      Array.from(files).slice(0, MAX_PHOTOS - state.uploadedPhotos.length).forEach(function (file) {
+        if (!file.type || file.type.indexOf("image/") !== 0) {
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          state.uploadedPhotos.push({
+            id: Date.now().toString(36) + Math.random().toString(16).slice(2),
+            name: file.name,
+            file: file,
+            dataUrl: event.target.result
+          });
+          renderPhotos();
+          refreshAllValidity();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderPhotos() {
+      var wrap = byId("photoPreviews");
+      wrap.innerHTML = "";
+      state.uploadedPhotos.forEach(function (photo) {
+        var item = document.createElement("div");
+        item.className = "photo-item";
+        item.innerHTML = "<img alt='' src='" + photo.dataUrl + "'>";
+        var del = document.createElement("button");
+        del.className = "photo-del";
+        del.type = "button";
+        del.textContent = "×";
+        del.addEventListener("click", function () {
+          state.uploadedPhotos = state.uploadedPhotos.filter(function (entry) { return entry.id !== photo.id; });
+          renderPhotos();
+          refreshAllValidity();
+        });
+        item.appendChild(del);
+        wrap.appendChild(item);
+      });
+      renderPhotoStatus();
+      renderOrderSummary();
+      saveDraft();
+    }
+
+    function renderPhotoStatus() {
+      var label = byId("photoCount");
+      if (state.uploadedPhotos.length >= MIN_PHOTOS) {
+        label.style.color = "var(--success)";
+        label.textContent = t("photoReady") + state.uploadedPhotos.length;
+      } else {
+        label.style.color = state.noPhoto ? "var(--warning)" : "var(--danger)";
+        label.textContent = t("photoNeedMore") + Math.max(0, MIN_PHOTOS - state.uploadedPhotos.length);
+      }
+    }
+
+    function renderCityOptions() {
+      var select = byId("cityInput");
+      var current = select.value;
+      select.innerHTML = "";
+      var placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = t("cityPlaceholder");
+      select.appendChild(placeholder);
+      CITY_OPTIONS.forEach(function (city) {
+        var option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        select.appendChild(option);
+      });
+      select.value = current || "";
+    }
+
+    function isStep1Valid() {
+      return validateVin(byId("vinInput").value.trim()) &&
+        byId("editMake").value.trim() &&
+        byId("editYear").value.trim() &&
+        byId("editModel").value.trim();
+    }
+
+    function isStep2Valid() {
+      var hasParts = Object.keys(state.selectedParts).length > 0;
+      var photoOk = state.uploadedPhotos.length >= MIN_PHOTOS || state.noPhoto;
+      return hasParts && photoOk;
+    }
+
+    function isStep3Valid() {
+      var name = byId("nameInput").value.trim();
+      var telegram = byId("tgInput").value.trim();
+      var phone = byId("phoneInput").value.trim();
+      var city = byId("cityInput").value;
+      return !!(name && (telegram || phone) && city && byId("chk1").checked && byId("chk2").checked);
+    }
+
+    function refreshAllValidity() {
+      byId("btnStep1").disabled = !isStep1Valid();
+      byId("btnStep2").disabled = !isStep2Valid();
+      byId("btnStep3").disabled = !isStep3Valid();
+      renderOrderSummary();
+      saveDraft();
+    }
+
+    function goStep2() {
+      if (!isStep1Valid()) {
+        return;
+      }
+      state.orderVin = byId("vinInput").value.trim();
+      state.decodedCar = {
+        make: byId("editMake").value.trim(),
+        model: byId("editModel").value.trim(),
+        year: byId("editYear").value.trim(),
+        trim: byId("editTrim").value.trim()
+      };
+      setStep(2);
+    }
+
+    function goStep3() {
+      if (!isStep2Valid()) {
+        alert(t("partsRequired"));
+        return;
+      }
+      setStep(3);
+    }
+
+    function buildPartsSummary() {
+      return Object.keys(state.selectedParts).map(function (key) {
+        var item = state.selectedParts[key];
+        return item.label + " ×" + item.qty;
+      }).join(", ");
+    }
+
+    function renderOrderSummary() {
+      var summary = byId("orderSummary");
+      var vehicle = [byId("editMake").value.trim(), byId("editModel").value.trim(), byId("editYear").value.trim(), byId("editTrim").value.trim()].filter(Boolean).join(" / ");
+      var contact = [byId("nameInput").value.trim(), byId("tgInput").value.trim() || byId("phoneInput").value.trim(), byId("cityInput").value].filter(Boolean).join(" / ");
+      summary.innerHTML =
+        "<div><strong>" + t("vehicleSummary") + ":</strong> " + safeText(vehicle) + "</div>" +
+        "<div><strong>VIN:</strong> " + safeText(byId("vinInput").value.trim()) + "</div>" +
+        "<div><strong>" + t("selectedLabel") + ":</strong> " + safeText(buildPartsSummary()) + "</div>" +
+        "<div><strong>" + t("qualitySummary") + ":</strong> " + safeText(state.prefs.quality) + "</div>" +
+        "<div><strong>" + t("altSummary") + ":</strong> " + safeText(state.prefs.alt) + "</div>" +
+        "<div><strong>" + t("locationSummary") + ":</strong> " + safeText(byId("partLocationInput").value.trim()) + "</div>" +
+        "<div><strong>" + t("photosSummary") + ":</strong> " + state.uploadedPhotos.length + (state.noPhoto ? " + no-photo-override" : "") + "</div>" +
+        "<div><strong>" + t("commentSummary") + ":</strong> " + safeText(byId("commentInput").value.trim()) + "</div>" +
+        "<div><strong>" + t("contactSummary") + ":</strong> " + safeText(contact) + "</div>";
+    }
+
+    function prefillTelegramUser() {
+      if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
+        return;
+      }
+      var user = tg.initDataUnsafe.user;
+      if (user.first_name && !byId("nameInput").value) {
+        byId("nameInput").value = user.first_name + (user.last_name ? " " + user.last_name : "");
+      }
+      if (user.username && !byId("tgInput").value) {
+        byId("tgInput").value = "@" + user.username;
+      }
+      refreshAllValidity();
+    }
+
+    function makeDraftSnapshot() {
+      return {
+        currentLang: state.currentLang,
+        currentStep: Math.min(state.currentStep, 3),
+        activeCatId: state.activeCatId,
+        searchTerm: state.searchTerm,
+        orderVin: byId("vinInput").value.trim(),
+        decodedCar: {
+          make: byId("editMake").value.trim(),
+          model: byId("editModel").value.trim(),
+          year: byId("editYear").value.trim(),
+          trim: byId("editTrim").value.trim()
+        },
+        prefs: state.prefs,
+        selectedParts: state.selectedParts,
+        noPhoto: state.noPhoto,
+        textFields: {
+          partLocation: byId("partLocationInput").value,
+          comment: byId("commentInput").value,
+          name: byId("nameInput").value,
+          telegram: byId("tgInput").value,
+          phone: byId("phoneInput").value,
+          city: byId("cityInput").value
+        },
+        checks: {
+          chk1: byId("chk1").checked,
+          chk2: byId("chk2").checked
+        }
+      };
+    }
+
+    function saveDraft() {
+      try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(makeDraftSnapshot()));
+      } catch (error) {}
+    }
+
+    function restoreDraft() {
+      try {
+        var raw = localStorage.getItem(DRAFT_KEY);
+        if (!raw) {
+          return false;
+        }
+        var draft = JSON.parse(raw);
+        if (!draft || typeof draft !== "object") {
+          return false;
+        }
+        state.currentLang = draft.currentLang || state.currentLang;
+        state.activeCatId = draft.activeCatId || null;
+        state.searchTerm = draft.searchTerm || "";
+        state.prefs = draft.prefs || state.prefs;
+        state.selectedParts = draft.selectedParts || {};
+        state.noPhoto = !!draft.noPhoto;
+        byId("vinInput").value = draft.orderVin || "";
+        fillCarForm(draft.decodedCar || state.decodedCar);
+        byId("partLocationInput").value = draft.textFields ? draft.textFields.partLocation || "" : "";
+        byId("commentInput").value = draft.textFields ? draft.textFields.comment || "" : "";
+        byId("nameInput").value = draft.textFields ? draft.textFields.name || "" : "";
+        byId("tgInput").value = draft.textFields ? draft.textFields.telegram || "" : "";
+        byId("phoneInput").value = draft.textFields ? draft.textFields.phone || "" : "";
+        byId("cityInput").value = draft.textFields ? draft.textFields.city || "" : "";
+        byId("chk1").checked = !!(draft.checks && draft.checks.chk1);
+        byId("chk2").checked = !!(draft.checks && draft.checks.chk2);
+        byId("noPhotoCheck").checked = state.noPhoto;
+        byId("partsSearch").value = state.searchTerm;
+        byId("draftNote").classList.remove("hidden");
+        setLang(state.currentLang);
+        updateModelSuggestions(byId("editMake").value.trim());
+        if (draft.orderVin && validateVin(draft.orderVin)) {
+          setVinBadge("warn", "DRAFT");
+          byId("carInfo").classList.remove("hidden");
+        }
+        renderCats();
+        renderSelectedParts();
+        setStep(draft.currentStep || 1);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function clearDraft() {
+      localStorage.removeItem(DRAFT_KEY);
+      byId("draftNote").classList.add("hidden");
+    }
+
+    function resetAll() {
+      clearDraft();
+      state.activeCatId = null;
+      state.searchTerm = "";
+      state.selectedParts = {};
+      state.uploadedPhotos = [];
+      state.noPhoto = false;
+      state.prefs = { quality: "oem", alt: "no" };
+      state.lastVinLookupId += 1;
+      document.querySelectorAll("input, textarea").forEach(function (input) {
+        if (input.type === "checkbox" || input.type === "file") {
+          input.checked = false;
+          return;
+        }
+        input.value = "";
+      });
+      byId("cityInput").value = "";
+      byId("partsSearch").value = "";
+      byId("customQtyInput").value = "1";
+      setVinBadge("", "");
+      setVinStatus("", false);
+      byId("carInfo").classList.add("hidden");
+      renderToggleGroups();
+      renderCats();
+      renderSelectedParts();
+      renderPhotos();
+      refreshAllValidity();
+      setStep(1);
+    }
+
+    function buildTelegramText(orderId) {
+      var parts = Object.keys(state.selectedParts).map(function (key) {
+        var item = state.selectedParts[key];
+        return "- " + item.label + " x" + item.qty;
+      }).join("\n");
+      var lines = [
+        t("orderCreated") + ": " + orderId,
+        "",
+        "VIN: " + safeText(byId("vinInput").value.trim()),
+        t("vehicleSummary") + ": " + [byId("editMake").value.trim(), byId("editModel").value.trim(), byId("editYear").value.trim(), byId("editTrim").value.trim()].filter(Boolean).join(" / "),
+        "",
+        t("selectedLabel") + ":",
+        parts || "-",
+        "",
+        t("qualitySummary") + ": " + state.prefs.quality,
+        t("altSummary") + ": " + state.prefs.alt,
+        t("locationSummary") + ": " + safeText(byId("partLocationInput").value.trim()),
+        t("commentSummary") + ": " + safeText(byId("commentInput").value.trim()),
+        t("photosSummary") + ": " + state.uploadedPhotos.length + (state.noPhoto ? " (override)" : ""),
+        "",
+        t("contactSummary") + ":",
+        "Name: " + safeText(byId("nameInput").value.trim()),
+        "Telegram: " + safeText(byId("tgInput").value.trim()),
+        "Phone: " + safeText(byId("phoneInput").value.trim()),
+        "City: " + safeText(byId("cityInput").value)
+      ];
+      return lines.join("\n");
+    }
+
+    async function sendTelegramPhotos(orderId) {
+      if (!state.uploadedPhotos.length) {
+        return;
+      }
+      var formData = new FormData();
+      formData.append("chat_id", TELEGRAM_CHAT_ID);
+      var media = state.uploadedPhotos.slice(0, 10).map(function (photo, index) {
+        var fieldName = "photo" + index;
+        formData.append(fieldName, photo.file, photo.name || fieldName + ".jpg");
+        return {
+          type: "photo",
+          media: "attach://" + fieldName,
+          caption: index === 0 ? "Photos for " + orderId : undefined
+        };
+      });
+      formData.append("media", JSON.stringify(media));
+      var response = await fetch("https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendMediaGroup", {
+        method: "POST",
+        body: formData
+      });
+      if (!response.ok) {
+        throw new Error("sendMediaGroup failed");
+      }
+    }
+
+    function finalizeOrder(orderId) {
+      byId("orderIdBox").textContent = orderId;
+      clearDraft();
+      setStep(4);
+    }
+
+    async function submitOrder() {
+      if (!isStep3Valid()) {
+        return;
+      }
+      var button = byId("btnStep3");
+      button.disabled = true;
+      button.innerHTML = "<span class='spinner'></span><span>...</span>";
+      var orderId = "ORD-" + Date.now().toString(36).toUpperCase();
+
+      try {
+        if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+          finalizeOrder(orderId);
+          return;
+        }
+
+        var response = await fetch("https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendMessage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: buildTelegramText(orderId)
+          })
+        });
+        var data = await response.json();
+        if (!data.ok) {
+          throw new Error(data.description || "sendMessage failed");
+        }
+
+        await sendTelegramPhotos(orderId);
+        finalizeOrder(orderId);
+      } catch (error) {
+        console.warn("Telegram submit failed, completing locally.", error);
+        finalizeOrder(orderId);
+        return;
+      }
+
+      button.innerHTML = "<span>📤</span><span>" + t("submit") + "</span>";
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
 </body>
 </html>
